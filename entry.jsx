@@ -28,8 +28,8 @@ var glitchInt = setInterval(function() {
       marginLeft: leftMove + "px",
       marginTop: -parseInt(top) + "px"
     });
-  }, 100);
-}, 1000);
+  }, 200);
+}, 465*4);
 /* Glitch for slider - end code */
 
 /* Slide change */
