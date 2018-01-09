@@ -1,5 +1,10 @@
 import React from 'react';
 
-const Congrats = () => <h1>Congratulations, you did it!</h1>;
+class Congrats extends React.Component {
+    render() {
+
+      return <pre>Hello World</pre>;
+    }
+  }
 
 export default Congrats;

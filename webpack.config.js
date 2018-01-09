@@ -9,6 +9,7 @@ module.exports = {
   },
   module: {
     loaders: [
+      { test: /\.json$/, loader: 'json-loader' },
       {
         test: [/\.jsx?$/, /\.js?$/],
         exclude: /(node_modules)/,
