@@ -952,10 +952,6 @@ var _slider = __webpack_require__(27);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _localJsonUtil = __webpack_require__(31);
-
-var _localJsonUtil2 = _interopRequireDefault(_localJsonUtil);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // og slider code
@@ -1011,9 +1007,6 @@ function nextSlide() {
 document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById("root");
 
-  // test code
-  window.fetchLocalGifUrls = _localJsonUtil2.default;
-  //
   _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
 });
 
@@ -18350,6 +18343,12 @@ var _gifsList = __webpack_require__(29);
 
 var _gifsList2 = _interopRequireDefault(_gifsList);
 
+var _localJsonUtil = __webpack_require__(31);
+
+var gifUtil = _interopRequireWildcard(_localJsonUtil);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18370,11 +18369,13 @@ var Slider = function (_React$Component) {
   _createClass(Slider, [{
     key: 'render',
     value: function render() {
+      var urls = gifUtil.fetchRandomGifUrls();
+
       return _react2.default.createElement(
         'div',
         { id: 'slider' },
         _react2.default.createElement(_slideClip2.default, null),
-        _react2.default.createElement(_gifsList2.default, null)
+        _react2.default.createElement(_gifsList2.default, { urls: url })
       );
     }
   }]);
@@ -18550,7 +18551,7 @@ exports.default = GifSlide;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchLocalGifUrls = undefined;
+exports.shuffle = exports.fetchRandomGifUrls = exports.fetchLocalGifUrls = undefined;
 
 var _results_ = __webpack_require__(32);
 
@@ -18584,7 +18585,24 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
     return urls;
 };
 
-exports.default = fetchLocalGifUrls;
+var fetchRandomGifUrls = exports.fetchRandomGifUrls = function fetchRandomGifUrls() {
+    var urls = fetchLocalGifUrls();
+    shuffle(urls);
+    return urls.slice(0, 13);
+};
+
+var shuffle = exports.shuffle = function shuffle(array) {
+    var i = 0,
+        j = 0,
+        temp = null;
+
+    for (i = array.length - 1; i > 0; i -= 1) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+};
 
 /***/ }),
 /* 32 */
