@@ -952,6 +952,10 @@ var _slider = __webpack_require__(27);
 
 var _slider2 = _interopRequireDefault(_slider);
 
+var _localJsonUtil = __webpack_require__(31);
+
+var _localJsonUtil2 = _interopRequireDefault(_localJsonUtil);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // og slider code
@@ -1006,6 +1010,10 @@ function nextSlide() {
 
 document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById("root");
+
+  // test code
+  window.fetchLocalGifs = _localJsonUtil2.default;
+  //
   _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
 });
 
@@ -18531,6 +18539,22 @@ var GifSlide = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = GifSlide;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var fetchLocalGifs = exports.fetchLocalGifs = function fetchLocalGifs() {
+    return console.log("local json util reached");
+};
+
+exports.default = fetchLocalGifs;
 
 /***/ })
 /******/ ]);

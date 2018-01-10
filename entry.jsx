@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Slider from './components/slider.jsx';
+import fetchLocalGifs from './util/localJsonUtil.js';
 
 // og slider code
 /* Glitch for slider */
@@ -53,6 +54,10 @@ function nextSlide() {
 /* Slide change - end code */
 
 document.addEventListener("DOMContentLoaded", () => {
-	const root = document.getElementById("root");
+  const root = document.getElementById("root");
+  
+  // test code
+  window.fetchLocalGifs = fetchLocalGifs;
+  //
 	ReactDOM.render(<Slider/>, root);
 });
