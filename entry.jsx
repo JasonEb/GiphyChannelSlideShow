@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Slider from './components/slider.jsx';
-import fetchLocalGifs from './util/localJsonUtil.js';
+import fetchLocalGifUrls from './util/localJsonUtil.js';
 
 // og slider code
 /* Glitch for slider */
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const root = document.getElementById("root");
   
   // test code
-  window.fetchLocalGifs = fetchLocalGifs;
+  window.fetchLocalGifUrls = fetchLocalGifUrls;
   //
 	ReactDOM.render(<Slider/>, root);
 });
