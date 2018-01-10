@@ -3,9 +3,14 @@ import GifSlide from './gifSlide.jsx';
 
 class GifsList extends React.Component {
     render() {
+      let urls = this.props.gifUrls
+      let gifSlides = urls.slice(1,urls.length).map((url, idx) =>{
+        return <GifSlide url={url} key={idx} className="slides"/>
+      })
+
       return <ul className="slides">
-      <GifSlide url="https://media.giphy.com/media/3oFzlX7ts7vrdTvKSs/giphy.gif" className="slides current"/>
-      <GifSlide url="https://media.giphy.com/media/3ohc0QbUyS8ay7gOkM/giphy.gif" className="slide" />
+      <GifSlide url={urls[0]} className="slides current"/>
+      {gifSlides}
     </ul>
     }
 }

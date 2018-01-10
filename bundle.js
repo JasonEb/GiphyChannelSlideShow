@@ -956,51 +956,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // og slider code
 /* Glitch for slider */
-var slider = $("#slider");
-var curSlide = $("li.slide.current");
-var glitchLine = $("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
-var imgUrl = curSlide.find("img").attr("src");
-var glitchImg = glitchLine.find("img");
-glitchImg.attr("src", imgUrl);
-var ttop = Math.round(Math.random() * (slider.height() - glitchLine.height()));
-glitchLine.css("top", ttop);
-glitchImg.css("margin-top", -ttop + "px");
-glitchLine.appendTo(slider);
-var glitchMoveInt;
-var glitchInt = setInterval(function () {
-  if (glitchMoveInt) clearInterval(glitchMoveInt);
-  var top = Math.round(Math.random() * (slider.height() - glitchLine.height()));
-  glitchLine.css("top", top);
-  glitchImg.css("margin-top", -top + "px");
-  glitchLine.toggleClass("glitchlineColored");
-  glitchMoveInt = setInterval(function () {
-    var leftMove = Math.round(Math.random() * 20 - 10);
-    var top = glitchLine.css("top");
-    glitchImg.css({
-      marginLeft: leftMove + "px",
-      marginTop: -parseInt(top) + "px"
-    });
-  }, 200);
-}, 465 * 4);
-/* Glitch for slider - end code */
-
-/* Slide change */
-setInterval(nextSlide, 465 * 12);
-function nextSlide() {
-  var curSlide = $(".slides li.current");
-  //console.log(curSlide);
-  var nxtSlide = curSlide.next();
-  if (nxtSlide.length === 0) {
-    nxtSlide = $(".slides li:first");
-  }
-  curSlide.removeClass("current");
-  nxtSlide.addClass("current");
-  glitchImg.attr("src", nxtSlide.find("img").attr("src"));
-  $("#slideClip").show();
-  setTimeout(function () {
-    $("#slideClip").hide();
-  }, 465); //400 represents the duration of slide noise clip
-}
 
 /* Slide change - end code */
 
@@ -1008,6 +963,54 @@ document.addEventListener("DOMContentLoaded", function () {
   var root = document.getElementById("root");
 
   _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
+
+  var beatMs = 60000 / (131 / 2);
+
+  var slider = $("#slider");
+  var curSlide = $("li.slide.current");
+  var glitchLine = $("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
+  var imgUrl = curSlide.find("img").attr("src");
+  var glitchImg = glitchLine.find("img");
+  glitchImg.attr("src", imgUrl);
+  var ttop = Math.round(Math.random() * (slider.height() - glitchLine.height()));
+  glitchLine.css("top", ttop);
+  glitchImg.css("margin-top", -ttop + "px");
+  glitchLine.appendTo(slider);
+  var glitchMoveInt;
+  var glitchInt = setInterval(function () {
+    if (glitchMoveInt) clearInterval(glitchMoveInt);
+    var top = Math.round(Math.random() * (slider.height() - glitchLine.height()));
+    glitchLine.css("top", top);
+    glitchImg.css("margin-top", -top + "px");
+    glitchLine.toggleClass("glitchlineColored");
+    glitchMoveInt = setInterval(function () {
+      var leftMove = Math.round(Math.random() * 20 - 10);
+      var top = glitchLine.css("top");
+      glitchImg.css({
+        marginLeft: leftMove + "px",
+        marginTop: -parseInt(top) + "px"
+      });
+    }, beatMs / 4);
+  }, beatMs * 2);
+  /* Glitch for slider - end code */
+
+  /* Slide change */
+  setInterval(nextSlide, beatMs * 8);
+  function nextSlide() {
+    var curSlide = $(".slides li.current");
+    //console.log(curSlide);
+    var nxtSlide = curSlide.next();
+    if (nxtSlide.length === 0) {
+      nxtSlide = $(".slides li:first");
+    }
+    curSlide.removeClass("current");
+    nxtSlide.addClass("current");
+    glitchImg.attr("src", nxtSlide.find("img").attr("src"));
+    $("#slideClip").show();
+    setTimeout(function () {
+      $("#slideClip").hide();
+    }, beatMs / 2); //beatMs represents the duration of slide noise clip
+  }
 });
 
 /***/ }),
@@ -18375,7 +18378,7 @@ var Slider = function (_React$Component) {
         'div',
         { id: 'slider' },
         _react2.default.createElement(_slideClip2.default, null),
-        _react2.default.createElement(_gifsList2.default, { urls: url })
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls })
       );
     }
   }]);
@@ -18473,11 +18476,16 @@ var GifsList = function (_React$Component) {
   _createClass(GifsList, [{
     key: 'render',
     value: function render() {
+      var urls = this.props.gifUrls;
+      var gifSlides = urls.slice(1, urls.length).map(function (url, idx) {
+        return _react2.default.createElement(_gifSlide2.default, { url: url, key: idx, className: 'slides' });
+      });
+
       return _react2.default.createElement(
         'ul',
         { className: 'slides' },
-        _react2.default.createElement(_gifSlide2.default, { url: 'https://media.giphy.com/media/3oFzlX7ts7vrdTvKSs/giphy.gif', className: 'slides current' }),
-        _react2.default.createElement(_gifSlide2.default, { url: 'https://media.giphy.com/media/3ohc0QbUyS8ay7gOkM/giphy.gif', className: 'slide' })
+        _react2.default.createElement(_gifSlide2.default, { url: urls[0], className: 'slides current' }),
+        gifSlides
       );
     }
   }]);
@@ -18588,7 +18596,7 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
 var fetchRandomGifUrls = exports.fetchRandomGifUrls = function fetchRandomGifUrls() {
     var urls = fetchLocalGifUrls();
     shuffle(urls);
-    return urls.slice(0, 13);
+    return urls.slice(0, 24);
 };
 
 var shuffle = exports.shuffle = function shuffle(array) {

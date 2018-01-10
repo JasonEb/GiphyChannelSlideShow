@@ -6,10 +6,10 @@ import * as gifUtil from '../util/localJsonUtil.js'
 class Slider extends React.Component {
     render() {
       let urls = gifUtil.fetchRandomGifUrls();
-      
+
       return <div id="slider">
         <SlideClip />
-        <GifsList urls={url} />
+        <GifsList gifUrls={urls} />
       </div>
     }
   }

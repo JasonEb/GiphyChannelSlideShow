@@ -9,7 +9,7 @@ a{
 text-decoration:none;
 }
 body{
-background:#747474;
+background:#000000;
 }
 #root{ 
   width:600px;
@@ -46,6 +46,6 @@ overflow:hidden;
 width:100%;
 }
 .glitchlineColored{
-//box-shadow:0px -1px 1px #00E403, 0px 1px 1px #E900E8;
-box-shadow:0px -2px 2px #00E403, 0px -4px 4px #E900E8;
+//box-shadow:0px -1px 1px #aaaaaa, 0px 1px 1px #ffffff;
+box-shadow:0px -2px 2px #aaaaaa, 0px -1px 1px #e694e6;
 }
