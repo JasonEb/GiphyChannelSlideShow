@@ -11290,10 +11290,19 @@ document.addEventListener("DOMContentLoaded", function () {
   _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
 
   //test code intervals
-
   window.slideUtil = slideUtil;
-  window.slideUtil.initializeShow(140);
+  window.currentTrack = "";
+  window.audioAnalysis = "";
+  window.spotifyAuthToken = "BQB8Hd4HkjsZ_QPKUr2v2ZQScKp88x2J9Mkbx9v9mnjuYzIdxrv-_FbxyHFwuXa0MZiKeGUfprvRQt3zCzW9mWNMy6BPV0_SU1i6TGH2AHXLodEW_4C33n4XMyN_JEELtnaw_vGaUPpe1XUhrCU9zpOF416Tub1vri-Te19bWpE";
   window.spotifyUtil = spotifyUtil;
+  spotifyUtil.setupHeaders();
+  spotifyUtil.getCurrentAudioAnalysis().then(function () {
+    window.tempo = window.audioAnalysis.sections[1].tempo;
+    window.tempo = parseInt(window.tempo);
+    console.log('tempo set! ' + window.tempo + ' bpm');
+  }).then(function () {
+    slideUtil.initializeShow(window.tempo * 2);
+  });
 });
 
 /***/ }),
@@ -28967,7 +28976,8 @@ var stopShow = exports.stopShow = function stopShow() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getCurrentAudioAnalysis = exports.getAudioAnalysis = exports.getCurrentTrack = undefined;
+exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.setupHeaders = undefined;
+exports.getCurrentAudioAnalysis = getCurrentAudioAnalysis;
 
 var _jquery = __webpack_require__(7);
 
@@ -28975,39 +28985,50 @@ var _jquery2 = _interopRequireDefault(_jquery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var setupHeaders = function setupHeaders() {
-    var authToken = 'Bearer BQAGTnTHfop3nIMz7SYk-tDLTEbyMBQr72fb6yUpmmt8BhSfKf5umpT4eVLIVEKtnKAXFZXLYwd0tHtivhVtNJGLbcHWkUZ52Z_ZY7TsjuASSGL3lkbqPRJr1paYDCSg4EypRk6OQ5P7cgkmyfpd1aLvdRfjDV9T1J5Q1HRKvbU';
+var setupHeaders = exports.setupHeaders = function setupHeaders() {
+    //change this eventually
+    var authToken = window.spotifyAuthToken;
 
     _jquery2.default.ajaxSetup({
         headers: { 'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': '' + authToken }
+            'Authorization': 'Bearer ' + authToken }
     });
 };
 
-var getCurrentTrack = exports.getCurrentTrack = function getCurrentTrack() {
-    setupHeaders();
+var setAuthToken = exports.setAuthToken = function setAuthToken(str) {
+    window.spotifyAuthToken = str;
+};
+
+var getCurrentTrack = exports.getCurrentTrack = function getCurrentTrack(fn) {
+    var succ = fn || function (res) {
+        window.currentTrack = res;
+    };
 
     return _jquery2.default.ajax({
         method: 'GET',
-        url: 'https://api.spotify.com/v1/me/player'
+        url: 'https://api.spotify.com/v1/me/player/currently-playing',
+        success: succ
     });
 };
 
-var getAudioAnalysis = exports.getAudioAnalysis = function getAudioAnalysis(id) {
-    setupHeaders();
+var getAudioAnalysis = exports.getAudioAnalysis = function getAudioAnalysis(id, fn) {
+    var succ = fn || function (res) {
+        window.audioAnalysis = res;
+    };
 
     return _jquery2.default.ajax({
         method: 'GET',
-        url: 'https://api.spotify.com/v1/audio-analysis/' + id
+        url: 'https://api.spotify.com/v1/audio-analysis/' + id,
+        success: succ
     });
 };
 
-var getCurrentAudioAnalysis = exports.getCurrentAudioAnalysis = function getCurrentAudioAnalysis(id) {
+function getCurrentAudioAnalysis() {
     return getCurrentTrack().then(function (res) {
         return getAudioAnalysis(res.item.id);
     });
-};
+}
 
 /***/ })
 /******/ ]);

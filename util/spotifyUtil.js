@@ -1,35 +1,40 @@
 import $ from 'jquery'
 
-const setupHeaders = () => {
-    let authToken = 'Bearer BQAGTnTHfop3nIMz7SYk-tDLTEbyMBQr72fb6yUpmmt8BhSfKf5umpT4eVLIVEKtnKAXFZXLYwd0tHtivhVtNJGLbcHWkUZ52Z_ZY7TsjuASSGL3lkbqPRJr1paYDCSg4EypRk6OQ5P7cgkmyfpd1aLvdRfjDV9T1J5Q1HRKvbU'
+export const setupHeaders = () => {
+    //change this eventually
+    let authToken = window.spotifyAuthToken;
 
     $.ajaxSetup({
         headers: { 'Content-Type': 'application/json',
                    'Accept': 'application/json',
-                   'Authorization': `${authToken}` }
+                   'Authorization': `Bearer ${authToken}` }
     });
 }
 
-export const getCurrentTrack = () => {
-    setupHeaders()
+export const setAuthToken = (str) => {
+    window.spotifyAuthToken = str;
+};
+
+export const getCurrentTrack = (fn) => {
+    let succ = fn || function(res) { window.currentTrack = res }
 
     return $.ajax({
       method: 'GET',
-      url: `https://api.spotify.com/v1/me/player`
+      url: `https://api.spotify.com/v1/me/player/currently-playing`,
+      success: succ
     })
 };
 
-export const getAudioAnalysis = (id) => {
-    setupHeaders()
+export const getAudioAnalysis = (id, fn) => {
+    let succ = fn || function(res) { window.audioAnalysis = res }
 
     return $.ajax({
         method: 'GET',
-        url: `https://api.spotify.com/v1/audio-analysis/${id}`
+        url: `https://api.spotify.com/v1/audio-analysis/${id}`,
+        success: succ
     }) 
 }
 
-export const getCurrentAudioAnalysis = (id) => {
-    return getCurrentTrack().then( (res) => {
-        return getAudioAnalysis(res.item.id)
-    })
+export function getCurrentAudioAnalysis () {
+    return getCurrentTrack().then( (res) => getAudioAnalysis(res.item.id))
 }
