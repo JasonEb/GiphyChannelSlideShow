@@ -23,9 +23,11 @@ position:relative;
 width:100%;
 //position:absolute;
 display:none;
+animation: film 1s steps(60) infinite;
 }
 #slider li.current img{
 display:inline;
+animation: noise 1s steps(60) infinite;
 }
 #slideClip{
 width:100%;
@@ -49,4 +51,10 @@ width:100%;
 .glitchlineColored{
 //box-shadow:0px -1px 1px #aaaaaa, 0px 1px 1px #ffffff;
 box-shadow:0px -2px 2px #aaaaaa, 0px -1px 1px #e694e6;
+}
+
+*, *:before, *:after {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }

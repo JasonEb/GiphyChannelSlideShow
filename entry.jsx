@@ -20,12 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
   window.slideUtil = slideUtil;
   window.currentTrack = ""
   window.audioAnalysis = ""
-  window.spotifyAuthToken = "BQB8Hd4HkjsZ_QPKUr2v2ZQScKp88x2J9Mkbx9v9mnjuYzIdxrv-_FbxyHFwuXa0MZiKeGUfprvRQt3zCzW9mWNMy6BPV0_SU1i6TGH2AHXLodEW_4C33n4XMyN_JEELtnaw_vGaUPpe1XUhrCU9zpOF416Tub1vri-Te19bWpE"
+  window.spotifyAuthToken = "BQCercWuTUgZar55EZPy7GZFJV9RasW7rz0hwYKBnpYefLK4IlonNxsZstHkYE9afdweM3C7HWwHEaeMqvdqmZIjOIsH4ijhkFZmVHW1R4ggvHPOQI7DmX_4xskCF_VqEoN5nLqgl3MQpDi9L4UQuljTFrmcDwO03Yl1IUIZGXo"
   window.spotifyUtil = spotifyUtil;
   spotifyUtil.setupHeaders()
   spotifyUtil.getCurrentAudioAnalysis().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
-    window.tempo = parseInt(window.tempo)
+    window.tempo = parseFloat(window.tempo)
     console.log(`tempo set! ${window.tempo} bpm`)
-  }).then( () => {slideUtil.initializeShow(window.tempo*2)} )
+  }).then( () => {
+    slideUtil.initializeShow(window.tempo*2)
+    let {name, artists} = window.currentTrack.item
+    let artist = artists[0].name
+    console.log(`Artist: ${artist}`)
+    console.log(`Song: ${name}`)
+    console.log(window.audioAnalysis.sections)
+
+    //set a Timeout to refresh page for a new song
+    let { currentTrack } = window
+    let resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms
+    console.log("reset time: ", resetTime);
+    const refreshPage = () => { location.reload() }
+    setTimeout( refreshPage , resetTime )
+  })
 });

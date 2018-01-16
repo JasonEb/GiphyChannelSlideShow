@@ -23,7 +23,7 @@ export const fetchLocalGifUrls = () => {
 export const fetchRandomGifUrls = () => {
     let urls = fetchLocalGifUrls();
     shuffle(urls);
-    return urls.slice(0,24);
+    return urls.slice(0,36);
 }
 
 export const shuffle = (array) => {

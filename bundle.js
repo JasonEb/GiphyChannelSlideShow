@@ -11293,15 +11293,34 @@ document.addEventListener("DOMContentLoaded", function () {
   window.slideUtil = slideUtil;
   window.currentTrack = "";
   window.audioAnalysis = "";
-  window.spotifyAuthToken = "BQB8Hd4HkjsZ_QPKUr2v2ZQScKp88x2J9Mkbx9v9mnjuYzIdxrv-_FbxyHFwuXa0MZiKeGUfprvRQt3zCzW9mWNMy6BPV0_SU1i6TGH2AHXLodEW_4C33n4XMyN_JEELtnaw_vGaUPpe1XUhrCU9zpOF416Tub1vri-Te19bWpE";
+  window.spotifyAuthToken = "BQCercWuTUgZar55EZPy7GZFJV9RasW7rz0hwYKBnpYefLK4IlonNxsZstHkYE9afdweM3C7HWwHEaeMqvdqmZIjOIsH4ijhkFZmVHW1R4ggvHPOQI7DmX_4xskCF_VqEoN5nLqgl3MQpDi9L4UQuljTFrmcDwO03Yl1IUIZGXo";
   window.spotifyUtil = spotifyUtil;
   spotifyUtil.setupHeaders();
   spotifyUtil.getCurrentAudioAnalysis().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
-    window.tempo = parseInt(window.tempo);
+    window.tempo = parseFloat(window.tempo);
     console.log('tempo set! ' + window.tempo + ' bpm');
   }).then(function () {
     slideUtil.initializeShow(window.tempo * 2);
+    var _window$currentTrack$ = window.currentTrack.item,
+        name = _window$currentTrack$.name,
+        artists = _window$currentTrack$.artists;
+
+    var artist = artists[0].name;
+    console.log('Artist: ' + artist);
+    console.log('Song: ' + name);
+    console.log(window.audioAnalysis.sections);
+
+    //set a Timeout to refresh page for a new song
+    var _window = window,
+        currentTrack = _window.currentTrack;
+
+    var resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms;
+    console.log("reset time: ", resetTime);
+    var refreshPage = function refreshPage() {
+      location.reload();
+    };
+    setTimeout(refreshPage, resetTime);
   });
 });
 
@@ -28841,7 +28860,7 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
 var fetchRandomGifUrls = exports.fetchRandomGifUrls = function fetchRandomGifUrls() {
     var urls = fetchLocalGifUrls();
     shuffle(urls);
-    return urls.slice(0, 24);
+    return urls.slice(0, 36);
 };
 
 var shuffle = exports.shuffle = function shuffle(array) {
