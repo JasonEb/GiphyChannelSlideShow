@@ -11282,9 +11282,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // og slider code
 /* Glitch for slider */
 window.intervals = [];
-/* Slide change - end code */
+
+// spotify implicit grant token 
+
 
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.location.hash == '') {
+    spotifyUtil.getAuthTokenImplicit();
+  } else {
+    spotifyUtil.setAuthToken();
+  }
   var root = document.getElementById("root");
 
   _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
@@ -11293,8 +11300,8 @@ document.addEventListener("DOMContentLoaded", function () {
   window.slideUtil = slideUtil;
   window.currentTrack = "";
   window.audioAnalysis = "";
-  window.spotifyAuthToken = "BQCercWuTUgZar55EZPy7GZFJV9RasW7rz0hwYKBnpYefLK4IlonNxsZstHkYE9afdweM3C7HWwHEaeMqvdqmZIjOIsH4ijhkFZmVHW1R4ggvHPOQI7DmX_4xskCF_VqEoN5nLqgl3MQpDi9L4UQuljTFrmcDwO03Yl1IUIZGXo";
   window.spotifyUtil = spotifyUtil;
+  window.$ = _jquery2.default;
   spotifyUtil.setupHeaders();
   spotifyUtil.getCurrentAudioAnalysis().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
@@ -28995,7 +29002,7 @@ var stopShow = exports.stopShow = function stopShow() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.setupHeaders = undefined;
+exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
 exports.getCurrentAudioAnalysis = getCurrentAudioAnalysis;
 
 var _jquery = __webpack_require__(7);
@@ -29015,7 +29022,49 @@ var setupHeaders = exports.setupHeaders = function setupHeaders() {
     });
 };
 
-var setAuthToken = exports.setAuthToken = function setAuthToken(str) {
+var getAuthTokenImplicit = exports.getAuthTokenImplicit = function getAuthTokenImplicit() {
+    // Get the hash of the url
+    var hash = window.location.hash.substring(1).split('&').reduce(function (initial, item) {
+        if (item) {
+            var parts = item.split('=');
+            initial[parts[0]] = decodeURIComponent(parts[1]);
+        }
+        return initial;
+    }, {});
+    window.location.hash = '';
+
+    // Set token
+    var _token = hash.access_token;
+
+    var authEndpoint = 'https://accounts.spotify.com/authorize';
+
+    var clientId = 'a1725413073e48a697827b4895650356';
+    var redirectUri = 'http://localhost:8000';
+    var scopes = ['user-read-currently-playing'];
+
+    // If there is no token, redirect to Spotify authorization
+    if (!_token) {
+        window.location = authEndpoint + '?client_id=' + clientId + '&redirect_uri=' + redirectUri + '&scope=' + scopes.join('%20') + '&response_type=token';
+    }
+};
+
+var getAuthToken = exports.getAuthToken = function getAuthToken() {
+    var url = "http://localhost:3000/token";
+    return _jquery2.default.ajax({
+        type: "GET",
+        crossDomain: true,
+        contentType: 'json',
+        headers: { 'Access-Control-Allow-Origin': 'http://localhost:3000' },
+        xhrFields: { withCredentials: true },
+        url: url
+    }).done(function (data) {
+        this.spotifyAuthToken = data.token;
+        console.log("spotify token");
+    });
+};
+
+var setAuthToken = exports.setAuthToken = function setAuthToken() {
+    var str = window.location.hash.slice(14, 182);
     window.spotifyAuthToken = str;
 };
 

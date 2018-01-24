@@ -9,19 +9,26 @@ import * as spotifyUtil from './util/spotifyUtil';
 // og slider code
 /* Glitch for slider */
 window.intervals = [];
-/* Slide change - end code */
+
+// spotify implicit grant token 
+
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.location.hash == '') {
+    spotifyUtil.getAuthTokenImplicit()
+  } else {
+    spotifyUtil.setAuthToken()
+  }
   const root = document.getElementById("root");
-  
+
   ReactDOM.render(<Slider/>, root);
 
   //test code intervals
   window.slideUtil = slideUtil;
   window.currentTrack = ""
   window.audioAnalysis = ""
-  window.spotifyAuthToken = "BQCercWuTUgZar55EZPy7GZFJV9RasW7rz0hwYKBnpYefLK4IlonNxsZstHkYE9afdweM3C7HWwHEaeMqvdqmZIjOIsH4ijhkFZmVHW1R4ggvHPOQI7DmX_4xskCF_VqEoN5nLqgl3MQpDi9L4UQuljTFrmcDwO03Yl1IUIZGXo"
   window.spotifyUtil = spotifyUtil;
+  window.$ = $;
   spotifyUtil.setupHeaders()
   spotifyUtil.getCurrentAudioAnalysis().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
