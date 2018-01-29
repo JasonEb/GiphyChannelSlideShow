@@ -28923,7 +28923,7 @@ var initializeShow = exports.initializeShow = function initializeShow() {
     var bpm = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 120;
 
     stopShow();
-    var beatMs = 60000 / (bpm / 2);
+    var beatMs = 60000 / bpm;
 
     var slider = (0, _jquery2.default)("#slider");
     var curSlide = (0, _jquery2.default)("li.slide.current");

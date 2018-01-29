@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 export const initializeShow = (bpm = 120) => {
     stopShow();
-    let beatMs = 60000/(bpm/2);
+    let beatMs = 60000/(bpm);
 
     var slider = $("#slider");
     var curSlide = $("li.slide.current");
