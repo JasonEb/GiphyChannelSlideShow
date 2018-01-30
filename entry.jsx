@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.currentTrack = ""
   window.audioAnalysis = ""
   window.spotifyUtil = spotifyUtil;
+  window.$ = $;
 
   //begin polling
   spotifyUtil.setupHeaders()
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let {name, artists} = window.currentTrack.item
     let artist = artists[0].name
     const refreshPage = () => { location.reload() }
-    
+
     console.log(window.audioAnalysis.sections)
 
     //set a Timeout to refresh page for a new song

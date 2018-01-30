@@ -11301,6 +11301,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.currentTrack = "";
   window.audioAnalysis = "";
   window.spotifyUtil = spotifyUtil;
+  window.$ = _jquery2.default;
 
   //begin polling
   spotifyUtil.setupHeaders();
@@ -28975,6 +28976,11 @@ var TitleCard = function (_React$Component) {
             var progressMs = window.currentTrack.progress_ms;
             duration = duration - progressMs - window.networkDelay;
             window.setTimeout(turnOff, duration);
+
+            //glitch up colors
+            for (var i = 0; i < 4; i++) {
+                (0, _jquery2.default)('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
+            }
         }
     }, {
         key: "render",
@@ -28984,19 +28990,24 @@ var TitleCard = function (_React$Component) {
                 songTitle = _props.songTitle;
 
             return _react2.default.createElement(
-                "div",
+                "section",
                 { id: "titleCard" },
                 _react2.default.createElement(
-                    "h1",
-                    null,
-                    "\"",
-                    songTitle,
-                    "\""
-                ),
-                _react2.default.createElement(
-                    "h2",
-                    null,
-                    artist
+                    "div",
+                    { className: "glitch" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "text" },
+                        _react2.default.createElement(
+                            "span",
+                            null,
+                            "\"",
+                            songTitle,
+                            "\"",
+                            _react2.default.createElement("br", null),
+                            artist
+                        )
+                    )
                 )
             );
         }

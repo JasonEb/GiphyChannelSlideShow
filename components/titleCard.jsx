@@ -17,14 +17,27 @@ class TitleCard extends React.Component {
         let progressMs = window.currentTrack.progress_ms
         duration = duration - progressMs - window.networkDelay
         window.setTimeout(turnOff, duration)
+
+        //glitch up colors
+        for(let i=0;i<4;i++){
+            $('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
+        }
     }
 
     render() {
         let {artist, songTitle} = this.props
-        return <div id="titleCard">
-        <h1>"{songTitle}"</h1>
-        <h2>{artist}</h2>
-        </div>
+        return <section id="titleCard">
+            <div className="glitch">
+                <div className="text">
+                    <span>
+                    "{songTitle}"
+                    <br/>
+                    {artist}
+                    </span>
+                </div> 
+                
+            </div>
+        </section>
     }
   }
 
