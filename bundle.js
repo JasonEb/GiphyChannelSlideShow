@@ -435,135 +435,6 @@ module.exports = emptyObject;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
-var validateFormat = function validateFormat(format) {};
-
-if (process.env.NODE_ENV !== 'production') {
-  validateFormat = function validateFormat(format) {
-    if (format === undefined) {
-      throw new Error('invariant requires an error message argument');
-    }
-  };
-}
-
-function invariant(condition, format, a, b, c, d, e, f) {
-  validateFormat(format);
-
-  if (!condition) {
-    var error;
-    if (format === undefined) {
-      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-    } else {
-      var args = [a, b, c, d, e, f];
-      var argIndex = 0;
-      error = new Error(format.replace(/%s/g, function () {
-        return args[argIndex++];
-      }));
-      error.name = 'Invariant Violation';
-    }
-
-    error.framesToPop = 1; // we don't care about invariant's own frame
-    throw error;
-  }
-}
-
-module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyFunction = __webpack_require__(2);
-
-/**
- * Similar to invariant but only logs a warning if the condition is not met.
- * This can be used to log issues in development environments in critical
- * paths. Removing the logging code for production environments will keep the
- * same logic and follow the same code paths.
- */
-
-var warning = emptyFunction;
-
-if (process.env.NODE_ENV !== 'production') {
-  var printWarning = function printWarning(format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    var argIndex = 0;
-    var message = 'Warning: ' + format.replace(/%s/g, function () {
-      return args[argIndex++];
-    });
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-
-  warning = function warning(condition, format) {
-    if (format === undefined) {
-      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
-    }
-
-    if (format.indexOf('Failed Composite propType: ') === 0) {
-      return; // Ignore CompositeComponent proptype check.
-    }
-
-    if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-        args[_key2 - 2] = arguments[_key2];
-      }
-
-      printWarning.apply(undefined, [format].concat(args));
-    }
-  };
-}
-
-module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10821,6 +10692,135 @@ return jQuery;
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var validateFormat = function validateFormat(format) {};
+
+if (process.env.NODE_ENV !== 'production') {
+  validateFormat = function validateFormat(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
+}
+
+function invariant(condition, format, a, b, c, d, e, f) {
+  validateFormat(format);
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(format.replace(/%s/g, function () {
+        return args[argIndex++];
+      }));
+      error.name = 'Invariant Violation';
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
+}
+
+module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyFunction = __webpack_require__(2);
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = emptyFunction;
+
+if (process.env.NODE_ENV !== 'production') {
+  var printWarning = function printWarning(format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function warning(condition, format) {
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (format.indexOf('Failed Composite propType: ') === 0) {
+      return; // Ignore CompositeComponent proptype check.
+    }
+
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10835,8 +10835,8 @@ return jQuery;
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = __webpack_require__(5);
-  var warning = __webpack_require__(6);
+  var invariant = __webpack_require__(6);
+  var warning = __webpack_require__(7);
   var ReactPropTypesSecret = __webpack_require__(19);
   var loggedTypeFailures = {};
 }
@@ -11259,11 +11259,11 @@ var _slider = __webpack_require__(29);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(36);
+var _sliderControls = __webpack_require__(37);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
-var _jquery = __webpack_require__(7);
+var _jquery = __webpack_require__(5);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -11271,7 +11271,7 @@ var _slideClip = __webpack_require__(15);
 
 var _slideClip2 = _interopRequireDefault(_slideClip);
 
-var _spotifyUtil = __webpack_require__(37);
+var _spotifyUtil = __webpack_require__(38);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
@@ -11304,17 +11304,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //begin polling
   spotifyUtil.setupHeaders();
+  var beginT = Date.now();
+
   spotifyUtil.getCurrentAudioAnalysis().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
     window.tempo = parseFloat(window.tempo);
     console.log('tempo set! ' + window.tempo + ' bpm');
   }).then(function () {
-    slideUtil.initializeShow(window.tempo);
     var _window$currentTrack$ = window.currentTrack.item,
         name = _window$currentTrack$.name,
         artists = _window$currentTrack$.artists;
 
     var artist = artists[0].name;
+    var refreshPage = function refreshPage() {
+      location.reload();
+    };
+
     console.log(window.audioAnalysis.sections);
 
     //set a Timeout to refresh page for a new song
@@ -11323,13 +11328,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms;
     console.log("reset time: ", resetTime);
-    var refreshPage = function refreshPage() {
-      location.reload();
-    };
+
     setTimeout(refreshPage, resetTime);
 
     //at this point all information is necessary
+    window.networkDelay = Date.now() - beginT;
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
+    slideUtil.initializeShow(window.tempo);
   });
 });
 
@@ -11385,8 +11390,8 @@ if (process.env.NODE_ENV !== "production") {
 
 var _assign = __webpack_require__(3);
 var emptyObject = __webpack_require__(4);
-var invariant = __webpack_require__(5);
-var warning = __webpack_require__(6);
+var invariant = __webpack_require__(6);
+var warning = __webpack_require__(7);
 var emptyFunction = __webpack_require__(2);
 var checkPropTypes = __webpack_require__(8);
 
@@ -13106,8 +13111,8 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var React = __webpack_require__(1);
-var invariant = __webpack_require__(5);
-var warning = __webpack_require__(6);
+var invariant = __webpack_require__(6);
+var warning = __webpack_require__(7);
 var ExecutionEnvironment = __webpack_require__(9);
 var _assign = __webpack_require__(3);
 var emptyFunction = __webpack_require__(2);
@@ -28670,7 +28675,7 @@ var _localJsonUtil = __webpack_require__(32);
 
 var gifUtil = _interopRequireWildcard(_localJsonUtil);
 
-var _titleCard = __webpack_require__(38);
+var _titleCard = __webpack_require__(36);
 
 var _titleCard2 = _interopRequireDefault(_titleCard);
 
@@ -28923,9 +28928,98 @@ module.exports = {"count":null,"next":"https://giphy.com/api/v1/channels/2579919
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jquery = __webpack_require__(5);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TitleCard = function (_React$Component) {
+    _inherits(TitleCard, _React$Component);
+
+    function TitleCard() {
+        _classCallCheck(this, TitleCard);
+
+        return _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).apply(this, arguments));
+    }
+
+    _createClass(TitleCard, [{
+        key: "super",
+        value: function _super(props) {
+            this.state = { on: false };
+            this.toggle = this.toggle.bind(this);
+            this.handleClick = this.handleClick.bind(this);
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+
+            var turnOff = function turnOff() {
+                (0, _jquery2.default)("#titleCard").hide();
+            };
+
+            var duration = window.audioAnalysis.sections[0].duration * 1000;
+            var progressMs = window.currentTrack.progress_ms;
+            duration = duration - progressMs - window.networkDelay;
+            window.setTimeout(turnOff, duration);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _props = this.props,
+                artist = _props.artist,
+                songTitle = _props.songTitle;
+
+            return _react2.default.createElement(
+                "div",
+                { id: "titleCard" },
+                _react2.default.createElement(
+                    "h1",
+                    null,
+                    "\"",
+                    songTitle,
+                    "\""
+                ),
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    artist
+                )
+            );
+        }
+    }]);
+
+    return TitleCard;
+}(_react2.default.Component);
+
+exports.default = TitleCard;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.stopShow = exports.initializeShow = undefined;
 
-var _jquery = __webpack_require__(7);
+var _jquery = __webpack_require__(5);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29005,7 +29099,7 @@ var stopShow = exports.stopShow = function stopShow() {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29017,7 +29111,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
 exports.getCurrentAudioAnalysis = getCurrentAudioAnalysis;
 
-var _jquery = __webpack_require__(7);
+var _jquery = __webpack_require__(5);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29109,94 +29203,6 @@ function getCurrentAudioAnalysis() {
         return getAudioAnalysis(res.item.id);
     });
 }
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _jquery = __webpack_require__(7);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TitleCard = function (_React$Component) {
-    _inherits(TitleCard, _React$Component);
-
-    function TitleCard() {
-        _classCallCheck(this, TitleCard);
-
-        return _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).apply(this, arguments));
-    }
-
-    _createClass(TitleCard, [{
-        key: "super",
-        value: function _super(props) {
-            this.state = { on: false };
-            this.toggle = this.toggle.bind(this);
-            this.handleClick = this.handleClick.bind(this);
-        }
-    }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-
-            var turnOff = function turnOff() {
-                (0, _jquery2.default)("#titleCard").hide();
-            };
-            var duration = window.audioAnalysis.bars[15].start * 1000;
-            var progressMs = window.currentTrack.progress_ms;
-
-            window.setTimeout(turnOff, duration - progressMs - 475);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var _props = this.props,
-                artist = _props.artist,
-                songTitle = _props.songTitle;
-
-            return _react2.default.createElement(
-                "div",
-                { id: "titleCard" },
-                _react2.default.createElement(
-                    "h1",
-                    null,
-                    "\"",
-                    songTitle,
-                    "\""
-                ),
-                _react2.default.createElement(
-                    "h2",
-                    null,
-                    artist
-                )
-            );
-        }
-    }]);
-
-    return TitleCard;
-}(_react2.default.Component);
-
-exports.default = TitleCard;
 
 /***/ })
 /******/ ]);

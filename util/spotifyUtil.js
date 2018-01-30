@@ -73,7 +73,9 @@ export const getCurrentTrack = (fn) => {
 };
 
 export const getAudioAnalysis = (id, fn) => {
-    let succ = fn || function(res) { window.audioAnalysis = res }
+    let succ = fn || function(res) {
+        window.audioAnalysis = res
+    }
 
     return $.ajax({
         method: 'GET',

@@ -12,11 +12,11 @@ class TitleCard extends React.Component {
         const turnOff = () => {
             $("#titleCard").hide()
         }
-        let duration = window.audioAnalysis.bars[15].start * 1000
+        
+        let duration = window.audioAnalysis.sections[0].duration * 1000
         let progressMs = window.currentTrack.progress_ms
-
-        window.setTimeout(turnOff, duration - progressMs - 475)
-
+        duration = duration - progressMs - window.networkDelay
+        window.setTimeout(turnOff, duration)
     }
 
     render() {

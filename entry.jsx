@@ -31,24 +31,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //begin polling
   spotifyUtil.setupHeaders()
+  let beginT = Date.now()
+
   spotifyUtil.getCurrentAudioAnalysis().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
     window.tempo = parseFloat(window.tempo)
     console.log(`tempo set! ${window.tempo} bpm`)
   }).then( () => {
-    slideUtil.initializeShow(window.tempo)
     let {name, artists} = window.currentTrack.item
     let artist = artists[0].name
+    const refreshPage = () => { location.reload() }
+    
     console.log(window.audioAnalysis.sections)
 
     //set a Timeout to refresh page for a new song
     let { currentTrack } = window
     let resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms
     console.log("reset time: ", resetTime);
-    const refreshPage = () => { location.reload() }
+
     setTimeout( refreshPage , resetTime )
 
     //at this point all information is necessary
+    window.networkDelay = Date.now() - beginT
     ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
+    slideUtil.initializeShow(window.tempo)
   })
 });
