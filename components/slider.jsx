@@ -7,7 +7,7 @@ import TitleCard from './titleCard.jsx'
 class Slider extends React.Component {
     render() {
       let urls = gifUtil.fetchRandomGifUrls()
-      let {artist, songTitle} = this.props
+      let {artist, songTitle, bpm} = this.props
 
       return <div id="slider">
         <SlideClip />

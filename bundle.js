@@ -11309,7 +11309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.tempo = parseFloat(window.tempo);
     console.log('tempo set! ' + window.tempo + ' bpm');
   }).then(function () {
-    slideUtil.initializeShow(window.tempo * 2);
+    slideUtil.initializeShow(window.tempo);
     var _window$currentTrack$ = window.currentTrack.item,
         name = _window$currentTrack$.name,
         artists = _window$currentTrack$.artists;
@@ -28699,7 +28699,8 @@ var Slider = function (_React$Component) {
       var urls = gifUtil.fetchRandomGifUrls();
       var _props = this.props,
           artist = _props.artist,
-          songTitle = _props.songTitle;
+          songTitle = _props.songTitle,
+          bpm = _props.bpm;
 
 
       return _react2.default.createElement(
@@ -29126,6 +29127,10 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _jquery = __webpack_require__(7);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29144,19 +29149,46 @@ var TitleCard = function (_React$Component) {
     }
 
     _createClass(TitleCard, [{
+        key: "super",
+        value: function _super(props) {
+            this.state = { on: false };
+            this.toggle = this.toggle.bind(this);
+            this.handleClick = this.handleClick.bind(this);
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+
+            var turnOff = function turnOff() {
+                (0, _jquery2.default)("#titleCard").hide();
+            };
+            var duration = window.audioAnalysis.bars[15].start * 1000;
+            var progressMs = window.currentTrack.progress_ms;
+
+            window.setTimeout(turnOff, duration - progressMs - 475);
+        }
+    }, {
         key: "render",
         value: function render() {
             var _props = this.props,
                 artist = _props.artist,
                 songTitle = _props.songTitle;
 
-
-            console.log("Artist: " + artist);
-            console.log("Song: " + songTitle);
             return _react2.default.createElement(
                 "div",
                 { id: "titleCard" },
-                "TEST"
+                _react2.default.createElement(
+                    "h1",
+                    null,
+                    "\"",
+                    songTitle,
+                    "\""
+                ),
+                _react2.default.createElement(
+                    "h2",
+                    null,
+                    artist
+                )
             );
         }
     }]);

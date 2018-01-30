@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.tempo = parseFloat(window.tempo)
     console.log(`tempo set! ${window.tempo} bpm`)
   }).then( () => {
-    slideUtil.initializeShow(window.tempo*2)
+    slideUtil.initializeShow(window.tempo)
     let {name, artists} = window.currentTrack.item
     let artist = artists[0].name
     console.log(window.audioAnalysis.sections)
