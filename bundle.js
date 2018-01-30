@@ -11294,14 +11294,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   var root = document.getElementById("root");
 
-  _reactDom2.default.render(_react2.default.createElement(_slider2.default, null), root);
+  //poll spotify for information first and send it as props to slider
 
-  //test code intervals
+  //setup
   window.slideUtil = slideUtil;
   window.currentTrack = "";
   window.audioAnalysis = "";
   window.spotifyUtil = spotifyUtil;
-  window.$ = _jquery2.default;
+
+  //begin polling
   spotifyUtil.setupHeaders();
   spotifyUtil.getCurrentAudioAnalysis().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
@@ -11314,8 +11315,6 @@ document.addEventListener("DOMContentLoaded", function () {
         artists = _window$currentTrack$.artists;
 
     var artist = artists[0].name;
-    console.log('Artist: ' + artist);
-    console.log('Song: ' + name);
     console.log(window.audioAnalysis.sections);
 
     //set a Timeout to refresh page for a new song
@@ -11328,6 +11327,9 @@ document.addEventListener("DOMContentLoaded", function () {
       location.reload();
     };
     setTimeout(refreshPage, resetTime);
+
+    //at this point all information is necessary
+    _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
   });
 });
 
@@ -28668,6 +28670,10 @@ var _localJsonUtil = __webpack_require__(32);
 
 var gifUtil = _interopRequireWildcard(_localJsonUtil);
 
+var _titleCard = __webpack_require__(38);
+
+var _titleCard2 = _interopRequireDefault(_titleCard);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28691,11 +28697,16 @@ var Slider = function (_React$Component) {
     key: 'render',
     value: function render() {
       var urls = gifUtil.fetchRandomGifUrls();
+      var _props = this.props,
+          artist = _props.artist,
+          songTitle = _props.songTitle;
+
 
       return _react2.default.createElement(
         'div',
         { id: 'slider' },
         _react2.default.createElement(_slideClip2.default, null),
+        _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls })
       );
     }
@@ -29097,6 +29108,63 @@ function getCurrentAudioAnalysis() {
         return getAudioAnalysis(res.item.id);
     });
 }
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TitleCard = function (_React$Component) {
+    _inherits(TitleCard, _React$Component);
+
+    function TitleCard() {
+        _classCallCheck(this, TitleCard);
+
+        return _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).apply(this, arguments));
+    }
+
+    _createClass(TitleCard, [{
+        key: "render",
+        value: function render() {
+            var _props = this.props,
+                artist = _props.artist,
+                songTitle = _props.songTitle;
+
+
+            console.log("Artist: " + artist);
+            console.log("Song: " + songTitle);
+            return _react2.default.createElement(
+                "div",
+                { id: "titleCard" },
+                "TEST"
+            );
+        }
+    }]);
+
+    return TitleCard;
+}(_react2.default.Component);
+
+exports.default = TitleCard;
 
 /***/ })
 /******/ ]);

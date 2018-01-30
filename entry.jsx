@@ -21,14 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   const root = document.getElementById("root");
 
-  ReactDOM.render(<Slider/>, root);
+  //poll spotify for information first and send it as props to slider
 
-  //test code intervals
+  //setup
   window.slideUtil = slideUtil;
   window.currentTrack = ""
   window.audioAnalysis = ""
   window.spotifyUtil = spotifyUtil;
-  window.$ = $;
+
+  //begin polling
   spotifyUtil.setupHeaders()
   spotifyUtil.getCurrentAudioAnalysis().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
@@ -38,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     slideUtil.initializeShow(window.tempo*2)
     let {name, artists} = window.currentTrack.item
     let artist = artists[0].name
-    console.log(`Artist: ${artist}`)
-    console.log(`Song: ${name}`)
     console.log(window.audioAnalysis.sections)
 
     //set a Timeout to refresh page for a new song
@@ -48,5 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("reset time: ", resetTime);
     const refreshPage = () => { location.reload() }
     setTimeout( refreshPage , resetTime )
+
+    //at this point all information is necessary
+    ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
   })
 });
