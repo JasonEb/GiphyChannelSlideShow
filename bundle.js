@@ -28671,9 +28671,9 @@ var _gifsList = __webpack_require__(30);
 
 var _gifsList2 = _interopRequireDefault(_gifsList);
 
-var _localJsonUtil = __webpack_require__(32);
+var _giphyApiUtil = __webpack_require__(32);
 
-var gifUtil = _interopRequireWildcard(_localJsonUtil);
+var gifUtil = _interopRequireWildcard(_giphyApiUtil);
 
 var _titleCard = __webpack_require__(36);
 
@@ -28692,16 +28692,31 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Slider = function (_React$Component) {
   _inherits(Slider, _React$Component);
 
-  function Slider() {
+  function Slider(props) {
     _classCallCheck(this, Slider);
 
-    return _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
+
+    _this.state = { urls: [] };
+    _this.fetchGifs = _this.fetchGifs.bind(_this);
+    return _this;
   }
 
   _createClass(Slider, [{
+    key: 'fetchGifs',
+    value: function fetchGifs() {
+      var urls = gifUtil.fetchRandomGifUrls();
+      this.setState({ urls: urls });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.fetchGifs();
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var urls = gifUtil.fetchRandomGifUrls();
+      var urls = this.state.urls;
       var _props = this.props,
           artist = _props.artist,
           songTitle = _props.songTitle,

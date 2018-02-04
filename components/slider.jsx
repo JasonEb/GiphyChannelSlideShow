@@ -1,12 +1,28 @@
 import React from 'react';
 import SlideClip from './slideClip.jsx'
 import GifsList from './gifsList.jsx'
-import * as gifUtil from '../util/localJsonUtil.js' 
+import * as gifUtil from '../util/giphyApiUtil.js' 
 import TitleCard from './titleCard.jsx'
 
 class Slider extends React.Component {
-    render() {
+    constructor(props){
+      super(props)
+      this.state = { urls: [] }
+      this.fetchGifs = this.fetchGifs.bind(this)
+    }
+
+    fetchGifs() {
       let urls = gifUtil.fetchRandomGifUrls()
+      this.setState({urls: urls})
+    }
+    
+    componentDidMount() {
+      this.fetchGifs()
+    }
+
+    render() {
+      let { urls } = this.state
+
       let {artist, songTitle, bpm} = this.props
 
       return <div id="slider">
