@@ -11201,7 +11201,7 @@ module.exports = focusNode;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11219,23 +11219,22 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SlideClip = function (_React$Component) {
-    _inherits(SlideClip, _React$Component);
+  _inherits(SlideClip, _React$Component);
 
-    function SlideClip() {
-        _classCallCheck(this, SlideClip);
+  function SlideClip() {
+    _classCallCheck(this, SlideClip);
 
-        return _possibleConstructorReturn(this, (SlideClip.__proto__ || Object.getPrototypeOf(SlideClip)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (SlideClip.__proto__ || Object.getPrototypeOf(SlideClip)).apply(this, arguments));
+  }
+
+  _createClass(SlideClip, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement("div", { id: "slideClip" });
     }
+  }]);
 
-    _createClass(SlideClip, [{
-        key: "render",
-        value: function render() {
-
-            return _react2.default.createElement("div", { id: "slideClip" });
-        }
-    }]);
-
-    return SlideClip;
+  return SlideClip;
 }(_react2.default.Component);
 
 exports.default = SlideClip;
@@ -11335,7 +11334,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //at this point all information is necessary
     window.networkDelay = Date.now() - beginT;
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
-    slideUtil.initializeShow(window.tempo);
+    slideUtil.initializeShow(window.tempo / 2);
   });
 });
 
@@ -28712,9 +28711,9 @@ var Slider = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'slider' },
-        _react2.default.createElement(_slideClip2.default, null),
+        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls })
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) })
       );
     }
   }]);

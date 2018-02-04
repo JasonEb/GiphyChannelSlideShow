@@ -55,6 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //at this point all information is necessary
     window.networkDelay = Date.now() - beginT
     ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
-    slideUtil.initializeShow(window.tempo)
+    slideUtil.initializeShow(window.tempo/2)
   })
 });
