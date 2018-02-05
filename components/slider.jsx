@@ -7,20 +7,30 @@ import TitleCard from './titleCard.jsx'
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: gifUtil.fetchRandomGifUrls() }
-      this.fetchGifs = this.fetchGifs.bind(this)
+      this.state = { urls: [] }
+      this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
     }
 
-    fetchGifs() {
-      console.log("fetch giphys: ", gifUtil.fetchGifUrls())
+    fetchChannelGifs(page="1") {
+      gifUtil.fetchGiphyChannel(page).then( (res) => {
+        if (res.next) {
+          let page = res.next[res.next.length - 1]
+          this.fetchChannelGifs(page)
+        }
+        let oldUrls = this.state.urls
+        res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        this.setState({urls: oldUrls})
+      })
     }
     
     componentDidMount() {
-      this.fetchGifs()
+      this.fetchChannelGifs()
     }
 
     render() {
       let { urls } = this.state
+      gifUtil.shuffle(urls)
+      urls = urls.slice(0,9)
 
       let {artist, songTitle, bpm} = this.props
 

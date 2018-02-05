@@ -28704,25 +28704,43 @@ var Slider = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
 
-    _this.state = { urls: gifUtil.fetchRandomGifUrls() };
-    _this.fetchGifs = _this.fetchGifs.bind(_this);
+    _this.state = { urls: [] };
+    _this.fetchChannelGifs = _this.fetchChannelGifs.bind(_this);
     return _this;
   }
 
   _createClass(Slider, [{
-    key: 'fetchGifs',
-    value: function fetchGifs() {
-      console.log("fetch giphys: ", gifUtil.fetchGifUrls());
+    key: 'fetchChannelGifs',
+    value: function fetchChannelGifs() {
+      var _this2 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
+
+      gifUtil.fetchGiphyChannel(page).then(function (res) {
+        if (res.next) {
+          var _page = res.next[res.next.length - 1];
+          _this2.fetchChannelGifs(_page);
+        }
+        var oldUrls = _this2.state.urls;
+        res.results.forEach(function (giphy) {
+          return oldUrls.push(giphy.images.original.url);
+        });
+        _this2.setState({ urls: oldUrls });
+      });
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.fetchGifs();
+      this.fetchChannelGifs();
     }
   }, {
     key: 'render',
     value: function render() {
       var urls = this.state.urls;
+
+      gifUtil.shuffle(urls);
+      urls = urls.slice(0, 9);
+
       var _props = this.props,
           artist = _props.artist,
           songTitle = _props.songTitle,
@@ -28868,7 +28886,7 @@ exports.default = GifSlide;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGifUrls = exports.fetchLocalGifUrls = undefined;
+exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGiphyChannel = exports.fetchGifUrls = exports.fetchLocalGifUrls = undefined;
 
 var _results_ = __webpack_require__(33);
 
@@ -28903,25 +28921,21 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
 };
 
 var fetchGifUrls = exports.fetchGifUrls = function fetchGifUrls() {
+    // let succ = function(res) { 
+    //     res.results.forEach( (giphy) => {
+    //         gifs.push(giphy.images.original.url)
+    //     })
+    // }
+
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
-    var fn = arguments[1];
+};
 
-    var succ = function succ(res) {
-        res.results.forEach(function (giphy) {
-            window.gifs.push(giphy.images.original.url);
-        });
-    };
+var fetchGiphyChannel = exports.fetchGiphyChannel = function fetchGiphyChannel() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
 
-    $.ajax({
+    return $.ajax({
         method: 'GET',
-        url: 'https://giphy.com/api/v1/channels/2579919/gifs/?page=' + page,
-        success: succ //callback updates the gifs list
-    }).then(function (res) {
-        var nextPage = res.next;
-        if (nextPage) {
-            var _page = nextPage[nextPage.length - 1];
-            fetchGifUrls(_page);
-        }
+        url: 'https://giphy.com/api/v1/channels/2579919/gifs/?page=' + page
     });
 };
 
@@ -28942,6 +28956,8 @@ var shuffle = exports.shuffle = function shuffle(array) {
         array[i] = array[j];
         array[j] = temp;
     }
+
+    return array;
 };
 
 /***/ }),
