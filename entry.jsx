@@ -60,5 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.networkDelay = Date.now() - beginT
     ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
     slideUtil.initializeShow(window.tempo/2)
+
+    spotifyUtil.getAudioFeatures(currentTrack.item.id).then( (res) => console.log("Audio Features", res))
   })
 });

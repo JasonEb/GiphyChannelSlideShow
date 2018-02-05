@@ -20,15 +20,6 @@ export const fetchLocalGifUrls = () => {
     return urls;
 }
 
-export const fetchGifUrls = (page="1") => {
-    // let succ = function(res) { 
-    //     res.results.forEach( (giphy) => {
-    //         gifs.push(giphy.images.original.url)
-    //     })
-    // }
-
-}
-
 export const fetchGiphyChannel = (page="1") => {
     return $.ajax({
         method: 'GET',

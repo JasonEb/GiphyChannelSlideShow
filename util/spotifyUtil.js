@@ -84,6 +84,18 @@ export const getAudioAnalysis = (id, fn) => {
     }) 
 }
 
+export const getAudioFeatures = (id, fn) => {
+    let succ = fn || function(res) {
+        window.audioFeatures = res
+    }
+
+    return $.ajax({
+        method: 'GET',
+        url: `https://api.spotify.com/v1/audio-features/${id}`,
+        success: succ
+    }) 
+}
+
 export function getCurrentAudioAnalysis () {
     return getCurrentTrack().then( (res) => getAudioAnalysis(res.item.id))
 }

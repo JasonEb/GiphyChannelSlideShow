@@ -11342,6 +11342,10 @@ document.addEventListener("DOMContentLoaded", function () {
     window.networkDelay = Date.now() - beginT;
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
     slideUtil.initializeShow(window.tempo / 2);
+
+    spotifyUtil.getAudioFeatures(currentTrack.item.id).then(function (res) {
+      return console.log("Audio Features", res);
+    });
   });
 });
 
@@ -28886,7 +28890,7 @@ exports.default = GifSlide;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGiphyChannel = exports.fetchGifUrls = exports.fetchLocalGifUrls = undefined;
+exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGiphyChannel = exports.fetchLocalGifUrls = undefined;
 
 var _results_ = __webpack_require__(33);
 
@@ -28918,16 +28922,6 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
         urls.push('https://media.giphy.com/media/' + gif.id + '/giphy.gif');
     });
     return urls;
-};
-
-var fetchGifUrls = exports.fetchGifUrls = function fetchGifUrls() {
-    // let succ = function(res) { 
-    //     res.results.forEach( (giphy) => {
-    //         gifs.push(giphy.images.original.url)
-    //     })
-    // }
-
-    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
 };
 
 var fetchGiphyChannel = exports.fetchGiphyChannel = function fetchGiphyChannel() {
@@ -29176,7 +29170,7 @@ var stopShow = exports.stopShow = function stopShow() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
+exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
 exports.getCurrentAudioAnalysis = getCurrentAudioAnalysis;
 
 var _jquery = __webpack_require__(5);
@@ -29262,6 +29256,18 @@ var getAudioAnalysis = exports.getAudioAnalysis = function getAudioAnalysis(id, 
     return _jquery2.default.ajax({
         method: 'GET',
         url: 'https://api.spotify.com/v1/audio-analysis/' + id,
+        success: succ
+    });
+};
+
+var getAudioFeatures = exports.getAudioFeatures = function getAudioFeatures(id, fn) {
+    var succ = fn || function (res) {
+        window.audioFeatures = res;
+    };
+
+    return _jquery2.default.ajax({
+        method: 'GET',
+        url: 'https://api.spotify.com/v1/audio-features/' + id,
         success: succ
     });
 };
