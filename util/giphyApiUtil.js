@@ -20,6 +20,26 @@ export const fetchLocalGifUrls = () => {
     return urls;
 }
 
+export const fetchGifUrls = (page="1", fn) => {
+    let succ = function(res) { 
+        res.results.forEach( (giphy) => {
+            window.gifs.push(giphy.images.original.url)
+        })
+    }
+
+    $.ajax({
+        method: 'GET',
+        url: `https://giphy.com/api/v1/channels/2579919/gifs/?page=${page}`,
+        success: succ //callback updates the gifs list
+    }).then( (res) => { 
+        let nextPage = res.next
+        if (nextPage) {
+            let page = nextPage[nextPage.length - 1]
+            fetchGifUrls(page)
+        }
+    })
+}
+
 export const fetchRandomGifUrls = () => {
     let urls = fetchLocalGifUrls();
     shuffle(urls);
@@ -27,7 +47,7 @@ export const fetchRandomGifUrls = () => {
 }
 
 export const shuffle = (array) => {
-    var i = 0
+    let i = 0
       , j = 0
       , temp = null
   

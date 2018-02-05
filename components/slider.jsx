@@ -14,6 +14,7 @@ class Slider extends React.Component {
     fetchGifs() {
       let urls = gifUtil.fetchRandomGifUrls()
       this.setState({urls: urls})
+      console.log("fetch giphys: ", gifUtil.fetchGifUrls())
     }
     
     componentDidMount() {

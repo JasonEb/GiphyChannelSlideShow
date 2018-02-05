@@ -11281,6 +11281,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // og slider code
 /* Glitch for slider */
 window.intervals = [];
+window.gifs = [];
 
 // spotify implicit grant token 
 
@@ -28707,6 +28708,7 @@ var Slider = function (_React$Component) {
     value: function fetchGifs() {
       var urls = gifUtil.fetchRandomGifUrls();
       this.setState({ urls: urls });
+      console.log("fetch giphys: ", gifUtil.fetchGifUrls());
     }
   }, {
     key: 'componentDidMount',
@@ -28862,7 +28864,7 @@ exports.default = GifSlide;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.shuffle = exports.fetchRandomGifUrls = exports.fetchLocalGifUrls = undefined;
+exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGifUrls = exports.fetchLocalGifUrls = undefined;
 
 var _results_ = __webpack_require__(33);
 
@@ -28894,6 +28896,29 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
         urls.push('https://media.giphy.com/media/' + gif.id + '/giphy.gif');
     });
     return urls;
+};
+
+var fetchGifUrls = exports.fetchGifUrls = function fetchGifUrls() {
+    var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
+    var fn = arguments[1];
+
+    var succ = function succ(res) {
+        res.results.forEach(function (giphy) {
+            window.gifs.push(giphy.images.original.url);
+        });
+    };
+
+    $.ajax({
+        method: 'GET',
+        url: 'https://giphy.com/api/v1/channels/2579919/gifs/?page=' + page,
+        success: succ //callback updates the gifs list
+    }).then(function (res) {
+        var nextPage = res.next;
+        if (nextPage) {
+            var _page = nextPage[nextPage.length - 1];
+            fetchGifUrls(_page);
+        }
+    });
 };
 
 var fetchRandomGifUrls = exports.fetchRandomGifUrls = function fetchRandomGifUrls() {
