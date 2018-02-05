@@ -2,18 +2,18 @@ import React from 'react'
 import $ from "jquery";
 
 class TitleCard extends React.Component {
-    super(props) {
-        this.state = { on: false }
-        this.toggle = this.toggle.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-    }
     componentDidMount() {
 
         const turnOff = () => {
             $("#titleCard").hide()
         }
-        
-        let duration = window.audioAnalysis.sections[0].duration * 1000
+
+        let section = window.audioAnalysis.sections.find( (section) => {
+          return section.start > 12
+        })
+
+        let duration = section.start * 1000
+
         let progressMs = window.currentTrack.progress_ms
         duration = duration - progressMs - window.networkDelay
         window.setTimeout(turnOff, duration)
@@ -34,8 +34,8 @@ class TitleCard extends React.Component {
                     <br/>
                     {artist}
                     </span>
-                </div> 
-                
+                </div>
+
             </div>
         </section>
     }

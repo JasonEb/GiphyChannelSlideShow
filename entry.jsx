@@ -11,7 +11,7 @@ import * as spotifyUtil from './util/spotifyUtil';
 window.intervals = [];
 window.gifs = [];
 
-// spotify implicit grant token 
+// spotify implicit grant token
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,15 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //begin polling
   spotifyUtil.setupHeaders()
-  let beginT = Date.now()
+  window.beginT = Date.now()
+  let { beginT } = window
 
   spotifyUtil.getCurrentAudioAnalysis().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
     window.tempo = parseFloat(window.tempo)
     console.log(`tempo set! ${window.tempo} bpm`)
+
   }).then( () => {
     let {name, artists} = window.currentTrack.item
-    let artist = artists[0].name
+    let artist = artists.join(", ")
+
     const refreshPage = () => { location.reload() }
 
     console.log(window.audioAnalysis.sections)
