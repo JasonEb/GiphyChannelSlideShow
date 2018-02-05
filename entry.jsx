@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }).then( () => {
     let {name, artists} = window.currentTrack.item
-    let artist = artists.join(", ")
+    let artist = artists.map( (artist) => { return artist.name}).join(", ")
 
     const refreshPage = () => { location.reload() }
 

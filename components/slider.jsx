@@ -7,13 +7,11 @@ import TitleCard from './titleCard.jsx'
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: [] }
+      this.state = { urls: gifUtil.fetchRandomGifUrls() }
       this.fetchGifs = this.fetchGifs.bind(this)
     }
 
     fetchGifs() {
-      let urls = gifUtil.fetchRandomGifUrls()
-      this.setState({urls: urls})
       console.log("fetch giphys: ", gifUtil.fetchGifUrls())
     }
     
