@@ -36,10 +36,10 @@ class Slider extends React.Component {
       let {artist, songTitle, bpm} = this.props
 
       return <div id="slider">
-        <SlideClip url={urls[0]} />
         <TitleCard artist={artist} songTitle={songTitle} />
         <AudioFeaturesCard />
         <GifsList gifUrls={urls.slice(1, urls.length)} />
+        <SlideClip url={urls[0]} />
       </div>
     }
   }

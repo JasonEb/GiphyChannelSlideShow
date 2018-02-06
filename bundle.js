@@ -65,6 +65,21 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(17);
+} else {
+  module.exports = __webpack_require__(18);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -254,21 +269,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(17);
-} else {
-  module.exports = __webpack_require__(18);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -312,127 +312,6 @@ module.exports = emptyFunction;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var emptyObject = {};
-
-if (process.env.NODE_ENV !== 'production') {
-  Object.freeze(emptyObject);
-}
-
-module.exports = emptyObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10692,6 +10571,127 @@ return jQuery;
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var emptyObject = {};
+
+if (process.env.NODE_ENV !== 'production') {
+  Object.freeze(emptyObject);
+}
+
+module.exports = emptyObject;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10749,7 +10749,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 7 */
@@ -10818,7 +10818,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = warning;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 8 */
@@ -10885,7 +10885,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
 module.exports = checkPropTypes;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 9 */
@@ -11005,7 +11005,7 @@ var EventListener = {
 };
 
 module.exports = EventListener;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 11 */
@@ -11206,7 +11206,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11246,7 +11246,7 @@ exports.default = SlideClip;
 "use strict";
 
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -11258,11 +11258,11 @@ var _slider = __webpack_require__(29);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(37);
+var _sliderControls = __webpack_require__(38);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
-var _jquery = __webpack_require__(5);
+var _jquery = __webpack_require__(3);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -11270,7 +11270,7 @@ var _slideClip = __webpack_require__(15);
 
 var _slideClip2 = _interopRequireDefault(_slideClip);
 
-var _spotifyUtil = __webpack_require__(38);
+var _spotifyUtil = __webpack_require__(39);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
@@ -11354,7 +11354,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(3),n=__webpack_require__(4),p=__webpack_require__(2),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(4),n=__webpack_require__(5),p=__webpack_require__(2),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -11390,8 +11390,8 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(3);
-var emptyObject = __webpack_require__(4);
+var _assign = __webpack_require__(4);
+var emptyObject = __webpack_require__(5);
 var invariant = __webpack_require__(6);
 var warning = __webpack_require__(7);
 var emptyFunction = __webpack_require__(2);
@@ -12731,7 +12731,7 @@ module.exports = react;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 19 */
@@ -12796,7 +12796,7 @@ if (process.env.NODE_ENV === 'production') {
   module.exports = __webpack_require__(24);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 21 */
@@ -12815,7 +12815,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),l=__webpack_require__(9),B=__webpack_require__(3),C=__webpack_require__(2),ba=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),fa=__webpack_require__(13),ia=__webpack_require__(14),D=__webpack_require__(4);
+var aa=__webpack_require__(0),l=__webpack_require__(9),B=__webpack_require__(4),C=__webpack_require__(2),ba=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),fa=__webpack_require__(13),ia=__webpack_require__(14),D=__webpack_require__(5);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -13112,18 +13112,18 @@ if (process.env.NODE_ENV !== "production") {
   (function() {
 'use strict';
 
-var React = __webpack_require__(1);
+var React = __webpack_require__(0);
 var invariant = __webpack_require__(6);
 var warning = __webpack_require__(7);
 var ExecutionEnvironment = __webpack_require__(9);
-var _assign = __webpack_require__(3);
+var _assign = __webpack_require__(4);
 var emptyFunction = __webpack_require__(2);
 var EventListener = __webpack_require__(10);
 var getActiveElement = __webpack_require__(11);
 var shallowEqual = __webpack_require__(12);
 var containsNode = __webpack_require__(13);
 var focusNode = __webpack_require__(14);
-var emptyObject = __webpack_require__(4);
+var emptyObject = __webpack_require__(5);
 var checkPropTypes = __webpack_require__(8);
 var hyphenateStyleName = __webpack_require__(25);
 var camelizeStyleName = __webpack_require__(27);
@@ -28490,7 +28490,7 @@ module.exports = reactDom;
   })();
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 25 */
@@ -28661,7 +28661,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -28681,7 +28681,7 @@ var _titleCard = __webpack_require__(36);
 
 var _titleCard2 = _interopRequireDefault(_titleCard);
 
-var _audioFeaturesCard = __webpack_require__(39);
+var _audioFeaturesCard = __webpack_require__(37);
 
 var _audioFeaturesCard2 = _interopRequireDefault(_audioFeaturesCard);
 
@@ -28749,10 +28749,10 @@ var Slider = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'slider' },
-        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
         _react2.default.createElement(_audioFeaturesCard2.default, null),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) })
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) }),
+        _react2.default.createElement(_slideClip2.default, { url: urls[0] })
       );
     }
   }]);
@@ -28775,7 +28775,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -28835,7 +28835,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -28981,11 +28981,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = __webpack_require__(5);
+var _jquery = __webpack_require__(3);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29076,9 +29076,111 @@ exports.default = TitleCard;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jquery = __webpack_require__(3);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AudioFeaturesCard = function (_React$Component) {
+    _inherits(AudioFeaturesCard, _React$Component);
+
+    function AudioFeaturesCard() {
+        _classCallCheck(this, AudioFeaturesCard);
+
+        return _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).apply(this, arguments));
+    }
+
+    _createClass(AudioFeaturesCard, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var i = 0;
+
+            for (i = 0; i < 4; i++) {
+                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
+            }
+            for (i = 0; i < 10; i++) {
+                (0, _jquery2.default)('.buzz_wrapper .scanline').eq(0).clone().appendTo('.buzz_wrapper');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _window = window,
+                audioFeatures = _window.audioFeatures;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'buzz_wrapper' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'text' },
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'danceability ',
+                            audioFeatures.danceability
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'energy ',
+                            audioFeatures.energy
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'valence ',
+                            audioFeatures.valence
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'tempo ',
+                            audioFeatures.tempo
+                        )
+                    )
+                ),
+                _react2.default.createElement('div', { className: 'scanline' })
+            );
+        }
+    }]);
+
+    return AudioFeaturesCard;
+}(_react2.default.Component);
+
+exports.default = AudioFeaturesCard;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.stopShow = exports.initializeShow = undefined;
 
-var _jquery = __webpack_require__(5);
+var _jquery = __webpack_require__(3);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29158,7 +29260,7 @@ var stopShow = exports.stopShow = function stopShow() {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29171,7 +29273,7 @@ exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = 
 exports.getCurrentAudioAnalysisAndFeatures = getCurrentAudioAnalysisAndFeatures;
 exports.getAudioAnalysisAndFeatures = getAudioAnalysisAndFeatures;
 
-var _jquery = __webpack_require__(5);
+var _jquery = __webpack_require__(3);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29268,108 +29370,6 @@ function getAudioAnalysisAndFeatures(id) {
 
     return _jquery2.default.when(getAnalysis, getFeatures);
 }
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _jquery = __webpack_require__(5);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AudioFeaturesCard = function (_React$Component) {
-    _inherits(AudioFeaturesCard, _React$Component);
-
-    function AudioFeaturesCard() {
-        _classCallCheck(this, AudioFeaturesCard);
-
-        return _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).apply(this, arguments));
-    }
-
-    _createClass(AudioFeaturesCard, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var i = 0;
-
-            for (i = 0; i < 4; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
-            }
-            for (i = 0; i < 10; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .scanline').eq(0).clone().appendTo('.buzz_wrapper');
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _window = window,
-                audioFeatures = _window.audioFeatures;
-
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'buzz_wrapper' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'text' },
-                    _react2.default.createElement(
-                        'ul',
-                        null,
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'danceability ',
-                            audioFeatures.danceability
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'energy ',
-                            audioFeatures.energy
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'valence ',
-                            audioFeatures.valence
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'tempo ',
-                            audioFeatures.tempo
-                        )
-                    )
-                ),
-                _react2.default.createElement('div', { className: 'scanline' })
-            );
-        }
-    }]);
-
-    return AudioFeaturesCard;
-}(_react2.default.Component);
-
-exports.default = AudioFeaturesCard;
 
 /***/ })
 /******/ ]);

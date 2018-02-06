@@ -32,6 +32,7 @@
   #slider li.current img {
     display: inline;
     animation: noise 1s steps(60) infinite;
+    z-index: 90;
   }
   #slideClip {
     width: 100%;
@@ -41,7 +42,7 @@
       url("https://media.giphy.com/media/xUPGcBcnXkclQKaxBS/giphy.gif") repeat;
     background-size: 100%;
     display: none;
-    z-index: 90;
+    z-index: 91;
   }
   #glitchline {
     width: 100%;
