@@ -15,6 +15,7 @@ class TitleCard extends React.Component {
         let duration = section.start * 1000
 
         let progressMs = window.currentTrack.progress_ms
+        window.networkDelay = Date.now() - window.beginT
         duration = duration - progressMs - window.networkDelay
         window.setTimeout(turnOff, duration)
 

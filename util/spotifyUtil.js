@@ -69,7 +69,7 @@ export const getCurrentTrack = (fn) => {
       method: 'GET',
       url: `https://api.spotify.com/v1/me/player/currently-playing`,
       success: succ
-    })
+    }).catch((err) => alert(err))
 };
 
 export const getAudioAnalysis = (id, fn) => {
@@ -96,6 +96,16 @@ export const getAudioFeatures = (id, fn) => {
     }) 
 }
 
-export function getCurrentAudioAnalysis () {
-    return getCurrentTrack().then( (res) => getAudioAnalysis(res.item.id))
+export function getCurrentAudioAnalysisAndFeatures () {
+    return getCurrentTrack().then( (res) => {
+        return getAudioAnalysisAndFeatures(res.item.id)
+    })
 }
+
+export function getAudioAnalysisAndFeatures (id) {
+    const getAnalysis = getAudioAnalysis(id)
+    const getFeatures = getAudioFeatures(id)
+
+    return $.when(getAnalysis, getFeatures)
+}
+

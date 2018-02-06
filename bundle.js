@@ -11310,7 +11310,7 @@ document.addEventListener("DOMContentLoaded", function () {
       beginT = _window.beginT;
 
 
-  spotifyUtil.getCurrentAudioAnalysis().then(function () {
+  spotifyUtil.getCurrentAudioAnalysisAndFeatures().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
     window.tempo = parseFloat(window.tempo);
     console.log('tempo set! ' + window.tempo + ' bpm');
@@ -11335,17 +11335,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms;
     console.log("reset time: ", resetTime);
-
     setTimeout(refreshPage, resetTime);
 
     //at this point all information is necessary
-    window.networkDelay = Date.now() - beginT;
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
     slideUtil.initializeShow(window.tempo / 2);
-
-    spotifyUtil.getAudioFeatures(currentTrack.item.id).then(function (res) {
-      return console.log("Audio Features", res);
-    });
   });
 });
 
@@ -29025,6 +29019,7 @@ var TitleCard = function (_React$Component) {
             var duration = section.start * 1000;
 
             var progressMs = window.currentTrack.progress_ms;
+            window.networkDelay = Date.now() - window.beginT;
             duration = duration - progressMs - window.networkDelay;
             window.setTimeout(turnOff, duration);
 
@@ -29171,7 +29166,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
-exports.getCurrentAudioAnalysis = getCurrentAudioAnalysis;
+exports.getCurrentAudioAnalysisAndFeatures = getCurrentAudioAnalysisAndFeatures;
+exports.getAudioAnalysisAndFeatures = getAudioAnalysisAndFeatures;
 
 var _jquery = __webpack_require__(5);
 
@@ -29245,6 +29241,8 @@ var getCurrentTrack = exports.getCurrentTrack = function getCurrentTrack(fn) {
         method: 'GET',
         url: 'https://api.spotify.com/v1/me/player/currently-playing',
         success: succ
+    }).catch(function (err) {
+        return alert(err);
     });
 };
 
@@ -29272,10 +29270,17 @@ var getAudioFeatures = exports.getAudioFeatures = function getAudioFeatures(id, 
     });
 };
 
-function getCurrentAudioAnalysis() {
+function getCurrentAudioAnalysisAndFeatures() {
     return getCurrentTrack().then(function (res) {
-        return getAudioAnalysis(res.item.id);
+        return getAudioAnalysisAndFeatures(res.item.id);
     });
+}
+
+function getAudioAnalysisAndFeatures(id) {
+    var getAnalysis = getAudioAnalysis(id);
+    var getFeatures = getAudioFeatures(id);
+
+    return _jquery2.default.when(getAnalysis, getFeatures);
 }
 
 /***/ })

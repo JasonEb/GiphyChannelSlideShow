@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.beginT = Date.now()
   let { beginT } = window
 
-  spotifyUtil.getCurrentAudioAnalysis().then( () => {
+  spotifyUtil.getCurrentAudioAnalysisAndFeatures().then( () => {
     window.tempo = window.audioAnalysis.sections[1].tempo
     window.tempo = parseFloat(window.tempo)
     console.log(`tempo set! ${window.tempo} bpm`)
@@ -53,14 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let { currentTrack } = window
     let resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms
     console.log("reset time: ", resetTime);
-
     setTimeout( refreshPage , resetTime )
 
     //at this point all information is necessary
-    window.networkDelay = Date.now() - beginT
     ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
     slideUtil.initializeShow(window.tempo/2)
-
-    spotifyUtil.getAudioFeatures(currentTrack.item.id).then( (res) => console.log("Audio Features", res))
   })
 });
