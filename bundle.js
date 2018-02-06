@@ -28681,6 +28681,10 @@ var _titleCard = __webpack_require__(36);
 
 var _titleCard2 = _interopRequireDefault(_titleCard);
 
+var _audioFeaturesCard = __webpack_require__(39);
+
+var _audioFeaturesCard2 = _interopRequireDefault(_audioFeaturesCard);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28747,6 +28751,7 @@ var Slider = function (_React$Component) {
         { id: 'slider' },
         _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
+        _react2.default.createElement(_audioFeaturesCard2.default, null),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) })
       );
     }
@@ -29263,6 +29268,108 @@ function getAudioAnalysisAndFeatures(id) {
 
     return _jquery2.default.when(getAnalysis, getFeatures);
 }
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jquery = __webpack_require__(5);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AudioFeaturesCard = function (_React$Component) {
+    _inherits(AudioFeaturesCard, _React$Component);
+
+    function AudioFeaturesCard() {
+        _classCallCheck(this, AudioFeaturesCard);
+
+        return _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).apply(this, arguments));
+    }
+
+    _createClass(AudioFeaturesCard, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var i = 0;
+
+            for (i = 0; i < 4; i++) {
+                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
+            }
+            for (i = 0; i < 10; i++) {
+                (0, _jquery2.default)('.buzz_wrapper .scanline').eq(0).clone().appendTo('.buzz_wrapper');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _window = window,
+                audioFeatures = _window.audioFeatures;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'buzz_wrapper' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'text' },
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'danceability ',
+                            audioFeatures.danceability
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'energy ',
+                            audioFeatures.energy
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'valence ',
+                            audioFeatures.valence
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'tempo ',
+                            audioFeatures.tempo
+                        )
+                    )
+                ),
+                _react2.default.createElement('div', { className: 'scanline' })
+            );
+        }
+    }]);
+
+    return AudioFeaturesCard;
+}(_react2.default.Component);
+
+exports.default = AudioFeaturesCard;
 
 /***/ })
 /******/ ]);
