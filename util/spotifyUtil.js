@@ -69,7 +69,7 @@ export const getCurrentTrack = (fn) => {
       method: 'GET',
       url: `https://api.spotify.com/v1/me/player/currently-playing`,
       success: succ
-    }).catch((err) => alert(err))
+    }).catch((err) => window.location("localhost:8000"))
 };
 
 export const getAudioAnalysis = (id, fn) => {
