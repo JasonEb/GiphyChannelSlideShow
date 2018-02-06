@@ -42,21 +42,6 @@ export const getAuthTokenImplicit = () => {
     }
 }
 
-export const getAuthToken = () => {
-    let url = "http://localhost:3000/token"
-    return $.ajax({
-        type: "GET",
-        crossDomain: true,
-        contentType: 'json',
-        headers: {  'Access-Control-Allow-Origin': 'http://localhost:3000' },
-        xhrFields: { withCredentials: true },
-        url: url
-    }).done(function (data) {
-        this.spotifyAuthToken = data.token
-        console.log("spotify token")
-    });
-}
-
 export const setAuthToken = () => {
     let str = window.location.hash.slice(14,182)
     window.spotifyAuthToken = str
@@ -64,12 +49,13 @@ export const setAuthToken = () => {
 
 export const getCurrentTrack = (fn) => {
     let succ = fn || function(res) { window.currentTrack = res }
+    let reset = getAuthTokenImplicit // this doesn't work, why?
 
     return $.ajax({
       method: 'GET',
       url: `https://api.spotify.com/v1/me/player/currently-playing`,
       success: succ
-    }).catch((err) => window.location("localhost:8000"))
+    })
 };
 
 export const getAudioAnalysis = (id, fn) => {

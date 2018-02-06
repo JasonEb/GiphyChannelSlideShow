@@ -11306,15 +11306,12 @@ document.addEventListener("DOMContentLoaded", function () {
   //begin polling
   spotifyUtil.setupHeaders();
   window.beginT = Date.now();
-  var _window = window,
-      beginT = _window.beginT;
-
 
   spotifyUtil.getCurrentAudioAnalysisAndFeatures().then(function () {
     window.tempo = window.audioAnalysis.sections[1].tempo;
     window.tempo = parseFloat(window.tempo);
     console.log('tempo set! ' + window.tempo + ' bpm');
-  }).then(function () {
+
     var _window$currentTrack$ = window.currentTrack.item,
         name = _window$currentTrack$.name,
         artists = _window$currentTrack$.artists;
@@ -11330,14 +11327,14 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(window.audioAnalysis.sections);
 
     //set a Timeout to refresh page for a new song
-    var _window2 = window,
-        currentTrack = _window2.currentTrack;
+    var _window = window,
+        currentTrack = _window.currentTrack;
 
     var resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms;
-    console.log("reset time: ", resetTime);
+    console.log("reset time: ", resetTime / 1000);
     setTimeout(refreshPage, resetTime);
 
-    //at this point all information is necessary
+    //at this point all audio analysis and features is fetched
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
     slideUtil.initializeShow(window.tempo / 2);
   });
@@ -29165,7 +29162,7 @@ var stopShow = exports.stopShow = function stopShow() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
+exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = exports.setAuthToken = exports.getAuthTokenImplicit = exports.setupHeaders = undefined;
 exports.getCurrentAudioAnalysisAndFeatures = getCurrentAudioAnalysisAndFeatures;
 exports.getAudioAnalysisAndFeatures = getAudioAnalysisAndFeatures;
 
@@ -29212,21 +29209,6 @@ var getAuthTokenImplicit = exports.getAuthTokenImplicit = function getAuthTokenI
     }
 };
 
-var getAuthToken = exports.getAuthToken = function getAuthToken() {
-    var url = "http://localhost:3000/token";
-    return _jquery2.default.ajax({
-        type: "GET",
-        crossDomain: true,
-        contentType: 'json',
-        headers: { 'Access-Control-Allow-Origin': 'http://localhost:3000' },
-        xhrFields: { withCredentials: true },
-        url: url
-    }).done(function (data) {
-        this.spotifyAuthToken = data.token;
-        console.log("spotify token");
-    });
-};
-
 var setAuthToken = exports.setAuthToken = function setAuthToken() {
     var str = window.location.hash.slice(14, 182);
     window.spotifyAuthToken = str;
@@ -29236,13 +29218,12 @@ var getCurrentTrack = exports.getCurrentTrack = function getCurrentTrack(fn) {
     var succ = fn || function (res) {
         window.currentTrack = res;
     };
+    var reset = getAuthTokenImplicit; // this doesn't work, why?
 
     return _jquery2.default.ajax({
         method: 'GET',
         url: 'https://api.spotify.com/v1/me/player/currently-playing',
         success: succ
-    }).catch(function (err) {
-        return alert(err);
     });
 };
 
