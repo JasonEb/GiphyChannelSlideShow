@@ -28738,7 +28738,7 @@ var Slider = function (_React$Component) {
       var urls = this.state.urls;
 
       gifUtil.shuffle(urls);
-      urls = urls.slice(0, 9);
+      urls = urls.slice(0, 15);
 
       var _props = this.props,
           artist = _props.artist,
@@ -29026,7 +29026,15 @@ var TitleCard = function (_React$Component) {
             window.setTimeout(turnOff, duration);
 
             //glitch up colors
-            for (var i = 0; i < 4; i++) {
+            var max = Math.floor(Math.random() * 3);
+
+            if (max == 1) {
+                max = Math.floor(Math.random() * 4);
+            } else {
+                max = 3;
+            }
+
+            for (var i = 0; i < max; i++) {
                 (0, _jquery2.default)('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
             }
         }
@@ -29098,22 +29106,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AudioFeaturesCard = function (_React$Component) {
     _inherits(AudioFeaturesCard, _React$Component);
 
-    function AudioFeaturesCard() {
+    function AudioFeaturesCard(props) {
         _classCallCheck(this, AudioFeaturesCard);
 
-        return _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).call(this, props));
+
+        _this.state = { visible: false };
+        return _this;
     }
 
     _createClass(AudioFeaturesCard, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             var i = 0;
+            var max = Math.floor(Math.random() * 3);
 
-            for (i = 0; i < 4; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
+            if (max == 1) {
+                max = Math.floor(Math.random() * 4);
+            } else {
+                max = 3;
             }
-            for (i = 0; i < 10; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .scanline').eq(0).clone().appendTo('.buzz_wrapper');
+
+            for (i = 0; i < max; i++) {
+                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
             }
         }
     }, {
@@ -29121,11 +29136,14 @@ var AudioFeaturesCard = function (_React$Component) {
         value: function render() {
             var _window = window,
                 audioFeatures = _window.audioFeatures;
+            var visible = this.state.visible;
 
+
+            var style = { display: visible ? null : 'none' };
 
             return _react2.default.createElement(
                 'div',
-                { className: 'buzz_wrapper' },
+                { className: 'buzz_wrapper', style: style },
                 _react2.default.createElement(
                     'div',
                     { className: 'text' },
@@ -29242,7 +29260,7 @@ var initializeShow = exports.initializeShow = function initializeShow() {
         (0, _jquery2.default)("#slideClip").show();
         setTimeout(function () {
             (0, _jquery2.default)("#slideClip").hide();
-        }, beatMs / 2); //beatMs represents the duration of slide noise clip
+        }, beatMs); //beatMs represents the duration of slide noise clip
     }
 };
 

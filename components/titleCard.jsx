@@ -20,7 +20,15 @@ class TitleCard extends React.Component {
         window.setTimeout(turnOff, duration)
 
         //glitch up colors
-        for(let i=0;i<4;i++){
+        let max = Math.floor(Math.random() * 3);
+
+        if (max == 1) {
+            max = Math.floor(Math.random() * 4);
+        } else {
+            max = 3
+        }
+        
+        for(let i=0;i<max;i++){
             $('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
         }
     }

@@ -54,7 +54,7 @@ export const initializeShow = (bpm = 120) => {
       $("#slideClip").show();
       setTimeout(function() {
         $("#slideClip").hide();
-      }, beatMs/2); //beatMs represents the duration of slide noise clip
+      }, beatMs); //beatMs represents the duration of slide noise clip
     }
 }
 

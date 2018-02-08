@@ -41,8 +41,7 @@
     background: #000
       url("https://media.giphy.com/media/xUPGcBcnXkclQKaxBS/giphy.gif") repeat;
     background-size: 100%;
-    display: none;
-    z-index: 91;
+    z-index: 100;
   }
   #glitchline {
     width: 100%;
