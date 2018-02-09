@@ -11336,7 +11336,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //at this point all audio analysis and features is fetched
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
-    slideUtil.initializeShow(window.tempo / 2);
+    slideUtil.initializeShow(window.tempo);
   });
 });
 
@@ -28751,8 +28751,8 @@ var Slider = function (_React$Component) {
         { id: 'slider' },
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
         _react2.default.createElement(_audioFeaturesCard2.default, null),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) }),
-        _react2.default.createElement(_slideClip2.default, { url: urls[0] })
+        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) })
       );
     }
   }]);

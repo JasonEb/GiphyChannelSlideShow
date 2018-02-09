@@ -3,6 +3,7 @@
     padding: 0;
     background-color: black
   }
+
   ol,
   ul {
     list-style: none;
@@ -10,6 +11,7 @@
   a {
     text-decoration: none;
   }
+
   body {
     background: #000000;
   }
@@ -21,17 +23,16 @@
   
   #slider {
     position: relative;
+    height: 100vh;
   }
   
   #slider li img {
     width: 100%;
     //position:absolute;
     display: none;
-    animation: film 1s steps(60) infinite;
   }
   #slider li.current img {
     display: inline;
-    animation: noise 1s steps(60) infinite;
     z-index: 90;
   }
   #slideClip {
@@ -41,7 +42,7 @@
     background: #000
       url("https://media.giphy.com/media/xUPGcBcnXkclQKaxBS/giphy.gif") repeat;
     background-size: 100%;
-    z-index: 100;
+    z-index: 90;
   }
   #glitchline {
     width: 100%;

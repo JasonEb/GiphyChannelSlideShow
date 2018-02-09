@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout( refreshPage , resetTime )
 
     //at this point all audio analysis and features is fetched
-    ReactDOM.render(<Slider artist={artist} songTitle={name} />, root);
-    slideUtil.initializeShow(window.tempo/2)
+    ReactDOM.render(<Slider artist={artist} songTitle={name} />, root)
+    slideUtil.initializeShow(window.tempo)
   })
 });

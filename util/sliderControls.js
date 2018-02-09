@@ -51,9 +51,9 @@ export const initializeShow = (bpm = 120) => {
       curSlide.removeClass("current");
       nxtSlide.addClass("current");
       glitchImg.attr("src", nxtSlide.find("img").attr("src"));
-      $("#slideClip").show();
+      $("#slideClip").show()
       setTimeout(function() {
-        $("#slideClip").hide();
+        $("#slideClip").hide()
       }, beatMs); //beatMs represents the duration of slide noise clip
     }
 }

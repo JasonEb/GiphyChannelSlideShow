@@ -38,8 +38,8 @@ class Slider extends React.Component {
       return <div id="slider">
         <TitleCard artist={artist} songTitle={songTitle} />
         <AudioFeaturesCard />
-        <GifsList gifUrls={urls.slice(1, urls.length)} />
         <SlideClip url={urls[0]} />
+        <GifsList gifUrls={urls.slice(1, urls.length)} />
       </div>
     }
   }

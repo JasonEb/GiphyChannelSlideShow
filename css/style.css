@@ -3,3 +3,16 @@
 @import "slider.css";
 @import "titleCard.css";
 @import "audioCard.css";
+
+html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow: hidden;
+  }
