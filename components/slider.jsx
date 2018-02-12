@@ -31,7 +31,7 @@ class Slider extends React.Component {
     render() {
       let { urls } = this.state
       gifUtil.shuffle(urls)
-      urls = urls.slice(0,15)
+      urls = urls.slice(0,17)
 
       let {artist, songTitle, bpm} = this.props
 

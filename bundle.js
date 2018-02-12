@@ -28738,7 +28738,7 @@ var Slider = function (_React$Component) {
       var urls = this.state.urls;
 
       gifUtil.shuffle(urls);
-      urls = urls.slice(0, 15);
+      urls = urls.slice(0, 17);
 
       var _props = this.props,
           artist = _props.artist,
