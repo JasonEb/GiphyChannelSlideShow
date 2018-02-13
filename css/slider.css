@@ -1,9 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    background-color: black
-  }
-
   ol,
   ul {
     list-style: none;
@@ -12,10 +6,6 @@
     text-decoration: none;
   }
 
-  body {
-    background: #000000;
-  }
-  
   #root {
     width: 70%;
     margin: 0 auto;

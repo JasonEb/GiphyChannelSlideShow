@@ -11230,7 +11230,7 @@ var SlideClip = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SlideClip.__proto__ || Object.getPrototypeOf(SlideClip)).call(this, props));
 
-    _this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 7, measures: 16 };
+    _this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 3, measures: 8 };
     _this.toggle = _this.toggle.bind(_this);
     _this.flash = _this.flash.bind(_this);
     return _this;
@@ -11258,7 +11258,16 @@ var SlideClip = function (_React$Component) {
         setTimeout(function () {
           return _this2.toggle();
         }, beatMs / beatDiv * i * rhythm);
+        var extraKick = Math.floor(Math.random() * 4);
+        if (extraKick === 0) {
+          console.log("extra toggle...");
+          var time = beatMs / beatDiv * i * rhythm;
+          setTimeout(function () {
+            return _this2.toggle();
+          }, time + beatMs / 4);
+        }
       }
+
       console.log("rhythm,beatDiv, flashMax", rhythm, beatDiv, flashMax);
     }
   }, {
