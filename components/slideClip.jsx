@@ -4,7 +4,7 @@ import $ from "jquery";
 class SlideClip extends React.Component {
     constructor(props) {
       super(props)
-      this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 7, measures: 16}
+      this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 3, measures:8}
       this.toggle = this.toggle.bind(this)
       this.flash = this.flash.bind(this)
     }
@@ -21,7 +21,14 @@ class SlideClip extends React.Component {
 
       for(let i = 0; i <= max; i++) {
         setTimeout(() => this.toggle(), (beatMs/ beatDiv) * i * rhythm)
+        let extraKick = Math.floor(Math.random() * 4);
+        if(extraKick === 0) {
+          console.log("extra toggle...")
+          let time = (beatMs/ beatDiv) * i * rhythm 
+          setTimeout(() => this.toggle(), time + (beatMs / 4))
+        }
       }
+
       console.log("rhythm,beatDiv, flashMax" ,rhythm,beatDiv, flashMax)
     }
 
