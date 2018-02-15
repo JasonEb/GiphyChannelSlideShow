@@ -23,7 +23,7 @@ export const fetchLocalGifUrls = () => {
 export const fetchGiphyChannel = (page="1") => {
     return $.ajax({
         method: 'GET',
-        url: `https://giphy.com/api/v1/channels/2579919/gifs/?page=${page}`
+        url: `https://api.giphy.com/v1/channels/2579919/gifs?api_key=cpHZy144063Z5Y1Y5yctNwoUmw8OjDIY&offset=0&limit=100`
     })
 }
 

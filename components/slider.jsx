@@ -12,14 +12,10 @@ class Slider extends React.Component {
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
     }
 
-    fetchChannelGifs(page="1") {
-      gifUtil.fetchGiphyChannel(page).then( (res) => {
-        if (res.next) {
-          let page = res.next[res.next.length - 1]
-          this.fetchChannelGifs(page)
-        }
+    fetchChannelGifs() {
+      gifUtil.fetchGiphyChannel().then( (res) => {
         let oldUrls = this.state.urls
-        res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         this.setState({urls: oldUrls})
       })
     }
