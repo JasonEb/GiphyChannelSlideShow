@@ -23,13 +23,10 @@ class SlideClip extends React.Component {
         setTimeout(() => this.toggle(), (beatMs/ beatDiv) * i * rhythm)
         let extraKick = Math.floor(Math.random() * 4);
         if(extraKick === 0) {
-          console.log("extra toggle...")
           let time = (beatMs/ beatDiv) * i * rhythm 
           setTimeout(() => this.toggle(), time + (beatMs / 4))
         }
       }
-
-      console.log("rhythm,beatDiv, flashMax" ,rhythm,beatDiv, flashMax)
     }
 
     componentDidMount() {
@@ -45,10 +42,12 @@ class SlideClip extends React.Component {
       let style = {
         display: visible ? null : 'none',
         width: '100%',
-        height: '100%',
+        height: '100vh',
         position: 'absolute',
         backgroundImage: `url("${url}")`,
-        backgroundSize: "100%, cover",
+        backgroundSize: "100%",
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'black',
         zIndex: '90'
       }
 

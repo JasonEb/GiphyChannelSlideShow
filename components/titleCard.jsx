@@ -18,17 +18,8 @@ class TitleCard extends React.Component {
         window.networkDelay = Date.now() - window.beginT
         duration = duration - progressMs - window.networkDelay
         window.setTimeout(turnOff, duration)
-
-        //glitch up colors
-        let max = Math.floor(Math.random() * 3);
-
-        if (max == 1) {
-            max = Math.floor(Math.random() * 4);
-        } else {
-            max = 3
-        }
         
-        for(let i=0;i<max;i++){
+        for(let i=0;i<3;i++){
             $('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
         }
     }
@@ -44,8 +35,7 @@ class TitleCard extends React.Component {
                     {artist}
                     </span>
                 </div>
-
-            </div>
+                            </div>
         </section>
     }
   }
