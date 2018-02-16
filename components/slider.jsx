@@ -10,18 +10,40 @@ class Slider extends React.Component {
       super(props)
       this.state = { urls: [] }
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
+      this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
     }
 
-    fetchChannelGifs() {
-      gifUtil.fetchGiphyChannel().then( (res) => {
+    fetchChannelGifs(id) {
+      gifUtil.fetchGiphyChannel(id).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         this.setState({urls: oldUrls})
       })
     }
+
+    fetchMyChannelGifs(page="1") {
+      gifUtil.fetchMyGiphys(page).then( (res) => {
+        if (res.next) {
+          let page = res.next[res.next.length - 1]
+          this.fetchMyChannelGifs(page)
+        }
+        let oldUrls = this.state.urls
+        res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        this.setState({urls: oldUrls})
+      })
+    }
     
     componentDidMount() {
-      this.fetchChannelGifs()
+      // this.fetchChannelGifs("6343")
+      // "6343" for horror gifs
+
+      // check valence. If below 0.400, show "dark" show
+      let {valence} = window.audioFeatures
+      if (valence > 0.400) {
+        this.fetchMyChannelGifs()
+      } else {
+        this.fetchChannelGifs("6343")
+      }
     }
 
     render() {
