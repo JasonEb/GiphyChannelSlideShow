@@ -49,7 +49,7 @@ export const setAuthToken = () => {
 
 export const getCurrentTrack = (fn) => {
     let succ = fn || function(res) { window.currentTrack = res }
-    let reset = getAuthTokenImplicit // this doesn't work, why?
+    let that = this;
 
     return $.ajax({
       method: 'GET',

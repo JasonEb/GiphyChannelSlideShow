@@ -43,7 +43,8 @@ class Slider extends React.Component {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
           let {url} = giphy.images.original
-          if (gifUtil.filteredGiphy(url)) { return }
+          if (url == 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif') { debugger }
+          if (gifUtil.filteredGiphy(url)) { debugger }
           oldUrls.push(url)}
        )
         this.setState({urls: oldUrls})
@@ -60,7 +61,7 @@ class Slider extends React.Component {
           this.fetchChannelGifs("6343")
           break;
         case "3":
-          this.searchGiphy("`luigi stare`", "24")
+          this.searchGiphy("`luigi stare`", "100")
           break;
         case "4":
           this.searchGiphy("nintendo animation", "50")
@@ -72,7 +73,7 @@ class Slider extends React.Component {
           this.searchGiphy("neon", "50")
           break;
         case "7":
-          this.searchGiphy("pixel sprite background")
+          this.searchGiphy("pixel sprite background", "150")
           break;
         case "8":
         this.searchGiphy("tom and jerry", "100")
