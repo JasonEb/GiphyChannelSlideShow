@@ -48,7 +48,7 @@ class SlideClip extends React.Component {
         backgroundSize: "100%",
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'black',
-        zIndex: '90'
+        zIndex: '91'
       }
 
       return <div id="slideClip" style={style}></div>

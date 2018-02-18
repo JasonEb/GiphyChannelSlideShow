@@ -41,7 +41,11 @@ class Slider extends React.Component {
     searchGiphy(input="", limit="32") {
       gifUtil.fetchSearchTerms(input, limit).then( (res) => {
         let oldUrls = this.state.urls
-        res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        res.data.forEach( (giphy) => {
+          let {url} = giphy.images.original
+          if (gifUtil.filteredGiphy(url)) { return }
+          oldUrls.push(url)}
+       )
         this.setState({urls: oldUrls})
       })      
     }
