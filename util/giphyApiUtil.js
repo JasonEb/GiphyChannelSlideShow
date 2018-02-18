@@ -30,6 +30,16 @@ export const fetchGiphyChannel = (id="2579919") => {
     })
 }
 
+export const fetchSearchTerms = (searchStr, limit="32") => {
+    // 6343 for matt horror work
+    let query = searchStr.replace(" ", "%20")
+    let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=0&limit=${limit}`
+    return $.ajax({
+        method: 'GET',
+        url: url
+    })
+}
+
 export const fetchMyGiphys = (page="1") => {
     return $.ajax({
         method: 'GET',

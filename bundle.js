@@ -272,48 +272,6 @@ process.umask = function() { return 0; };
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-function makeEmptyFunction(arg) {
-  return function () {
-    return arg;
-  };
-}
-
-/**
- * This function accepts and discards inputs; it has no side effects. This is
- * primarily useful idiomatically for overridable function endpoints which
- * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
- */
-var emptyFunction = function emptyFunction() {};
-
-emptyFunction.thatReturns = makeEmptyFunction;
-emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
-emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
-emptyFunction.thatReturnsNull = makeEmptyFunction(null);
-emptyFunction.thatReturnsThis = function () {
-  return this;
-};
-emptyFunction.thatReturnsArgument = function (arg) {
-  return arg;
-};
-
-module.exports = emptyFunction;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10571,6 +10529,48 @@ return jQuery;
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+function makeEmptyFunction(arg) {
+  return function () {
+    return arg;
+  };
+}
+
+/**
+ * This function accepts and discards inputs; it has no side effects. This is
+ * primarily useful idiomatically for overridable function endpoints which
+ * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+ */
+var emptyFunction = function emptyFunction() {};
+
+emptyFunction.thatReturns = makeEmptyFunction;
+emptyFunction.thatReturnsFalse = makeEmptyFunction(false);
+emptyFunction.thatReturnsTrue = makeEmptyFunction(true);
+emptyFunction.thatReturnsNull = makeEmptyFunction(null);
+emptyFunction.thatReturnsThis = function () {
+  return this;
+};
+emptyFunction.thatReturnsArgument = function (arg) {
+  return arg;
+};
+
+module.exports = emptyFunction;
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10766,7 +10766,7 @@ module.exports = invariant;
 
 
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(3);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -10942,7 +10942,7 @@ module.exports = ExecutionEnvironment;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(3);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -11210,7 +11210,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -11237,12 +11237,12 @@ var SlideClip = function (_React$Component) {
   }
 
   _createClass(SlideClip, [{
-    key: "toggle",
+    key: 'toggle',
     value: function toggle() {
       this.setState({ visible: !this.state.visible });
     }
   }, {
-    key: "flash",
+    key: 'flash',
     value: function flash() {
       var _this2 = this;
 
@@ -11260,18 +11260,15 @@ var SlideClip = function (_React$Component) {
         }, beatMs / beatDiv * i * rhythm);
         var extraKick = Math.floor(Math.random() * 4);
         if (extraKick === 0) {
-          console.log("extra toggle...");
           var time = beatMs / beatDiv * i * rhythm;
           setTimeout(function () {
             return _this2.toggle();
           }, time + beatMs / 4);
         }
       }
-
-      console.log("rhythm,beatDiv, flashMax", rhythm, beatDiv, flashMax);
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       var _this3 = this;
 
@@ -11283,7 +11280,7 @@ var SlideClip = function (_React$Component) {
       }, beatMs * measures); //beatMs represents the duration of slide noise clip
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var url = this.props.url;
       var visible = this.state.visible;
@@ -11292,14 +11289,16 @@ var SlideClip = function (_React$Component) {
       var style = {
         display: visible ? null : 'none',
         width: '100%',
-        height: '100%',
+        height: '100vh',
         position: 'absolute',
-        backgroundImage: "url(\"" + url + "\")",
-        backgroundSize: "100%, cover",
+        backgroundImage: 'url("' + url + '")',
+        backgroundSize: "100%",
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'black',
         zIndex: '90'
       };
 
-      return _react2.default.createElement("div", { id: "slideClip", style: style });
+      return _react2.default.createElement('div', { id: 'slideClip', style: style });
     }
   }]);
 
@@ -11327,11 +11326,11 @@ var _slider = __webpack_require__(29);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(38);
+var _sliderControls = __webpack_require__(39);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -11339,7 +11338,7 @@ var _slideClip = __webpack_require__(15);
 
 var _slideClip2 = _interopRequireDefault(_slideClip);
 
-var _spotifyUtil = __webpack_require__(39);
+var _spotifyUtil = __webpack_require__(40);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
@@ -11423,7 +11422,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * LICENSE file in the root directory of this source tree.
  */
 
-var m=__webpack_require__(4),n=__webpack_require__(5),p=__webpack_require__(2),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
+var m=__webpack_require__(4),n=__webpack_require__(5),p=__webpack_require__(3),q="function"===typeof Symbol&&Symbol["for"],r=q?Symbol["for"]("react.element"):60103,t=q?Symbol["for"]("react.call"):60104,u=q?Symbol["for"]("react.return"):60105,v=q?Symbol["for"]("react.portal"):60106,w=q?Symbol["for"]("react.fragment"):60107,x="function"===typeof Symbol&&Symbol.iterator;
 function y(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var z={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function A(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}A.prototype.isReactComponent={};A.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?y("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};A.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function B(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}function C(){}C.prototype=A.prototype;var D=B.prototype=new C;D.constructor=B;m(D,A.prototype);D.isPureReactComponent=!0;function E(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||z}var F=E.prototype=new C;F.constructor=E;m(F,A.prototype);F.unstable_isAsyncReactComponent=!0;F.render=function(){return this.props.children};var G={current:null},H=Object.prototype.hasOwnProperty,I={key:!0,ref:!0,__self:!0,__source:!0};
@@ -11463,7 +11462,7 @@ var _assign = __webpack_require__(4);
 var emptyObject = __webpack_require__(5);
 var invariant = __webpack_require__(6);
 var warning = __webpack_require__(7);
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(3);
 var checkPropTypes = __webpack_require__(8);
 
 // TODO: this is special because it gets imported during build.
@@ -12884,7 +12883,7 @@ if (process.env.NODE_ENV === 'production') {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(0),l=__webpack_require__(9),B=__webpack_require__(4),C=__webpack_require__(2),ba=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),fa=__webpack_require__(13),ia=__webpack_require__(14),D=__webpack_require__(5);
+var aa=__webpack_require__(0),l=__webpack_require__(9),B=__webpack_require__(4),C=__webpack_require__(3),ba=__webpack_require__(10),da=__webpack_require__(11),ea=__webpack_require__(12),fa=__webpack_require__(13),ia=__webpack_require__(14),D=__webpack_require__(5);
 function E(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:E("227");
 var oa={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function pa(a,b){return(a&b)===b}
 var ta={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=ta,c=a.Properties||{},d=a.DOMAttributeNamespaces||{},e=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in c){ua.hasOwnProperty(f)?E("48",f):void 0;var g=f.toLowerCase(),h=c[f];g={attributeName:g,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:pa(h,b.MUST_USE_PROPERTY),
@@ -13186,7 +13185,7 @@ var invariant = __webpack_require__(6);
 var warning = __webpack_require__(7);
 var ExecutionEnvironment = __webpack_require__(9);
 var _assign = __webpack_require__(4);
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(3);
 var EventListener = __webpack_require__(10);
 var getActiveElement = __webpack_require__(11);
 var shallowEqual = __webpack_require__(12);
@@ -28754,6 +28753,10 @@ var _audioFeaturesCard = __webpack_require__(37);
 
 var _audioFeaturesCard2 = _interopRequireDefault(_audioFeaturesCard);
 
+var _glitchLine = __webpack_require__(38);
+
+var _glitchLine2 = _interopRequireDefault(_glitchLine);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28774,39 +28777,155 @@ var Slider = function (_React$Component) {
 
     _this.state = { urls: [] };
     _this.fetchChannelGifs = _this.fetchChannelGifs.bind(_this);
+    _this.fetchMyChannelGifs = _this.fetchMyChannelGifs.bind(_this);
+    _this.searchGiphy = _this.searchGiphy.bind(_this);
+    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
+    _this.channelSelect = _this.channelSelect.bind(_this);
     return _this;
   }
 
   _createClass(Slider, [{
     key: 'fetchChannelGifs',
-    value: function fetchChannelGifs() {
+    value: function fetchChannelGifs(id) {
       var _this2 = this;
 
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
-
-      gifUtil.fetchGiphyChannel(page).then(function (res) {
-        if (res.next) {
-          var _page = res.next[res.next.length - 1];
-          _this2.fetchChannelGifs(_page);
-        }
+      gifUtil.fetchGiphyChannel(id).then(function (res) {
         var oldUrls = _this2.state.urls;
-        res.results.forEach(function (giphy) {
+        res.data.forEach(function (giphy) {
           return oldUrls.push(giphy.images.original.url);
         });
         _this2.setState({ urls: oldUrls });
       });
     }
   }, {
+    key: 'fetchMyChannelGifs',
+    value: function fetchMyChannelGifs() {
+      var _this3 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
+
+      gifUtil.fetchMyGiphys(page).then(function (res) {
+        if (res.next) {
+          var _page = res.next[res.next.length - 1];
+          _this3.fetchMyChannelGifs(_page);
+        }
+        var oldUrls = _this3.state.urls;
+        res.results.forEach(function (giphy) {
+          return oldUrls.push(giphy.images.original.url);
+        });
+        _this3.setState({ urls: oldUrls });
+      });
+    }
+  }, {
+    key: 'searchGiphy',
+    value: function searchGiphy() {
+      var _this4 = this;
+
+      var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+      var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "32";
+
+      gifUtil.fetchSearchTerms(input, limit).then(function (res) {
+        var oldUrls = _this4.state.urls;
+        res.data.forEach(function (giphy) {
+          return oldUrls.push(giphy.images.original.url);
+        });
+        _this4.setState({ urls: oldUrls });
+      });
+    }
+  }, {
+    key: 'channelSelect',
+    value: function channelSelect(key) {
+      this.setState({ urls: [] });
+      switch (key) {
+        case "1":
+          this.fetchMyChannelGifs();
+          break;
+        case "2":
+          this.fetchChannelGifs("6343");
+          break;
+        case "3":
+          this.searchGiphy("`luigi stare`", "24");
+          break;
+        case "4":
+          this.searchGiphy("nintendo animation", "50");
+          break;
+        case "5":
+          this.searchGiphy("hanna barbera", "150");
+          break;
+        case "6":
+          this.searchGiphy("neon", "50");
+          break;
+        case "7":
+          this.searchGiphy("pixel sprite background");
+          break;
+        case "8":
+          this.searchGiphy("tom and jerry", "100");
+          break;
+      }
+    }
+  }, {
+    key: 'handleKeyPress',
+    value: function handleKeyPress(e) {
+      this.channelSelect(e.key);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.fetchChannelGifs();
+      // this.fetchChannelGifs("6343")
+      // "6343" for horror gifs
+      // "7425" for pixel gifs
+      // "6191" for cartoony 
+      // check valence. If below a certain threshold, show "dark" show
+      // 0.360 is feels happiness
+      var _window$audioFeatures = window.audioFeatures,
+          valence = _window$audioFeatures.valence,
+          danceability = _window$audioFeatures.danceability,
+          energy = _window$audioFeatures.energy,
+          tempo = _window$audioFeatures.tempo;
+
+      console.log("valence: ", valence, "danceability:", danceability, "energy: ", energy, "tempo: ", tempo);
+
+      var rng = Math.ceil(Math.random() * 5);
+
+      // if (dark) {
+      //   this.fetchChannelGifs("6343")
+      // } else {
+      //   this.fetchMyChannelGifs()
+      // }
+      // this.fetchChannelGifs("6343")
+      // this.fetchMyChannelGifs()
+
+      switch (rng) {
+        case 1:
+          this.fetchMyChannelGifs();
+          break;
+        case 2:
+          this.searchGiphy("`luigi stare`", "24");
+          break;
+        case 3:
+          this.searchGiphy("nintendo animation", "50");
+          break;
+        case 4:
+          this.searchGiphy("neon", "50");
+          break;
+        case 5:
+          this.searchGiphy("pixel sprite background");
+          break;
+        default:
+          this.searchGiphy("hanna barbera", "50");
+          break;
+      }
     }
   }, {
     key: 'render',
     value: function render() {
       var urls = this.state.urls;
 
-      gifUtil.shuffle(urls);
+      var i = void 0,
+          max = Math.ceil(Math.random() * 3);
+      for (i = 0; i <= max; i++) {
+        gifUtil.shuffle(urls);
+      }
       urls = urls.slice(0, 17);
 
       var _props = this.props,
@@ -28817,11 +28936,12 @@ var Slider = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { id: 'slider' },
+        { id: 'slider', onKeyPress: this.handleKeyPress, tabIndex: '1' },
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle }),
         _react2.default.createElement(_audioFeaturesCard2.default, null),
         _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) })
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length) }),
+        _react2.default.createElement(_glitchLine2.default, { gifUrls: urls.slice(1, urls.length) })
       );
     }
   }]);
@@ -28955,7 +29075,7 @@ exports.default = GifSlide;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.shuffle = exports.fetchRandomGifUrls = exports.fetchGiphyChannel = exports.fetchLocalGifUrls = undefined;
+exports.shuffle = exports.fetchMyGiphys = exports.fetchSearchTerms = exports.fetchGiphyChannel = exports.fetchLocalGifUrls = undefined;
 
 var _results_ = __webpack_require__(33);
 
@@ -28990,18 +29110,36 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
 };
 
 var fetchGiphyChannel = exports.fetchGiphyChannel = function fetchGiphyChannel() {
+    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "2579919";
+
+    // 6343 for matt horror work
+    var url = 'https://api.giphy.com/v1/channels/' + id + '/gifs?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&offset=0&limit=100';
+    // let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=cpHZy144063Z5Y1Y5yctNwoUmw8OjDIY&offset=0&limit=100`
+    return $.ajax({
+        method: 'GET',
+        url: url
+    });
+};
+
+var fetchSearchTerms = exports.fetchSearchTerms = function fetchSearchTerms(searchStr) {
+    var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "32";
+
+    // 6343 for matt horror work
+    var query = searchStr.replace(" ", "%20");
+    var url = 'https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=' + query + '&offset=0&limit=' + limit;
+    return $.ajax({
+        method: 'GET',
+        url: url
+    });
+};
+
+var fetchMyGiphys = exports.fetchMyGiphys = function fetchMyGiphys() {
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
 
     return $.ajax({
         method: 'GET',
         url: 'https://giphy.com/api/v1/channels/2579919/gifs/?page=' + page
     });
-};
-
-var fetchRandomGifUrls = exports.fetchRandomGifUrls = function fetchRandomGifUrls() {
-    var urls = fetchLocalGifUrls();
-    shuffle(urls);
-    return urls.slice(0, 36);
 };
 
 var shuffle = exports.shuffle = function shuffle(array) {
@@ -29054,7 +29192,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29094,16 +29232,7 @@ var TitleCard = function (_React$Component) {
             duration = duration - progressMs - window.networkDelay;
             window.setTimeout(turnOff, duration);
 
-            //glitch up colors
-            var max = Math.floor(Math.random() * 3);
-
-            if (max == 1) {
-                max = Math.floor(Math.random() * 4);
-            } else {
-                max = 3;
-            }
-
-            for (var i = 0; i < max; i++) {
+            for (var i = 0; i < 3; i++) {
                 (0, _jquery2.default)('.glitch .text span').eq(0).clone().prependTo('.glitch .text');
             }
         }
@@ -29160,7 +29289,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29181,12 +29310,20 @@ var AudioFeaturesCard = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (AudioFeaturesCard.__proto__ || Object.getPrototypeOf(AudioFeaturesCard)).call(this, props));
 
         _this.state = { visible: false };
+        _this.toggle = _this.toggle.bind(_this);
         return _this;
     }
 
     _createClass(AudioFeaturesCard, [{
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({ visible: !this.state.visible });
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             var i = 0;
             var max = Math.floor(Math.random() * 3);
 
@@ -29199,12 +29336,30 @@ var AudioFeaturesCard = function (_React$Component) {
             for (i = 0; i < max; i++) {
                 (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
             }
+
+            //set timer for display...after midsection?
+            var sections = window.audioAnalysis.sections;
+
+            var section = sections[Math.ceil(sections.length / 2)];
+            var beatMs = 60000 / section.tempo;
+            var timestamp = section.start * 1000;
+
+            var progressMs = window.currentTrack.progress_ms;
+            window.networkDelay = Date.now() - window.beginT;
+            timestamp = timestamp - progressMs - window.networkDelay;
+            window.setTimeout(function () {
+                return _this2.toggle();
+            }, timestamp);
+            window.setTimeout(function () {
+                return _this2.toggle();
+            }, timestamp + beatMs * 16);
         }
     }, {
         key: 'render',
         value: function render() {
             var _window = window,
-                audioFeatures = _window.audioFeatures;
+                audioFeatures = _window.audioFeatures,
+                audioAnalysis = _window.audioAnalysis;
             var visible = this.state.visible;
 
 
@@ -29242,6 +29397,37 @@ var AudioFeaturesCard = function (_React$Component) {
                             null,
                             'tempo ',
                             audioFeatures.tempo
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'key ',
+                            audioFeatures.key
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'time_signature ',
+                            audioFeatures.time_signature
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'end_of_fade_in ',
+                            audioAnalysis.track.end_of_fade_in
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'start_of_fade_out ',
+                            audioAnalysis.track.start_of_fade_out
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            'duration_ms ',
+                            audioFeatures.duration_ms / 1000,
+                            ' '
                         )
                     )
                 ),
@@ -29265,9 +29451,96 @@ exports.default = AudioFeaturesCard;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jquery = __webpack_require__(2);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GlitchLine = function (_React$Component) {
+    _inherits(GlitchLine, _React$Component);
+
+    function GlitchLine(props) {
+        _classCallCheck(this, GlitchLine);
+
+        var _this = _possibleConstructorReturn(this, (GlitchLine.__proto__ || Object.getPrototypeOf(GlitchLine)).call(this, props));
+
+        _this.state = { visible: false };
+        _this.toggle = _this.toggle.bind(_this);
+        return _this;
+    }
+
+    _createClass(GlitchLine, [{
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({ visible: !this.state.visible });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // //set timer for display...after midsection?
+            // let {sections} = window.audioAnalysis
+            // let section = sections[ Math.ceil(sections.length / 2)]
+            // let beatMs = 60000/(section.tempo);
+            // let timestamp = section.start * 1000
+
+            // let progressMs = window.currentTrack.progress_ms
+            // window.networkDelay = Date.now() - window.beginT
+            // timestamp = timestamp - progressMs - window.networkDelay
+            // window.setTimeout(() => this.toggle(), timestamp)
+            // window.setTimeout(() => this.toggle(), (timestamp + beatMs*16))
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _window = window,
+                audioFeatures = _window.audioFeatures,
+                audioAnalysis = _window.audioAnalysis;
+            var visible = this.state.visible;
+            var gifUrls = this.props.gifUrls;
+
+
+            var style = { display: visible ? null : 'none' };
+
+            return _react2.default.createElement(
+                'div',
+                { id: 'glitchLine', style: style },
+                _react2.default.createElement('img', { src: gifUrls[0] })
+            );
+        }
+    }]);
+
+    return GlitchLine;
+}(_react2.default.Component);
+
+exports.default = GlitchLine;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.stopShow = exports.initializeShow = undefined;
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -29347,7 +29620,7 @@ var stopShow = exports.stopShow = function stopShow() {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29360,7 +29633,7 @@ exports.getAudioFeatures = exports.getAudioAnalysis = exports.getCurrentTrack = 
 exports.getCurrentAudioAnalysisAndFeatures = getCurrentAudioAnalysisAndFeatures;
 exports.getAudioAnalysisAndFeatures = getAudioAnalysisAndFeatures;
 
-var _jquery = __webpack_require__(3);
+var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
