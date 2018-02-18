@@ -5,6 +5,7 @@ import * as gifUtil from '../util/giphyApiUtil.js'
 import TitleCard from './titleCard.jsx'
 import AudioFeaturesCard from './audioFeaturesCard.jsx'
 import GlitchLine from './glitchLine.jsx'
+import Shuffle from 'shuffle-array'
 
 class Slider extends React.Component {
     constructor(props){
@@ -104,7 +105,7 @@ class Slider extends React.Component {
           this.fetchMyChannelGifs()
           break;
         case 2:
-          this.searchGiphy("`luigi stare`", "24")
+          this.searchGiphy("`luigi deathstare`", "24")
           break;
         case 3:
           this.searchGiphy("nintendo animation", "50")
@@ -123,9 +124,7 @@ class Slider extends React.Component {
 
     render() {
       let { urls } = this.state
-      let i, max = Math.ceil(Math.random()*3)
-      for(i = 0; i <= max; i++) { gifUtil.shuffle(urls) }
-      urls = urls.slice(0,17)
+      urls = Shuffle.pick(urls,{picks: 16})
 
       let {artist, songTitle, bpm} = this.props
 

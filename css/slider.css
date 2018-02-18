@@ -19,7 +19,7 @@
   
   #slider li img {
     width: 100%;
-    //position:absolute;
+    position:absolute;
     display: none;
   }
   #slider li.current img {

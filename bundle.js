@@ -11326,7 +11326,7 @@ var _slider = __webpack_require__(29);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(39);
+var _sliderControls = __webpack_require__(40);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
@@ -11338,7 +11338,7 @@ var _slideClip = __webpack_require__(15);
 
 var _slideClip2 = _interopRequireDefault(_slideClip);
 
-var _spotifyUtil = __webpack_require__(40);
+var _spotifyUtil = __webpack_require__(41);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
@@ -28757,6 +28757,10 @@ var _glitchLine = __webpack_require__(38);
 
 var _glitchLine2 = _interopRequireDefault(_glitchLine);
 
+var _shuffleArray = __webpack_require__(39);
+
+var _shuffleArray2 = _interopRequireDefault(_shuffleArray);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28900,7 +28904,7 @@ var Slider = function (_React$Component) {
           this.fetchMyChannelGifs();
           break;
         case 2:
-          this.searchGiphy("`luigi stare`", "24");
+          this.searchGiphy("`luigi deathstare`", "24");
           break;
         case 3:
           this.searchGiphy("nintendo animation", "50");
@@ -28921,12 +28925,7 @@ var Slider = function (_React$Component) {
     value: function render() {
       var urls = this.state.urls;
 
-      var i = void 0,
-          max = Math.ceil(Math.random() * 3);
-      for (i = 0; i <= max; i++) {
-        gifUtil.shuffle(urls);
-      }
-      urls = urls.slice(0, 17);
+      urls = _shuffleArray2.default.pick(urls, { picks: 16 });
 
       var _props = this.props,
           artist = _props.artist,
@@ -29535,6 +29534,95 @@ exports.default = GlitchLine;
 "use strict";
 
 
+/**
+ * Randomize the order of the elements in a given array.
+ * @param {Array} arr - The given array.
+ * @param {Object} [options] - Optional configuration options.
+ * @param {Boolean} [options.copy] - Sets if should return a shuffled copy of the given array. By default it's a falsy value.
+ * @param {Function} [options.rng] - Specifies a custom random number generator.
+ * @returns {Array}
+ */
+function shuffle(arr, options) {
+
+  if (!Array.isArray(arr)) {
+    throw new Error('shuffle expect an array as parameter.');
+  }
+
+  options = options || {};
+
+  var collection = arr,
+      len = arr.length,
+      rng = options.rng || Math.random,
+      random,
+      temp;
+
+  if (options.copy === true) {
+    collection = arr.slice();
+  }
+
+  while (len) {
+    random = Math.floor(rng() * len);
+    len -= 1;
+    temp = collection[len];
+    collection[len] = collection[random];
+    collection[random] = temp;
+  }
+
+  return collection;
+};
+
+/**
+ * Pick one or more random elements from the given array.
+ * @param {Array} arr - The given array.
+ * @param {Object} [options] - Optional configuration options.
+ * @param {Number} [options.picks] - Specifies how many random elements you want to pick. By default it picks 1.
+ * @param {Function} [options.rng] - Specifies a custom random number generator.
+ * @returns {Object}
+ */
+shuffle.pick = function(arr, options) {
+
+  if (!Array.isArray(arr)) {
+    throw new Error('shuffle.pick() expect an array as parameter.');
+  }
+
+  options = options || {};
+
+  var rng = options.rng || Math.random,
+      picks = options.picks || 1;
+
+  if (typeof picks === 'number' && picks !== 1) {
+    var len = arr.length,
+        collection = arr.slice(),
+        random = [],
+        index;
+
+    while (picks && len) {
+      index = Math.floor(rng() * len);
+      random.push(collection[index]);
+      collection.splice(index, 1);
+      len -= 1;
+      picks -= 1;
+    }
+
+    return random;
+  }
+
+  return arr[Math.floor(rng() * arr.length)];
+};
+
+/**
+ * Expose
+ */
+module.exports = shuffle;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -29620,7 +29708,7 @@ var stopShow = exports.stopShow = function stopShow() {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
