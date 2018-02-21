@@ -6,6 +6,7 @@ import TitleCard from './titleCard.jsx'
 import AudioFeaturesCard from './audioFeaturesCard.jsx'
 import GlitchLine from './glitchLine.jsx'
 import Shuffle from 'shuffle-array'
+import GiphySearchBar from './giphySearchBar';
 
 class Slider extends React.Component {
     constructor(props){
@@ -43,8 +44,11 @@ class Slider extends React.Component {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
           let {url} = giphy.images.original
-          if (url == 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif') { debugger }
+
+          //filtering attempt...
+          if (url === 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif') { debugger }
           if (gifUtil.filteredGiphy(url)) { debugger }
+
           oldUrls.push(url)}
        )
         this.setState({urls: oldUrls})
@@ -133,12 +137,13 @@ class Slider extends React.Component {
 
       let {artist, songTitle, bpm} = this.props
 
-      return <div id="slider" onKeyPress={this.handleKeyPress} tabIndex="1" >
+      return <div id="slider" >
         <TitleCard artist={artist} songTitle={songTitle} />
         <AudioFeaturesCard />
         <SlideClip url={urls[0]} />
         <GifsList gifUrls={urls.slice(1, urls.length)} />
         <GlitchLine gifUrls={urls.slice(1, urls.length)} />
+        <GiphySearchBar channelSelect={this.channelSelect} searchGiphy={this.searchGiphy} />
       </div>
     }
   }
