@@ -4,6 +4,8 @@
 @import "slider.css";
 @import "titleCard.css";
 @import "audioCard.css";
+@import "searchCard.css";
+
 
 html{
     height: 100%;
@@ -18,3 +20,12 @@ body {
     overflow: hidden;
     background-color: black;
   }
+
+  *,
+  *:before,
+  *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  

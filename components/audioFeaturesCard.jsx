@@ -44,7 +44,7 @@ class AudioFeaturesCard extends React.Component {
 
         let style = { display: visible ? null : 'none' }
 
-        return <div className="buzz_wrapper" style={style}>
+        return <div className="audio_features" style={style}>
             <div className="text">
                 <ul>
                     <li>danceability {audioFeatures.danceability}</li>

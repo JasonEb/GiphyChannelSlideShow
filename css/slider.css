@@ -45,16 +45,9 @@
   #glitchline img {
     width: 100%;
   }
-  .glitchlineColored {
+
+  /* .glitchlineColored {
     //box-shadow:0px -1px 1px #aaaaaa, 0px 1px 1px #ffffff;
     //box-shadow: 0px -2px 2px #aaaaaa, 0px -1px 1px #e694e6;
-  }
-  
-  *,
-  *:before,
-  *:after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  } */
   

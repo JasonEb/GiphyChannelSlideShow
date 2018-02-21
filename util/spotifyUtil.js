@@ -31,7 +31,7 @@ export const getAuthTokenImplicit = () => {
     const authEndpoint = 'https://accounts.spotify.com/authorize'
 
     const clientId = 'a1725413073e48a697827b4895650356'
-    const redirectUri = 'http://localhost:8000'
+    const redirectUri = 'http://192.168.1.8:8000'
     const scopes = [
         'user-read-currently-playing'
     ];
@@ -49,7 +49,6 @@ export const setAuthToken = () => {
 
 export const getCurrentTrack = (fn) => {
     let succ = fn || function(res) { window.currentTrack = res }
-    let that = this;
 
     return $.ajax({
       method: 'GET',
