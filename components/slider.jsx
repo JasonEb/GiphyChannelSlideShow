@@ -11,7 +11,7 @@ import GiphySearchBar from './giphySearchBar';
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: [] }
+      this.state = { urls: [], searchVisible: true }
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
       this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
@@ -51,7 +51,8 @@ class Slider extends React.Component {
 
           oldUrls.push(url)}
        )
-        this.setState({urls: oldUrls})
+      this.setState({urls: oldUrls})
+      if (this.state.searchVisible) { this.setState({searchVisible: false})} 
       })      
     }
 
@@ -86,7 +87,11 @@ class Slider extends React.Component {
     }
 
     handleKeyPress (e) {
-      this.channelSelect(e.key)
+      if (e.key === "`") {
+        this.setState({searchVisible: !this.state.searchVisible})
+      } else {
+        this.channelSelect(e.key)
+      } 
     }
     
     componentDidMount() {
@@ -99,7 +104,7 @@ class Slider extends React.Component {
       let {valence, danceability, energy, tempo} = window.audioFeatures
       console.log("valence: ", valence, "danceability:", danceability, "energy: ", energy, "tempo: ", tempo)  
 
-      let rng = Math.ceil(Math.random()*5)
+      let rng = Math.ceil(Math.random()*6)
  
       // if (dark) {
       //   this.fetchChannelGifs("6343")
@@ -114,10 +119,10 @@ class Slider extends React.Component {
           this.fetchMyChannelGifs()
           break;
         case 2:
-          this.searchGiphy("`luigi deathstare`", "24")
+          this.searchGiphy("luigi stare", "150")
           break;
         case 3:
-          this.searchGiphy("nintendo animation", "50")
+          this.searchGiphy("nintendo animation", "200")
           break;
         case 4:
           this.searchGiphy("neon", "50")
@@ -125,25 +130,27 @@ class Slider extends React.Component {
         case 5:
           this.searchGiphy("pixel sprite background")
           break;
-        default:
+        case 5:
           this.searchGiphy("hanna barbera", "50")
           break; 
       }
     }
 
     render() {
-      let { urls } = this.state
-      urls = Shuffle.pick(urls,{picks: 16})
+      let { urls, searchCard } = this.state
+      urls = Shuffle.pick(urls,{picks: 32})
 
       let {artist, songTitle, bpm} = this.props
-
-      return <div id="slider" >
-        <TitleCard artist={artist} songTitle={songTitle} />
-        <AudioFeaturesCard />
-        <SlideClip url={urls[0]} />
+      // <TitleCard artist={artist} songTitle={songTitle} />
+      // <AudioFeaturesCard />
+      // <SlideClip url={urls[0]} />
+      return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
+        <GiphySearchBar 
+          channelSelect={this.channelSelect}
+          visible={this.state.searchVisible}
+          searchGiphy={this.searchGiphy}
+          handleKeyPress={this.handleKeyPress} />
         <GifsList gifUrls={urls.slice(1, urls.length)} />
-        <GlitchLine gifUrls={urls.slice(1, urls.length)} />
-        <GiphySearchBar channelSelect={this.channelSelect} searchGiphy={this.searchGiphy} />
       </div>
     }
   }

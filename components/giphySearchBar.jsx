@@ -3,37 +3,33 @@ import React from 'react';
 class GiphySearchBar extends React.Component {
     constructor(props) {
         super(props)
-        this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.state = { searchStr: ''};
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    handleKeyPress(e) {
-        let {channelSelect} = this.props
-        channelSelect(e.key)
+    handleChange(e) {
+        this.setState({searchStr: e.currentTarget.value});
     }
 
     handleSubmit(e) {
         e.preventDefault()
         let {searchGiphy} = this.props
-        searchGiphy("street fighter")
+        searchGiphy(this.state.searchStr)
     }
-    // <div id="search_bar" onKeyPress={this.handleKeyPress} onSubmit={this.handleSubmit} tabIndex="1">
-    //         <form>
-    //             <label>
-    //             Search:
-    //             <input type="text" name="name" />
-    //             </label>
-    //             <input type="submit" value="Submit" />
-    //         </form>
-    //     </div>
+
     render() {
-        return <div id="search_card">
-            <div id="control_bar" onKeyPress={this.handleKeyPress}  tabIndex="1" >CHANNEL</div>
+        let visible = this.props.visible
+        let style = {display: visible ? null : "none"}
+        // <div id="control_bar" onKeyPress={this.handleKeyPress}  tabIndex="1" >CHANNEL</div>
+
+        return <div id="search_card" style={style}>
+            <div id="control_bar" onKeyPress={this.props.handleKeyPress}  tabIndex="2" >CHANNEL</div>
             <form onSubmit={this.handleSubmit}>
-                <label><div>{String.fromCodePoint(0x1F50E)}</div>
-                    <input type="text" name="name" />
+                <label>
+                    <input type="text" value={this.state.searchStr} onChange={this.handleChange}  />
                 </label>
-                <input type="submit" name="Submit" />
+                <input type="submit" value="SEARCH" />
             </form>
         </div>
     }
