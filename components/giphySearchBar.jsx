@@ -19,11 +19,10 @@ class GiphySearchBar extends React.Component {
     }
 
     render() {
-        let visible = this.props.visible
-        let style = {display: visible ? null : "none"}
+        // let style = {display: visible ? null : "none"}
         // <div id="control_bar" onKeyPress={this.handleKeyPress}  tabIndex="1" >CHANNEL</div>
 
-        return <div id="search_card" style={style}>
+        return <div id="search_bar" >
             <div id="control_bar" onKeyPress={this.props.handleKeyPress}  tabIndex="2" >CHANNEL</div>
             <form onSubmit={this.handleSubmit}>
                 <label>
