@@ -1,4 +1,5 @@
 import React from 'react'
+import GiphySearchBar from './giphySearchBar';
 
 class TitleCard extends React.Component {
     constructor(props){
@@ -28,7 +29,6 @@ class TitleCard extends React.Component {
         section = sections[sections.length - 1]
         let timeStamp = section.start * 1000 - progressMs - window.networkDelay
         window.setTimeout(this.toggle, timeStamp)
-        console.log("outro: ", timeStamp, section)
     }
 
     render() {
@@ -42,7 +42,10 @@ class TitleCard extends React.Component {
         }
         let visible = this.state.visible
         let style = {display: visible ? null : "none"}
-
+        // <GiphySearchBar 
+        // channelSelect={this.props.channelSelect}
+        // searchGiphy={this.props.searchGiphy}
+        // handleKeyPress={this.props.handleKeyPress} />
         return <section id="titleCard" style={style}>
             <div className="glitch">
                 <div className="text">

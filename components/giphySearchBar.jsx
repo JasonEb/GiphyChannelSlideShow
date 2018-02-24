@@ -23,7 +23,7 @@ class GiphySearchBar extends React.Component {
         // <div id="control_bar" onKeyPress={this.handleKeyPress}  tabIndex="1" >CHANNEL</div>
 
         return <div id="search_bar" >
-            <div id="control_bar" onKeyPress={this.props.handleKeyPress}  tabIndex="2" >CHANNEL</div>
+            <div id="control_bar" onKeyPress={this.props.handleKeyPress}  tabIndex="2" >GIPHY</div>
             <form onSubmit={this.handleSubmit}>
                 <label>
                     <input type="text" value={this.state.searchStr} onChange={this.handleChange}  />

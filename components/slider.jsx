@@ -6,12 +6,12 @@ import TitleCard from './titleCard.jsx'
 import AudioFeaturesCard from './audioFeaturesCard.jsx'
 import GlitchLine from './glitchLine.jsx'
 import Shuffle from 'shuffle-array'
-import GiphySearchBar from './giphySearchBar';
+import GiphySearchCard from './giphySearchCard';
 
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: [], searchVisible: true }
+      this.state = { urls: [], searchVisible: false }
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
       this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
@@ -39,7 +39,7 @@ class Slider extends React.Component {
       })
     }
 
-    searchGiphy(input="", limit="32") {
+    searchGiphy(input="", limit="128") {
       gifUtil.fetchSearchTerms(input, limit).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
@@ -125,32 +125,38 @@ class Slider extends React.Component {
           this.searchGiphy("nintendo animation", "200")
           break;
         case 4:
-          this.searchGiphy("neon", "50")
+          this.searchGiphy("neon", "150")
+          // this.fetchChannelGifs("6343")
           break;
         case 5:
-          this.searchGiphy("pixel sprite background")
+          this.searchGiphy("pixel sprite background", "200")
           break;
         case 5:
-          this.searchGiphy("hanna barbera", "50")
+          this.searchGiphy("hanna barbera", "150")
           break; 
       }
     }
 
     render() {
       let { urls, searchCard } = this.state
-      urls = Shuffle.pick(urls,{picks: 32})
+      urls = Shuffle.pick(urls,{picks: 21})
 
       let {artist, songTitle, bpm} = this.props
-      // <TitleCard artist={artist} songTitle={songTitle} />
-      // <AudioFeaturesCard />
-      // <SlideClip url={urls[0]} />
+
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
-        <GiphySearchBar 
+        <TitleCard artist={artist} songTitle={songTitle}
           channelSelect={this.channelSelect}
-          visible={this.state.searchVisible}
           searchGiphy={this.searchGiphy}
-          handleKeyPress={this.handleKeyPress} />
-        <GifsList gifUrls={urls.slice(1, urls.length)} />
+          handleKeyPress={this.handleKeyPress}              
+        />
+        <GiphySearchCard visible={this.state.searchVisible} 
+          channelSelect={this.channelSelect}
+          searchGiphy={this.searchGiphy}
+          handleKeyPress={this.handleKeyPress}       
+        />
+        <AudioFeaturesCard />
+        <SlideClip url={urls[0]} />
+        <GifsList gifUrls={urls.slice(1, urls.length - 1)} />
       </div>
     }
   }

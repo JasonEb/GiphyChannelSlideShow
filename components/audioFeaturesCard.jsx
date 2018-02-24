@@ -16,7 +16,7 @@ class AudioFeaturesCard extends React.Component {
         let i = 0;
         let max = Math.floor(Math.random() * 3);
 
-        if (max == 1) {
+        if (max == 0) {
             max = Math.floor(Math.random() * 4);
         } else {
             max = 3

@@ -5,7 +5,7 @@
 @import "titleCard.css";
 @import "audioCard.css";
 @import "searchCard.css";
-
+@import "searchBar.css";
 
 html{
     height: 100%;

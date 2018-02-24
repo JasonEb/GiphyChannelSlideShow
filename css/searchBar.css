@@ -1,0 +1,12 @@
+input{
+    background-color: transparent;
+    border: 1px solid #69696942;
+    font-family: "VT323";
+    font-size: 3em;
+    color: white;
+  }
+
+div#search_bar{
+    top:10%;
+    position: relative;
+}

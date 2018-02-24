@@ -35,7 +35,6 @@
   -webkit-filter: blur(1px);
   -webkit-animation: blur 30ms infinite, jerk 50ms infinite;
   top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
   width: 100vw;
 }
