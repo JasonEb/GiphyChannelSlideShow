@@ -1,5 +1,4 @@
 div.vhr_overlay {
-    border:1px solid red;
     height: 100vh;
     width: 100%;
     background-color: transparent;
@@ -10,10 +9,25 @@ div.vhr_overlay {
 }
 
 div#vhr_grid {
-    border:5px solid green;
-    height: 100%;
-    margin-top: 10em;
-    margin-bottom: 10em;
-    margin-left: 10em;
-    margin-right: 10em;
+    border: 5px solid gray;
+    height: 90%;
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-image-source: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/bjjnyco/camera-viewfinder-with-white-frame-and-red-record-button_hvipsjmog_thumbnail-full01.png);
+    border-image-slice: 50%;
+    border-image-width: 100px;
+    box-shadow: 10em;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.25;
+    }
+    50%{
+        opacity: 0.50;
+    }
+    100%{
+        opacity: 0.25;
+    }
 }

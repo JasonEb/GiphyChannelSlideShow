@@ -20,8 +20,10 @@
   
   #slider li img {
     width: 100%;
+    height: 85vh;
     position:absolute;
     display: none;
+    margin-top: 5%;
   }
   #slider li.current img {
     display: inline;
@@ -41,9 +43,12 @@
     position: absolute;
     z-index: 89;
     overflow: hidden;
+    margin-top: 5%;
   }
   #glitchline img {
     width: 100%;
+    height: 85vh;
+    margin-top: 5%;
   }
 
   /* .glitchlineColored {

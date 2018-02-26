@@ -42,13 +42,14 @@ class SlideClip extends React.Component {
       let style = {
         display: visible ? null : 'none',
         width: '100%',
-        height: '100vh',
+        height: '85vh',
         position: 'absolute',
         backgroundImage: `url("${url}")`,
         backgroundSize: "100%",
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'black',
-        zIndex: '91'
+        zIndex: '91',
+        marginTop: '5%'
       }
 
       return <div id="slideClip" style={style}></div>

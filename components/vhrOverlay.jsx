@@ -42,10 +42,15 @@ class VhrOverlay extends React.Component {
         let {audioFeatures, audioAnalysis} = window
         let {visible} = this.state
 
-        let style = { display: visible ? null : 'none' }
+        let rng = Math.ceil(Math.random() * 3)
+        let beat = 60000 / window.tempo / 1000 * rng;
+
+        let gridStyle = {
+            animation: `pulse ${beat}s infinite`
+        }
 
         return <div className="vhr_overlay" >
-            <div id="vhr_grid" />
+            <div id="vhr_grid" style={gridStyle} />
             <div>TEST</div>
       </div>
     }

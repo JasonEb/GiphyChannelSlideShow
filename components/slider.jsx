@@ -6,7 +6,8 @@ import TitleCard from './titleCard.jsx'
 import AudioFeaturesCard from './audioFeaturesCard.jsx'
 import GlitchLine from './glitchLine.jsx'
 import Shuffle from 'shuffle-array'
-import GiphySearchCard from './giphySearchCard';
+import GiphySearchCard from './giphySearchCard'
+import VhrOverlay from './vhrOverlay'
 
 class Slider extends React.Component {
     constructor(props){
@@ -104,18 +105,10 @@ class Slider extends React.Component {
       let {valence, danceability, energy, tempo} = window.audioFeatures
       console.log("valence: ", valence, "danceability:", danceability, "energy: ", energy, "tempo: ", tempo)  
 
-      let rng = Math.ceil(Math.random()*6)
- 
-      // if (dark) {
-      //   this.fetchChannelGifs("6343")
-      // } else {
-      //   this.fetchMyChannelGifs()
-      // }
-      // this.fetchChannelGifs("6343")
-      // this.fetchMyChannelGifs()
-
+      let rng = Math.ceil(Math.random()*7)
+      
       switch (rng) {
-        case 1:
+        default:
           this.fetchMyChannelGifs()
           break;
         case 2:
@@ -126,24 +119,32 @@ class Slider extends React.Component {
           break;
         case 4:
           this.searchGiphy("neon", "150")
-          // this.fetchChannelGifs("6343")
           break;
         case 5:
           this.searchGiphy("pixel sprite background", "200")
           break;
-        case 5:
+        case 6:
           this.searchGiphy("hanna barbera", "150")
+          break;
+        case 7:
+          //darkness gifs
+          this.fetchChannelGifs("6343")
+          break;
+        case 1:
+          this.searchGiphy("sailor moon", "300")
           break; 
       }
     }
 
     render() {
       let { urls, searchCard } = this.state
-      urls = Shuffle.pick(urls,{picks: 21})
+      urls = Shuffle(urls)
+      urls = Shuffle.pick(urls, {picks: 21})
 
       let {artist, songTitle, bpm} = this.props
 
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
+        <VhrOverlay />
         <TitleCard artist={artist} songTitle={songTitle}
           channelSelect={this.channelSelect}
           searchGiphy={this.searchGiphy}
