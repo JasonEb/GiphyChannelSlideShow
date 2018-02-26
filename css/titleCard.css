@@ -6,7 +6,7 @@
   position: absolute;
   background-size: 100%;
   display: inline;
-  z-index: 100;
+  z-index: 99;
 }
 
 .glitch {

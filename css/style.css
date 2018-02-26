@@ -6,6 +6,7 @@
 @import "audioCard.css";
 @import "searchCard.css";
 @import "searchBar.css";
+@import "vhrOverlay.css";
 
 html{
     height: 100%;

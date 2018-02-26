@@ -1,0 +1,19 @@
+div.vhr_overlay {
+    border:1px solid red;
+    height: 100vh;
+    width: 100%;
+    background-color: transparent;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 100;
+}
+
+div#vhr_grid {
+    border:5px solid green;
+    height: 100%;
+    margin-top: 10em;
+    margin-bottom: 10em;
+    margin-left: 10em;
+    margin-right: 10em;
+}
