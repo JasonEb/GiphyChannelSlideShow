@@ -33,8 +33,8 @@ export const initializeShow = (bpm = 120) => {
           marginLeft: leftMove + "px",
           marginTop: -parseInt(top) + "px"
         });
-      }, beatMs/4);
-    }, beatMs*2);
+      }, beatMs/2);
+    }, beatMs*4);
     /* Glitch for slider - end code */
     
     /* Slide change */
