@@ -56,5 +56,19 @@ document.addEventListener("DOMContentLoaded", () => {
     //at this point all audio analysis and features is fetched
     ReactDOM.render(<Slider artist={artist} songTitle={name} />, root)
     slideUtil.initializeShow(window.tempo)
+
+    //periodically check track status
+    let checkInterval = 60000 / window.tempo * 12
+    setInterval( () => {
+      spotifyUtil.getCurrentTrack(()=>{}).then( (res) => {
+        let previousId = window.currentTrack.item.id
+        let newId = res.item.id
+
+        console.log("interval", checkInterval)
+        if (newId !== previousId) {
+          window.location.href = "http://192.168.1.8:8000"
+        }
+      })
+    }, checkInterval)
   })
 });
