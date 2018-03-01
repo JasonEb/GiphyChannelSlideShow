@@ -5,13 +5,13 @@ export const initializeShow = (bpm = 120) => {
     let beatMs = 60000/(bpm);
 
     var slider = $("#slider");
-    var curSlide = $("li.slide.current");
+    var curSlide = $("li.slides.current");
     var glitchLine = $("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
     var imgUrl = curSlide.find("img").attr("src");
     var glitchImg = glitchLine.find("img");
     glitchImg.attr("src", imgUrl);
-    var ttop = Math.round(Math.random() * (slider.height() - glitchLine.height()));
-    glitchLine.css("top", ttop);
+    var ttop = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
+    glitchLine.css("top", ttop + "px");
     glitchImg.css("margin-top", -ttop + "px");
     glitchLine.appendTo(slider);
     var glitchMoveInt;
@@ -22,8 +22,8 @@ export const initializeShow = (bpm = 120) => {
       // replace with redux
       window.intervals.push(glitchInt);
       //
-      var top = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
-      glitchLine.css("top", top);
+      var top = Math.round(Math.random() * (50));
+      glitchLine.css("top", top + "vh");
       glitchImg.css("margin-top", -top + "px");
       glitchLine.toggleClass("glitchlineColored");
       glitchMoveInt = setInterval(function() {

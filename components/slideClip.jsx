@@ -42,7 +42,7 @@ class SlideClip extends React.Component {
       let style = {
         display: visible ? null : 'none',
         width: '100%',
-        height: '85vh',
+        height: '80vh',
         position: 'absolute',
         backgroundImage: `url("${url}")`,
         backgroundSize: "100%",

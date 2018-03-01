@@ -20,7 +20,7 @@
   
   #slider li img {
     width: 100%;
-    height: 85vh;
+    height: 80vh;
     position:absolute;
     display: none;
     margin-top: 5%;
@@ -30,15 +30,6 @@
     object-fit: contain;
   }
 
-  /* #slideClip {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background: #000
-      url("https://media.giphy.com/media/xUPGcBcnXkclQKaxBS/giphy.gif") repeat;
-    background-size: 100%;
-    z-index: 90;
-  } */
   #glitchline {
     width: 100%;
     height: 50px;
@@ -49,8 +40,7 @@
   }
   #glitchline img {
     width: 100%;
-    height: 85vh;
-    margin-top: 5%;
+    height: 80vh;
     object-fit: contain;
   }
 
