@@ -22,7 +22,7 @@ export const initializeShow = (bpm = 120) => {
       // replace with redux
       window.intervals.push(glitchInt);
       //
-      var top = Math.round(Math.random() * (slider.height() - glitchLine.height()));
+      var top = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
       glitchLine.css("top", top);
       glitchImg.css("margin-top", -top + "px");
       glitchLine.toggleClass("glitchlineColored");
