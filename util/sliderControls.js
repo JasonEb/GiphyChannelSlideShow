@@ -27,14 +27,14 @@ export const initializeShow = (bpm = 120) => {
       glitchImg.css("margin-top", -top + "px");
       glitchLine.toggleClass("glitchlineColored");
       glitchMoveInt = setInterval(function() {
-        var leftMove = Math.round(Math.random() * 20 - 10);
+        var leftMove = Math.round(Math.random() * 2);
         var top = glitchLine.css("top");
         glitchImg.css({
           marginLeft: leftMove + "px",
           marginTop: -parseInt(top) + "px"
         });
-      }, beatMs/2);
-    }, beatMs*4);
+      }, beatMs);
+    }, beatMs*8);
     /* Glitch for slider - end code */
     
     /* Slide change */
@@ -51,10 +51,10 @@ export const initializeShow = (bpm = 120) => {
       curSlide.removeClass("current");
       nxtSlide.addClass("current");
       glitchImg.attr("src", nxtSlide.find("img").attr("src"));
-      $("#slideClip").show()
-      setTimeout(function() {
-        $("#slideClip").hide()
-      }, beatMs); //beatMs represents the duration of slide noise clip
+      // $("#slideClip").show()
+      // setTimeout(function() {
+      //   $("#slideClip").hide()
+      // }, beatMs); //beatMs represents the duration of slide noise clip
     }
 }
 

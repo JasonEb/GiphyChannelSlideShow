@@ -20,7 +20,7 @@
   
   #slider li img {
     width: 100%;
-    height: 80vh;
+    height: 70vh;
     position:absolute;
     display: none;
     margin-top: 5%;
@@ -40,7 +40,7 @@
   }
   #glitchline img {
     width: 100%;
-    height: 80vh;
+    height: 70vh;
     object-fit: contain;
   }
 

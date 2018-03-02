@@ -4,7 +4,12 @@ import $ from "jquery";
 class SlideClip extends React.Component {
     constructor(props) {
       super(props)
-      this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 3, measures:8}
+      this.state = { visible: true,
+        mixBlendMode: "hard-light",
+        rhythm: 1, 
+        beatDiv: 4, 
+        flashMax: 3, 
+        measures:8 }
       this.toggle = this.toggle.bind(this)
       this.flash = this.flash.bind(this)
     }
@@ -14,7 +19,6 @@ class SlideClip extends React.Component {
     }
 
     flash() {
-
       let beatMs = 60000/(window.tempo);
       let {rhythm,beatDiv, flashMax } = this.state
       let max = Math.floor(Math.random() * flashMax);
@@ -24,7 +28,7 @@ class SlideClip extends React.Component {
         let extraKick = Math.floor(Math.random() * 4);
         if(extraKick === 0) {
           let time = (beatMs/ beatDiv) * i * rhythm 
-          setTimeout(() => this.toggle(), time + (beatMs / 4))
+          setTimeout(() => this.toggle(), time + (beatMs / 2))
         }
       }
     }
@@ -37,19 +41,23 @@ class SlideClip extends React.Component {
 
     render() {
       let {url} = this.props
-      let {visible} = this.state
+      let {visible, mixBlendMode} = this.state
 
       let style = {
         display: visible ? null : 'none',
+        mixBlendMode: mixBlendMode,
         width: '100%',
-        height: '80vh',
+        height: '70vh',
         position: 'absolute',
         backgroundImage: `url("${url}")`,
-        backgroundSize: "100%",
+        backgroundSize: "contain",
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'black',
+        backgroundPosition: 'center',
         zIndex: '91',
-        marginTop: '5%'
+        marginTop: '5%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       }
 
       return <div id="slideClip" style={style}></div>

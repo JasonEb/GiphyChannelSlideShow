@@ -11230,19 +11230,24 @@ var SlideClip = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (SlideClip.__proto__ || Object.getPrototypeOf(SlideClip)).call(this, props));
 
-    _this.state = { visible: false, rhythm: 1, beatDiv: 4, flashMax: 3, measures: 8 };
+    _this.state = { visible: true,
+      mixBlendMode: "hard-light",
+      rhythm: 1,
+      beatDiv: 4,
+      flashMax: 3,
+      measures: 8 };
     _this.toggle = _this.toggle.bind(_this);
     _this.flash = _this.flash.bind(_this);
     return _this;
   }
 
   _createClass(SlideClip, [{
-    key: 'toggle',
+    key: "toggle",
     value: function toggle() {
       this.setState({ visible: !this.state.visible });
     }
   }, {
-    key: 'flash',
+    key: "flash",
     value: function flash() {
       var _this2 = this;
 
@@ -11263,12 +11268,12 @@ var SlideClip = function (_React$Component) {
           var time = beatMs / beatDiv * i * rhythm;
           setTimeout(function () {
             return _this2.toggle();
-          }, time + beatMs / 4);
+          }, time + beatMs / 2);
         }
       }
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       var _this3 = this;
 
@@ -11280,26 +11285,32 @@ var SlideClip = function (_React$Component) {
       }, beatMs * measures); //beatMs represents the duration of slide noise clip
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var url = this.props.url;
-      var visible = this.state.visible;
+      var _state2 = this.state,
+          visible = _state2.visible,
+          mixBlendMode = _state2.mixBlendMode;
 
 
       var style = {
         display: visible ? null : 'none',
+        mixBlendMode: mixBlendMode,
         width: '100%',
-        height: '85vh',
+        height: '70vh',
         position: 'absolute',
-        backgroundImage: 'url("' + url + '")',
-        backgroundSize: "100%",
+        backgroundImage: "url(\"" + url + "\")",
+        backgroundSize: "contain",
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'black',
+        backgroundPosition: 'center',
         zIndex: '91',
-        marginTop: '5%'
+        marginTop: '5%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
       };
 
-      return _react2.default.createElement('div', { id: 'slideClip', style: style });
+      return _react2.default.createElement("div", { id: "slideClip", style: style });
     }
   }]);
 
@@ -11363,9 +11374,6 @@ var GiphySearchBar = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            // let style = {display: visible ? null : "none"}
-            // <div id="control_bar" onKeyPress={this.handleKeyPress}  tabIndex="1" >CHANNEL</div>
-
             return _react2.default.createElement(
                 'div',
                 { id: 'search_bar' },
@@ -11412,7 +11420,7 @@ var _slider = __webpack_require__(30);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(43);
+var _sliderControls = __webpack_require__(44);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
@@ -11424,7 +11432,7 @@ var _slideClip = __webpack_require__(15);
 
 var _slideClip2 = _interopRequireDefault(_slideClip);
 
-var _spotifyUtil = __webpack_require__(44);
+var _spotifyUtil = __webpack_require__(45);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
@@ -28873,12 +28881,13 @@ var Slider = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
 
-    _this.state = { urls: [], searchVisible: false };
+    _this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack };
     _this.fetchChannelGifs = _this.fetchChannelGifs.bind(_this);
     _this.fetchMyChannelGifs = _this.fetchMyChannelGifs.bind(_this);
     _this.searchGiphy = _this.searchGiphy.bind(_this);
     _this.handleKeyPress = _this.handleKeyPress.bind(_this);
     _this.channelSelect = _this.channelSelect.bind(_this);
+    _this.updateCurrentlyPlaying = _this.updateCurrentlyPlaying.bind(_this);
     return _this;
   }
 
@@ -28927,16 +28936,13 @@ var Slider = function (_React$Component) {
         res.data.forEach(function (giphy) {
           var url = giphy.images.original.url;
 
-          //filtering attempt...
+          //filtering inappropriate gifs
 
-          if (url === 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif') {
-            debugger;
-          }
           if (gifUtil.filteredGiphy(url)) {
-            debugger;
+            console.log("Skipped ", url);
+          } else {
+            oldUrls.push(url);
           }
-
-          oldUrls.push(url);
         });
         _this4.setState({ urls: oldUrls });
         if (_this4.state.searchVisible) {
@@ -28985,6 +28991,25 @@ var Slider = function (_React$Component) {
       }
     }
   }, {
+    key: 'updateCurrentlyPlaying',
+    value: function updateCurrentlyPlaying() {
+      //periodically check track status
+      var checkInterval = 60000 / window.tempo * 12;
+      var self = this;
+      setInterval(function () {
+        spotifyUtil.getCurrentTrack(function () {}).then(function (res) {
+          var previousId = window.currentTrack.item.id;
+          var newId = res.item.id;
+
+          console.log("interval", checkInterval);
+          if (newId !== previousId) {
+            window.location.href = "http://192.168.1.8:8000";
+          }
+          self.setState({ currentTrack: res });
+        });
+      }, checkInterval);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       // this.fetchChannelGifs("6343")
@@ -29001,7 +29026,9 @@ var Slider = function (_React$Component) {
 
       console.log("valence: ", valence, "danceability:", danceability, "energy: ", energy, "tempo: ", tempo);
 
-      var rng = Math.ceil(Math.random() * 7);
+      this.updateCurrentlyPlaying();
+
+      var rng = Math.ceil(Math.random() * 9);
 
       switch (rng) {
         default:
@@ -29027,7 +29054,7 @@ var Slider = function (_React$Component) {
           this.fetchChannelGifs("6343");
           break;
         case 1:
-          this.searchGiphy("sailor moon", "300");
+          this.searchGiphy("sailor moon", "250");
           break;
       }
     }
@@ -29036,7 +29063,8 @@ var Slider = function (_React$Component) {
     value: function render() {
       var _state = this.state,
           urls = _state.urls,
-          searchCard = _state.searchCard;
+          searchCard = _state.searchCard,
+          currentTrack = _state.currentTrack;
 
       urls = (0, _shuffleArray2.default)(urls);
       urls = _shuffleArray2.default.pick(urls, { picks: 21 });
@@ -29050,19 +29078,19 @@ var Slider = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { id: 'slider', onKeyPress: this.handleKeyPress, tabIndex: '1' },
-        _react2.default.createElement(_vhrOverlay2.default, null),
-        _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle,
-          channelSelect: this.channelSelect,
-          searchGiphy: this.searchGiphy,
-          handleKeyPress: this.handleKeyPress
-        }),
+        _react2.default.createElement(_vhrOverlay2.default, { currentTrack: currentTrack }),
         _react2.default.createElement(_giphySearchCard2.default, { visible: this.state.searchVisible,
           channelSelect: this.channelSelect,
           searchGiphy: this.searchGiphy,
           handleKeyPress: this.handleKeyPress
         }),
-        _react2.default.createElement(_audioFeaturesCard2.default, null),
+        _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle,
+          channelSelect: this.channelSelect,
+          searchGiphy: this.searchGiphy,
+          handleKeyPress: this.handleKeyPress
+        }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
+        _react2.default.createElement(_audioFeaturesCard2.default, null),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length - 1) })
       );
     }
@@ -29265,16 +29293,20 @@ var fetchMyGiphys = exports.fetchMyGiphys = function fetchMyGiphys() {
 };
 
 var filteredGiphy = exports.filteredGiphy = function filteredGiphy(url) {
-    var list = {
-        'https://media.giphy.com/media/pAtqeLnnedEY0/giphy.gif': true,
-        'https://media.giphy.com/media/drDNlR1IfDCms/giphy.gif': true,
-        'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif': true,
-        'https://media.giphy.com/media/5rSGQoyTjYlvW/giphy.gif': true,
-        'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif': true,
-        'https://media.giphy.com/media/JroPe9R0Wp19S/giphy.gif': true
-    };
+    var list = ['https://media.giphy.com/media/pAtqeLnnedEY0/giphy.gif', 'https://media.giphy.com/media/drDNlR1IfDCms/giphy.gif', 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif', 'https://media.giphy.com/media/5rSGQoyTjYlvW/giphy.gif', 'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif', 'https://media.giphy.com/media/JroPe9R0Wp19S/giphy.gif', 'https://media1.giphy.com/media/drDNlR1IfDCms/giphy.gif', 'https://media2.giphy.com/media/5TT7baDXvhEiY/giphy.gif', 'https://media2.giphy.com/media/AyPGV9CREcGMU/giphy.gif', 'https://media2.giphy.com/mesdia/pAtqeLnnedEY0/giphy.gif', 'https://media2.giphy.com/media/hxtdEflXBROBW/giphy.gif', 'https://media3.giphy.com/media/hxtdEflXBROBW/giphy.gif', 'https://media3.giphy.com/media/dduG6iRQp9MKk/giphy.gif', 'https://media2.giphy.com/media/S9e5BERjHx45O/giphy.gif:', 'https://media0.giphy.com/media/CG44ARqf8X20M/giphy.gif', 'https://media.giphy.com/media/GXiasDXfP0j8Q/giphy.gif', 'https://media.giphy.com/media/12NA6MjdxtoXL2/giphy.gif', 'https://media.giphy.com/media/buSRHoRDSD6mc/giphy.gif', 'https://media.giphy.com/media/qcTAxgEBkz41G/giphy.gif', 'https://media.giphy.com/media/plOy8VYn4ZMGs/giphy.gif', 'https://media.giphy.com/media/q4e1yUcoJW6c0/giphy.gif', 'https://media.giphy.com/media/DBg0ahNm847v2/giphy.gif', 'https://media.giphy.com/media/3o7aD8Ius3KlrU6W7S/giphy.gif', 'https://media0.giphy.com/media/5rSGQoyTjYlvW/giphy.gif', 'https://media2.giphy.com/media/eNMGwf0QEcxP2/giphy.gif', 'https://media3.giphy.com/media/U7rWTHglrGY7u/giphy.gif', 'https://media3.giphy.com/media/se9wkjIJGG0Ao/giphy.gif',
 
-    return typeof list[url] === "undefined" ? false : true;
+    //nintendo
+    'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif', 'https://media.giphy.com/media/S0dxdpIyDNOxi/giphy.gif',
+    //neons
+    'https://media.giphy.com/media/xUOxfaAKhzC0oiCOhG/giphy.gif', 'https://media.giphy.com/media/3ohs82QgSrufH5ZdkI/giphy.gif', 'https://media.giphy.com/media/3ohhwH5ID6da0StBsI/giphy.gif', 'https://media.giphy.com/media/xUOxf3f85d9JvMrgIg/giphy.gif', 'https://media.giphy.com/media/l1KdbJpTr5ou0kWB2/giphy.gif', 'https://media.giphy.com/media/l44QtQcQ0JUozPmve/giphy.gif', 'https://media.giphy.com/media/xThuWk6BrQheZMf1NS/giphy.gif'];
+
+    //extract id
+    var idx = url.indexOf("/media/");
+    var id = url.slice(idx + 7, url.length);
+
+    return list.some(function (bannedUrl) {
+        return bannedUrl.includes(id);
+    });
 };
 
 /***/ }),
@@ -29332,7 +29364,7 @@ var TitleCard = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).call(this, props));
 
-        _this.state = { visible: true };
+        _this.state = { visible: true, mixBlendMode: "normal" };
         _this.toggle = _this.toggle.bind(_this);
         return _this;
     }
@@ -29345,6 +29377,8 @@ var TitleCard = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+            var _this2 = this;
+
             var sections = window.audioAnalysis.sections;
 
             var section = sections.find(function (section) {
@@ -29358,6 +29392,10 @@ var TitleCard = function (_React$Component) {
             duration = duration - progressMs - window.networkDelay;
             window.setTimeout(this.toggle, duration);
 
+            //titleCard blend effect
+            window.setTimeout(function () {
+                _this2.setState({ mixBlendMode: "hard-light" });
+            }, duration / 2);
             //outro 
             section = sections[sections.length - 1];
             var timeStamp = section.start * 1000 - progressMs - window.networkDelay;
@@ -29382,13 +29420,16 @@ var TitleCard = function (_React$Component) {
                     artist
                 ));
             }
-            var visible = this.state.visible;
-            var style = { display: visible ? null : "none"
-                // <GiphySearchBar 
-                // channelSelect={this.props.channelSelect}
-                // searchGiphy={this.props.searchGiphy}
-                // handleKeyPress={this.props.handleKeyPress} />
-            };return _react2.default.createElement(
+            var _state = this.state,
+                visible = _state.visible,
+                mixBlendMode = _state.mixBlendMode;
+
+            var style = {
+                display: visible ? null : "none",
+                mixBlendMode: mixBlendMode
+            };
+
+            return _react2.default.createElement(
                 'section',
                 { id: 'titleCard', style: style },
                 _react2.default.createElement(
@@ -29448,6 +29489,7 @@ var AudioFeaturesCard = function (_React$Component) {
 
         _this.state = { visible: false };
         _this.toggle = _this.toggle.bind(_this);
+        _this.textGenerator = _this.textGenerator.bind(_this);
         return _this;
     }
 
@@ -29457,22 +29499,81 @@ var AudioFeaturesCard = function (_React$Component) {
             this.setState({ visible: !this.state.visible });
         }
     }, {
+        key: 'textGenerator',
+        value: function textGenerator() {
+            var _window = window,
+                audioFeatures = _window.audioFeatures,
+                audioAnalysis = _window.audioAnalysis;
+
+            var max = Math.floor(Math.random() * 6 + 1);
+            var text = [];
+            for (var i = 0; i < max; i++) {
+                text.push(_react2.default.createElement(
+                    'ul',
+                    { key: i },
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'danceability ',
+                        audioFeatures.danceability
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'energy ',
+                        audioFeatures.energy
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'valence ',
+                        audioFeatures.valence
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'tempo ',
+                        audioFeatures.tempo
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'key ',
+                        audioFeatures.key
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'time_signature ',
+                        audioFeatures.time_signature
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'end_of_fade_in ',
+                        audioAnalysis.track.end_of_fade_in
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'start_of_fade_out ',
+                        audioAnalysis.track.start_of_fade_out
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'duration_ms ',
+                        audioFeatures.duration_ms / 1000,
+                        ' '
+                    )
+                ));
+            }
+            return text;
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
-
-            var i = 0;
-            var max = Math.floor(Math.random() * 3);
-
-            if (max == 0) {
-                max = Math.floor(Math.random() * 4);
-            } else {
-                max = 3;
-            }
-
-            for (i = 0; i < max; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
-            }
 
             //set timer for display...after midsection?
             var sections = window.audioAnalysis.sections;
@@ -29494,13 +29595,14 @@ var AudioFeaturesCard = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _window = window,
-                audioFeatures = _window.audioFeatures,
-                audioAnalysis = _window.audioAnalysis;
             var visible = this.state.visible;
 
+            var text = this.textGenerator();
 
-            var style = { display: visible ? null : 'none' };
+            var style = {
+                display: visible ? null : 'none'
+
+            };
 
             return _react2.default.createElement(
                 'div',
@@ -29508,65 +29610,7 @@ var AudioFeaturesCard = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'text' },
-                    _react2.default.createElement(
-                        'ul',
-                        null,
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'danceability ',
-                            audioFeatures.danceability
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'energy ',
-                            audioFeatures.energy
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'valence ',
-                            audioFeatures.valence
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'tempo ',
-                            audioFeatures.tempo
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'key ',
-                            audioFeatures.key
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'time_signature ',
-                            audioFeatures.time_signature
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'end_of_fade_in ',
-                            audioAnalysis.track.end_of_fade_in
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'start_of_fade_out ',
-                            audioAnalysis.track.start_of_fade_out
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            'duration_ms ',
-                            audioFeatures.duration_ms / 1000,
-                            ' '
-                        )
-                    )
+                    text
                 ),
                 _react2.default.createElement('div', { className: 'scanline' })
             );
@@ -29836,6 +29880,10 @@ var _jquery = __webpack_require__(2);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
+var _battery = __webpack_require__(43);
+
+var _battery2 = _interopRequireDefault(_battery);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29864,39 +29912,7 @@ var VhrOverlay = function (_React$Component) {
         }
     }, {
         key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            var i = 0;
-            var max = Math.floor(Math.random() * 3);
-
-            if (max == 0) {
-                max = Math.floor(Math.random() * 4);
-            } else {
-                max = 3;
-            }
-
-            for (i = 0; i < max; i++) {
-                (0, _jquery2.default)('.buzz_wrapper .text ul').eq(0).clone().prependTo('.buzz_wrapper .text');
-            }
-
-            //set timer for display...after midsection?
-            var sections = window.audioAnalysis.sections;
-
-            var section = sections[Math.ceil(sections.length / 2)];
-            var beatMs = 60000 / section.tempo;
-            var timestamp = section.start * 1000;
-
-            var progressMs = window.currentTrack.progress_ms;
-            window.networkDelay = Date.now() - window.beginT;
-            timestamp = timestamp - progressMs - window.networkDelay;
-            window.setTimeout(function () {
-                return _this2.toggle();
-            }, timestamp);
-            window.setTimeout(function () {
-                return _this2.toggle();
-            }, timestamp + beatMs * 16);
-        }
+        value: function componentDidMount() {}
     }, {
         key: 'render',
         value: function render() {
@@ -29904,24 +29920,22 @@ var VhrOverlay = function (_React$Component) {
                 audioFeatures = _window.audioFeatures,
                 audioAnalysis = _window.audioAnalysis;
             var visible = this.state.visible;
+            var currentTrack = this.props.currentTrack;
+            var progress_ms = currentTrack.progress_ms;
+            var duration_ms = currentTrack.item.duration_ms;
 
-
+            var batteryPct = 1 - progress_ms / duration_ms;
             var rng = Math.ceil(Math.random() * 3);
             var beat = 60000 / window.tempo / 1000 * rng;
 
             var gridStyle = {
                 animation: 'pulse ' + beat + 's infinite'
             };
-
             return _react2.default.createElement(
                 'div',
                 { className: 'vhr_overlay' },
                 _react2.default.createElement('div', { id: 'vhr_grid', style: gridStyle }),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    'TEST'
-                )
+                _react2.default.createElement(_battery2.default, { batteryPct: batteryPct })
             );
         }
     }]);
@@ -29933,6 +29947,77 @@ exports.default = VhrOverlay;
 
 /***/ }),
 /* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var battery = function (_React$Component) {
+    _inherits(battery, _React$Component);
+
+    function battery(props) {
+        _classCallCheck(this, battery);
+
+        var _this = _possibleConstructorReturn(this, (battery.__proto__ || Object.getPrototypeOf(battery)).call(this, props));
+
+        _this.state = { visible: false };
+        _this.toggle = _this.toggle.bind(_this);
+        return _this;
+    }
+
+    _createClass(battery, [{
+        key: 'toggle',
+        value: function toggle() {
+            this.setState({ visible: !this.state.visible });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log("Battery test");
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var batteryPct = this.props.batteryPct;
+
+
+            var width = Math.round(76 * batteryPct);
+            var style = {
+                animation: 'jerk 2s infinite',
+                width: width + 'px',
+                // animation: batteryPct < 0.30 ? 'pulse 1s infinite' : null,
+                backgroundColor: batteryPct < 0.30 ? 'red' : 'white'
+            };
+
+            return _react2.default.createElement('div', { id: 'battery', style: style });
+        }
+    }]);
+
+    return battery;
+}(_react2.default.Component);
+
+exports.default = battery;
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29956,13 +30041,13 @@ var initializeShow = exports.initializeShow = function initializeShow() {
     var beatMs = 60000 / bpm;
 
     var slider = (0, _jquery2.default)("#slider");
-    var curSlide = (0, _jquery2.default)("li.slide.current");
+    var curSlide = (0, _jquery2.default)("li.slides.current");
     var glitchLine = (0, _jquery2.default)("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
     var imgUrl = curSlide.find("img").attr("src");
     var glitchImg = glitchLine.find("img");
     glitchImg.attr("src", imgUrl);
-    var ttop = Math.round(Math.random() * (slider.height() - glitchLine.height()));
-    glitchLine.css("top", ttop);
+    var ttop = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
+    glitchLine.css("top", ttop + "px");
     glitchImg.css("margin-top", -ttop + "px");
     glitchLine.appendTo(slider);
     var glitchMoveInt;
@@ -29973,19 +30058,19 @@ var initializeShow = exports.initializeShow = function initializeShow() {
         // replace with redux
         window.intervals.push(glitchInt);
         //
-        var top = Math.round(Math.random() * (slider.height() - glitchLine.height()));
-        glitchLine.css("top", top);
+        var top = Math.round(Math.random() * 50);
+        glitchLine.css("top", top + "vh");
         glitchImg.css("margin-top", -top + "px");
         glitchLine.toggleClass("glitchlineColored");
         glitchMoveInt = setInterval(function () {
-            var leftMove = Math.round(Math.random() * 20 - 10);
+            var leftMove = Math.round(Math.random() * 2);
             var top = glitchLine.css("top");
             glitchImg.css({
                 marginLeft: leftMove + "px",
                 marginTop: -parseInt(top) + "px"
             });
-        }, beatMs / 4);
-    }, beatMs * 2);
+        }, beatMs);
+    }, beatMs * 8);
     /* Glitch for slider - end code */
 
     /* Slide change */
@@ -30002,10 +30087,10 @@ var initializeShow = exports.initializeShow = function initializeShow() {
         curSlide.removeClass("current");
         nxtSlide.addClass("current");
         glitchImg.attr("src", nxtSlide.find("img").attr("src"));
-        (0, _jquery2.default)("#slideClip").show();
-        setTimeout(function () {
-            (0, _jquery2.default)("#slideClip").hide();
-        }, beatMs); //beatMs represents the duration of slide noise clip
+        // $("#slideClip").show()
+        // setTimeout(function() {
+        //   $("#slideClip").hide()
+        // }, beatMs); //beatMs represents the duration of slide noise clip
     }
 };
 
@@ -30023,7 +30108,7 @@ var stopShow = exports.stopShow = function stopShow() {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

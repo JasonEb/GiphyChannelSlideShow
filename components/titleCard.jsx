@@ -4,7 +4,7 @@ import GiphySearchBar from './giphySearchBar';
 class TitleCard extends React.Component {
     constructor(props){
         super(props)
-        this.state = {visible: true}
+        this.state = {visible: true, mixBlendMode: "normal"}
         this.toggle = this.toggle.bind(this)
     }
 
@@ -25,6 +25,10 @@ class TitleCard extends React.Component {
         duration = duration - progressMs - window.networkDelay
         window.setTimeout(this.toggle, duration)
 
+        //titleCard blend effect
+        window.setTimeout(()=>{
+            this.setState({mixBlendMode: "hard-light"})
+        }, duration / 2)
         //outro 
         section = sections[sections.length - 1]
         let timeStamp = section.start * 1000 - progressMs - window.networkDelay
@@ -40,12 +44,12 @@ class TitleCard extends React.Component {
             {artist}
         </span>)
         }
-        let visible = this.state.visible
-        let style = {display: visible ? null : "none"}
-        // <GiphySearchBar 
-        // channelSelect={this.props.channelSelect}
-        // searchGiphy={this.props.searchGiphy}
-        // handleKeyPress={this.props.handleKeyPress} />
+        let {visible, mixBlendMode} = this.state
+        let style = {
+            display: visible ? null : "none",
+            mixBlendMode : mixBlendMode
+        }
+
         return <section id="titleCard" style={style}>
             <div className="glitch">
                 <div className="text">
