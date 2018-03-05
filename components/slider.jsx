@@ -8,6 +8,7 @@ import GlitchLine from './glitchLine.jsx'
 import Shuffle from 'shuffle-array'
 import GiphySearchCard from './giphySearchCard'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
+import * as spotifyUtil from '../util/spotifyUtil'
 
 class Slider extends React.Component {
     constructor(props){
@@ -26,6 +27,7 @@ class Slider extends React.Component {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         this.setState({urls: oldUrls})
+        slideUtil.initializeShow(window.tempo)
       })
     }
 
@@ -38,6 +40,7 @@ class Slider extends React.Component {
         let oldUrls = this.state.urls
         res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         this.setState({urls: oldUrls})
+        slideUtil.initializeShow(window.tempo)
       })
     }
 
@@ -54,8 +57,9 @@ class Slider extends React.Component {
             oldUrls.push(url)
           }
         })
-      this.setState({urls: oldUrls})
-      if (this.state.searchVisible) { this.setState({searchVisible: false})} 
+        this.setState({urls: oldUrls})
+        if (this.state.searchVisible) { this.setState({searchVisible: false})}
+        slideUtil.initializeShow(window.tempo)
       })      
     }
 
@@ -108,7 +112,7 @@ class Slider extends React.Component {
 
           console.log("interval", checkInterval)
           if (newId !== previousId) {
-            window.location.href = "http://192.168.1.8:8000"
+            window.location.href = "http://127.0.0.1:8000"
           }
           self.setState({currentTrack: res})
         })
@@ -128,7 +132,6 @@ class Slider extends React.Component {
       this.updateCurrentlyPlaying()
 
       let rng = Math.ceil(Math.random()*9)
-
       switch (rng) {
         default:
           this.fetchMyChannelGifs()

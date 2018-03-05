@@ -11498,7 +11498,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //at this point all audio analysis and features is fetched
     _reactDom2.default.render(_react2.default.createElement(_slider2.default, { artist: artist, songTitle: name }), root);
-    slideUtil.initializeShow(window.tempo);
   });
 });
 
@@ -28863,6 +28862,10 @@ var _vhrOverlay = __webpack_require__(42);
 
 var _vhrOverlay2 = _interopRequireDefault(_vhrOverlay);
 
+var _spotifyUtil = __webpack_require__(45);
+
+var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28902,6 +28905,7 @@ var Slider = function (_React$Component) {
           return oldUrls.push(giphy.images.original.url);
         });
         _this2.setState({ urls: oldUrls });
+        slideUtil.initializeShow(window.tempo);
       });
     }
   }, {
@@ -28921,6 +28925,7 @@ var Slider = function (_React$Component) {
           return oldUrls.push(giphy.images.original.url);
         });
         _this3.setState({ urls: oldUrls });
+        slideUtil.initializeShow(window.tempo);
       });
     }
   }, {
@@ -28948,6 +28953,7 @@ var Slider = function (_React$Component) {
         if (_this4.state.searchVisible) {
           _this4.setState({ searchVisible: false });
         }
+        slideUtil.initializeShow(window.tempo);
       });
     }
   }, {
@@ -29003,7 +29009,7 @@ var Slider = function (_React$Component) {
 
           console.log("interval", checkInterval);
           if (newId !== previousId) {
-            window.location.href = "http://192.168.1.8:8000";
+            window.location.href = "http://127.0.0.1:8000";
           }
           self.setState({ currentTrack: res });
         });
@@ -29029,7 +29035,6 @@ var Slider = function (_React$Component) {
       this.updateCurrentlyPlaying();
 
       var rng = Math.ceil(Math.random() * 9);
-
       switch (rng) {
         default:
           this.fetchMyChannelGifs();
@@ -30155,7 +30160,7 @@ var getAuthTokenImplicit = exports.getAuthTokenImplicit = function getAuthTokenI
     var authEndpoint = 'https://accounts.spotify.com/authorize';
 
     var clientId = 'a1725413073e48a697827b4895650356';
-    var redirectUri = 'http://192.168.1.8:8000';
+    var redirectUri = 'http://127.0.0.1:8000';
     var scopes = ['user-read-currently-playing'];
 
     // If there is no token, redirect to Spotify authorization
