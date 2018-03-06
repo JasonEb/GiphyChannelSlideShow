@@ -163,6 +163,7 @@ class Slider extends React.Component {
 
     render() {
       let { urls, searchCard, currentTrack } = this.state
+      let {tempo} = window
       urls = Shuffle(urls)
       urls = Shuffle.pick(urls, {picks: 21})
 
@@ -184,7 +185,7 @@ class Slider extends React.Component {
         <SlideClip url={urls[0]} />
         <AudioFeaturesCard />
 
-        <GifsList gifUrls={urls.slice(1, urls.length - 1)} />
+        <GifsList gifUrls={urls.slice(1, urls.length - 1)} tempo={tempo} />
       </div>
     }
   }
