@@ -165,7 +165,7 @@ class Slider extends React.Component {
       let { urls, searchCard, currentTrack } = this.state
       let {tempo} = window
       urls = Shuffle(urls)
-      urls = Shuffle.pick(urls, {picks: 21})
+      urls = Shuffle.pick(urls, {picks: 29})
 
       let {artist, songTitle, bpm} = this.props
 

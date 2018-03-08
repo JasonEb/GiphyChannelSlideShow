@@ -1,0 +1,8 @@
+div#current_track_display {
+    color: #ffffff50;
+    position: fixed;
+    bottom: 19vh;
+    left: 17vw;
+    font-family: VT323;
+    font-size: 2rem;
+}

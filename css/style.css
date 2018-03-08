@@ -7,7 +7,6 @@
 @import "searchCard.css";
 @import "searchBar.css";
 @import "./vhrOverlay/vhrOverlay.css";
-@import "./vhrOverlay/battery.css";
 
 html{
     height: 100%;

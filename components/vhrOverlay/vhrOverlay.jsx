@@ -1,6 +1,7 @@
 import React from 'react'
 import $ from "jquery"
 import Battery from './battery'
+import CurrentTrackDisplay from './currentTrackDisplay'
 
 class VhrOverlay extends React.Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class VhrOverlay extends React.Component {
         return <div className="vhr_overlay" >
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} />
+            <CurrentTrackDisplay currentTrack={currentTrack} />
       </div>
     }
   }
