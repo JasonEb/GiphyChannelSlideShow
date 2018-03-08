@@ -17,12 +17,12 @@ class battery extends React.Component {
 
     render() {
         let { batteryPct } = this.props
-
+        let {tempo} = window
+        let beatMs = 60000 / tempo
         let width = Math.round(76 * (batteryPct))
         let style = {
-            animation: 'jerk 2s infinite',
             width: `${width}px`,
-            // animation: batteryPct < 0.30 ? 'pulse 1s infinite' : null,
+            animation: `jerk ${beatMs*4}ms infinite`,
             backgroundColor: batteryPct < 0.30 ? 'red' : 'white'
         }
         

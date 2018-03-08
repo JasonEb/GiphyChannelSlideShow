@@ -27,6 +27,7 @@ class AudioFeaturesCard extends React.Component {
             <li>end_of_fade_in {audioAnalysis.track.end_of_fade_in}</li>
             <li>start_of_fade_out {audioAnalysis.track.start_of_fade_out}</li>
             <li>duration_ms {audioFeatures.duration_ms/ 1000} </li>
+            <li>POWERED by the wonderful Web APIs of Spotify, Giphy, and Twitch</li>
         </ul>)
         }
         return text;
