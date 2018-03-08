@@ -1,0 +1,8 @@
+div#date_and_time_display {
+    color: #ffffff50;
+    position: fixed;
+    right: 8em;
+    top: 1em;
+    font-family: VT323;
+    font-size: 2rem;
+}

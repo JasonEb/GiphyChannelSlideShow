@@ -2,6 +2,7 @@ import React from 'react'
 import $ from "jquery"
 import Battery from './battery'
 import CurrentTrackDisplay from './currentTrackDisplay'
+import DateAndTimeDisplay from './dateAndTimeDisplay'
 
 class VhrOverlay extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class VhrOverlay extends React.Component {
 
     componentDidMount() {
     }
+
     render() {
         let {audioFeatures, audioAnalysis} = window
         let {visible} = this.state
@@ -34,6 +36,7 @@ class VhrOverlay extends React.Component {
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} />
             <CurrentTrackDisplay currentTrack={currentTrack} />
+            <DateAndTimeDisplay />
       </div>
     }
   }
