@@ -52,7 +52,6 @@ class AudioFeaturesCard extends React.Component {
 
         let style = {
             display: visible ? null : 'none'
-            
         }
 
         return <div className="audio_features" style={style}>
