@@ -13,33 +13,33 @@ export const initializeShow = (bpm = 120) => {
     var ttop = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
     glitchLine.css("top", ttop + "px");
     glitchImg.css("margin-top", -ttop + "px");
-    glitchLine.appendTo(slider);
+    // glitchLine.appendTo(slider);
     var glitchMoveInt;
-    var glitchInt = setInterval(function() {
-      if (glitchMoveInt) {
-          clearInterval(glitchMoveInt)
-      };
-      // replace with redux
-      window.intervals.push(glitchInt);
-      //
-      var top = Math.round(Math.random() * (50));
-      glitchLine.css("top", top + "vh");
-      glitchImg.css("margin-top", -top + "px");
-      glitchLine.toggleClass("glitchlineColored");
-      glitchMoveInt = setInterval(function() {
-        var leftMove = Math.round(Math.random() * 2);
-        var top = glitchLine.css("top");
-        glitchImg.css({
-          marginLeft: leftMove + "px",
-          marginTop: -parseInt(top) + "px"
-        });
-      }, beatMs);
-    }, beatMs*8);
+    // var glitchInt = setInterval(function() {
+    //   if (glitchMoveInt) {
+    //       clearInterval(glitchMoveInt)
+    //   };
+    //   // replace with redux
+    //   window.intervals.push(glitchInt);
+    //   //
+    //   var top = Math.round(Math.random() * (50));
+    //   glitchLine.css("top", top + "vh");
+    //   glitchImg.css("margin-top", -top + "px");
+    //   glitchLine.toggleClass("glitchlineColored");
+    //   glitchMoveInt = setInterval(function() {
+    //     var leftMove = Math.round(Math.random() * 2);
+    //     var top = glitchLine.css("top");
+    //     glitchImg.css({
+    //       marginLeft: leftMove + "px",
+    //       marginTop: -parseInt(top) + "px"
+    //     });
+    //   }, beatMs);
+    // }, beatMs*8);
     /* Glitch for slider - end code */
     
     /* Slide change */
-    let slideId = setInterval(nextSlide, beatMs*8);
-    window.intervals.push(slideId);
+    // let slideId = setInterval(nextSlide, beatMs*8);
+    // window.intervals.push(slideId);
 
     function nextSlide() {
       var curSlide = $(".slides li.current");
