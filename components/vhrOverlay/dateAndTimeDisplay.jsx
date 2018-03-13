@@ -32,7 +32,7 @@ class DateAndTimeDisplay extends React.Component {
             animation: `blur ${beatMs*2}ms infinite`
         }
 
-        let info = count % 2 === 0 ? date.toDateString() : date.toLocaleTimeString()
+        let info = count % 2 === 0 ? date.toDateString() : date.toLocaleTimeString() + " PST"
 
         return <div id="date_and_time_display" style={style}>{info}</div>
     }

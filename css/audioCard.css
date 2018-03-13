@@ -1,10 +1,12 @@
 .audio_features{
-  padding: 5em;
+  padding: 4em;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  z-index: 99;
+  z-index: 100;
   position: relative;
+  background:#000;
+  mix-blend-mode: difference;
 }
 .scanline{
   width:100%;

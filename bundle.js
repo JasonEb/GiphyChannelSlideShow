@@ -11531,7 +11531,7 @@ var _slider = __webpack_require__(31);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(46);
+var _sliderControls = __webpack_require__(47);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
@@ -29015,6 +29015,7 @@ var Slider = function (_React$Component) {
         res.data.forEach(function (giphy) {
           return oldUrls.push(giphy.images.original.url);
         });
+        oldUrls = (0, _shuffleArray2.default)(oldUrls);
         _this2.setState({ urls: oldUrls });
         slideUtil.initializeShow(window.tempo);
       });
@@ -29035,6 +29036,7 @@ var Slider = function (_React$Component) {
         res.results.forEach(function (giphy) {
           return oldUrls.push(giphy.images.original.url);
         });
+        oldUrls = (0, _shuffleArray2.default)(oldUrls);
         _this3.setState({ urls: oldUrls });
         slideUtil.initializeShow(window.tempo);
       });
@@ -29060,6 +29062,7 @@ var Slider = function (_React$Component) {
             oldUrls.push(url);
           }
         });
+        oldUrls = (0, _shuffleArray2.default)(oldUrls);
         _this4.setState({ urls: oldUrls });
         if (_this4.state.searchVisible) {
           _this4.setState({ searchVisible: false });
@@ -29145,13 +29148,20 @@ var Slider = function (_React$Component) {
 
       this.updateCurrentlyPlaying();
 
-      var rng = Math.ceil(Math.random() * 9);
+      var rng = Math.floor(Math.random() * 3);
+      rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 3);
+
       switch (rng) {
         default:
+          // this.searchGiphy("sailor moon", "250")
+          // this.searchGiphy("mario nintendo", "150")
           this.fetchMyChannelGifs();
+          // this.searchGiphy("ssbm", "200")
+          // this.searchGiphy("street fighter", "150")
           break;
         case 2:
-          this.searchGiphy("luigi stare", "150");
+          // this.searchGiphy("luigi stare", "150")
+          this.searchGiphy("smashbros", "150");
           break;
         case 3:
           this.searchGiphy("nintendo animation", "200");
@@ -29170,7 +29180,7 @@ var Slider = function (_React$Component) {
           this.fetchChannelGifs("6343");
           break;
         case 1:
-          this.searchGiphy("sailor moon", "250");
+          this.fetchMyChannelGifs();
           break;
       }
     }
@@ -29180,13 +29190,10 @@ var Slider = function (_React$Component) {
       var _state = this.state,
           urls = _state.urls,
           searchCard = _state.searchCard,
-          currentTrack = _state.currentTrack;
+          currentTrack = _state.currentTrack,
+          notShuffle = _state.notShuffle;
       var _window = window,
           tempo = _window.tempo;
-
-      urls = (0, _shuffleArray2.default)(urls);
-      urls = _shuffleArray2.default.pick(urls, { picks: 29 });
-
       var _props = this.props,
           artist = _props.artist,
           songTitle = _props.songTitle,
@@ -29208,8 +29215,8 @@ var Slider = function (_React$Component) {
           handleKeyPress: this.handleKeyPress
         }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
-        _react2.default.createElement(_audioFeaturesCard2.default, null),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, urls.length - 1), tempo: tempo })
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo }),
+        _react2.default.createElement(_audioFeaturesCard2.default, null)
       );
     }
   }]);
@@ -29257,7 +29264,7 @@ var GifsList = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (GifsList.__proto__ || Object.getPrototypeOf(GifsList)).call(this, props));
 
     _this.gifsCycle = _this.gifsCycle.bind(_this);
-    _this.state = { idx: 0, rhythmFactor: 8, intervalId: '' };
+    _this.state = { idx: 0, rhythmFactor: 12, intervalId: '' };
     _this.play = _this.play.bind(_this);
     return _this;
   }
@@ -29453,9 +29460,24 @@ var filteredGiphy = exports.filteredGiphy = function filteredGiphy(url) {
     var list = ['https://media.giphy.com/media/pAtqeLnnedEY0/giphy.gif', 'https://media.giphy.com/media/drDNlR1IfDCms/giphy.gif', 'https://media.giphy.com/media/7Td9Of2U4y2s/giphy.gif', 'https://media.giphy.com/media/5rSGQoyTjYlvW/giphy.gif', 'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif', 'https://media.giphy.com/media/JroPe9R0Wp19S/giphy.gif', 'https://media1.giphy.com/media/drDNlR1IfDCms/giphy.gif', 'https://media2.giphy.com/media/5TT7baDXvhEiY/giphy.gif', 'https://media2.giphy.com/media/AyPGV9CREcGMU/giphy.gif', 'https://media2.giphy.com/mesdia/pAtqeLnnedEY0/giphy.gif', 'https://media2.giphy.com/media/hxtdEflXBROBW/giphy.gif', 'https://media3.giphy.com/media/hxtdEflXBROBW/giphy.gif', 'https://media3.giphy.com/media/dduG6iRQp9MKk/giphy.gif', 'https://media2.giphy.com/media/S9e5BERjHx45O/giphy.gif:', 'https://media0.giphy.com/media/CG44ARqf8X20M/giphy.gif', 'https://media.giphy.com/media/GXiasDXfP0j8Q/giphy.gif', 'https://media.giphy.com/media/12NA6MjdxtoXL2/giphy.gif', 'https://media.giphy.com/media/buSRHoRDSD6mc/giphy.gif', 'https://media.giphy.com/media/qcTAxgEBkz41G/giphy.gif', 'https://media.giphy.com/media/plOy8VYn4ZMGs/giphy.gif', 'https://media.giphy.com/media/q4e1yUcoJW6c0/giphy.gif', 'https://media.giphy.com/media/DBg0ahNm847v2/giphy.gif', 'https://media.giphy.com/media/3o7aD8Ius3KlrU6W7S/giphy.gif', 'https://media0.giphy.com/media/5rSGQoyTjYlvW/giphy.gif', 'https://media2.giphy.com/media/eNMGwf0QEcxP2/giphy.gif', 'https://media3.giphy.com/media/U7rWTHglrGY7u/giphy.gif', 'https://media3.giphy.com/media/se9wkjIJGG0Ao/giphy.gif',
 
     //nintendo
-    'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif', 'https://media.giphy.com/media/S0dxdpIyDNOxi/giphy.gif',
+    'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif', 'https://media.giphy.com/media/S0dxdpIyDNOxi/giphy.gif', 'https://media.giphy.com/media/GG4n7LfpWdlhS/giphy.gif', 'https://media.giphy.com/media/F1EBQr1Vz5ZCM/giphy.gif', 'https://media.giphy.com/media/XyfJNYbiSzYWY/giphy.gif', 'https://media.giphy.com/media/Ecz1rmF6ioxzy/giphy.gif', 'https://media.giphy.com/media/D8NgeNXALLBWE/giphy.gif',
+    // mario nintendo 
+    'https://media.giphy.com/media/vRFFDHJRuBBPW/giphy.gif', 'https://media.giphy.com/media/s5InywO5jPS2Q/giphy.gif', 'https://media.giphy.com/media/1Pfd5qmaqBvjO/giphy.gif', 'https://media.giphy.com/media/ZMIiowTaw05H2/giphy.gif',
+
     //neons
-    'https://media.giphy.com/media/xUOxfaAKhzC0oiCOhG/giphy.gif', 'https://media.giphy.com/media/3ohs82QgSrufH5ZdkI/giphy.gif', 'https://media.giphy.com/media/3ohhwH5ID6da0StBsI/giphy.gif', 'https://media.giphy.com/media/xUOxf3f85d9JvMrgIg/giphy.gif', 'https://media.giphy.com/media/l1KdbJpTr5ou0kWB2/giphy.gif', 'https://media.giphy.com/media/l44QtQcQ0JUozPmve/giphy.gif', 'https://media.giphy.com/media/xThuWk6BrQheZMf1NS/giphy.gif'];
+    'https://media.giphy.com/media/xUOxfaAKhzC0oiCOhG/giphy.gif', 'https://media.giphy.com/media/3ohs82QgSrufH5ZdkI/giphy.gif', 'https://media.giphy.com/media/3ohhwH5ID6da0StBsI/giphy.gif', 'https://media.giphy.com/media/xUOxf3f85d9JvMrgIg/giphy.gif', 'https://media.giphy.com/media/l1KdbJpTr5ou0kWB2/giphy.gif', 'https://media.giphy.com/media/l44QtQcQ0JUozPmve/giphy.gif', 'https://media.giphy.com/media/xThuWk6BrQheZMf1NS/giphy.gif', 'https://media.giphy.com/media/JIHBwty4qGsUM/giphy.gif', 'https://media.giphy.com/media/26FPuTAUDw7GUmYIo/giphy.gif', 'https://media.giphy.com/media/xUOxfaybRlOU2GTsVq/giphy.gif',
+
+    //drumming
+    'https://media.giphy.com/media/GPwqerVOHdbRS/giphy.gif', 'https://media.giphy.com/media/jABQhAeOSx8pW/giphy.gif',
+
+    //street fighter
+    'https://media.giphy.com/media/Qkn68VhjJzIKk/giphy.gif',
+
+    //smashbros
+    'https://media.giphy.com/media/KFGs6Cd7QWIak/giphy.gif', 'https://media.giphy.com/media/GcePL61Xt4zEQ/giphy.gif',
+
+    //vhs
+    'https://media.giphy.com/media/AgTXXhw81sloI/giphy.gif', 'https://media.giphy.com/media/TI9ggBf9WQIlq/giphy.gif', 'https://media.giphy.com/media/OtbXtyvid45QA/giphy.gif', 'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif', 'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif'];
 
     //extract id
     var idx = url.indexOf("/media/");
@@ -29726,7 +29748,22 @@ var AudioFeaturesCard = function (_React$Component) {
                     _react2.default.createElement(
                         'li',
                         null,
-                        'POWERED by the wonderful Web APIs of Spotify, Giphy, and Twitch'
+                        _react2.default.createElement('br', null)
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'Mario a-go-go baby'
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        _react2.default.createElement('br', null)
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'Built with tech from Spotify, Giphy, StreamLabs, and Twitch'
                     )
                 ));
             }
@@ -30049,7 +30086,7 @@ var _currentTrackDisplay = __webpack_require__(45);
 
 var _currentTrackDisplay2 = _interopRequireDefault(_currentTrackDisplay);
 
-var _dateAndTimeDisplay = __webpack_require__(48);
+var _dateAndTimeDisplay = __webpack_require__(46);
 
 var _dateAndTimeDisplay2 = _interopRequireDefault(_dateAndTimeDisplay);
 
@@ -30227,15 +30264,13 @@ var CurrentTrackDisplay = function (_React$Component) {
             artists = _currentTrack$item.artists,
             album = _currentTrack$item.album;
 
-        artists = artists.map(function (artist) {
-            return artist.name;
-        }).join(", ");
 
         _this.rotateInfo = _this.rotateInfo.bind(_this);
         _this.toggle = _this.toggle.bind(_this);
+        _this.formatArtistsData = _this.formatArtistsData.bind(_this);
         _this.state = {
             count: 0,
-            info: ['Song: ' + name, 'Artists: ' + artists, 'Album: ' + album.name],
+            info: ['Song: ' + name, _this.formatArtistsData(artists), 'Album: ' + album.name],
             idx: 0,
             visible: false,
             loopId: 0
@@ -30244,6 +30279,18 @@ var CurrentTrackDisplay = function (_React$Component) {
     }
 
     _createClass(CurrentTrackDisplay, [{
+        key: 'formatArtistsData',
+        value: function formatArtistsData(artistsData) {
+            var artists = artistsData.map(function (artist) {
+                return artist.name;
+            }).join(", ");
+            var text = 'Artists';
+            if (artistsData.length === 1) {
+                text = 'Artist';
+            }
+            return text + ': ' + artists;
+        }
+    }, {
         key: 'rotateInfo',
         value: function rotateInfo() {
             var _state = this.state,
@@ -30329,98 +30376,6 @@ exports.default = CurrentTrackDisplay;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.stopShow = exports.initializeShow = undefined;
-
-var _jquery = __webpack_require__(2);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var initializeShow = exports.initializeShow = function initializeShow() {
-    var bpm = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 120;
-
-    stopShow();
-    var beatMs = 60000 / bpm;
-
-    var slider = (0, _jquery2.default)("#slider");
-    var curSlide = (0, _jquery2.default)("li.slides.current");
-    var glitchLine = (0, _jquery2.default)("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
-    var imgUrl = curSlide.find("img").attr("src");
-    var glitchImg = glitchLine.find("img");
-    glitchImg.attr("src", imgUrl);
-    var ttop = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
-    glitchLine.css("top", ttop + "px");
-    glitchImg.css("margin-top", -ttop + "px");
-    // glitchLine.appendTo(slider);
-    var glitchMoveInt;
-    // var glitchInt = setInterval(function() {
-    //   if (glitchMoveInt) {
-    //       clearInterval(glitchMoveInt)
-    //   };
-    //   // replace with redux
-    //   window.intervals.push(glitchInt);
-    //   //
-    //   var top = Math.round(Math.random() * (50));
-    //   glitchLine.css("top", top + "vh");
-    //   glitchImg.css("margin-top", -top + "px");
-    //   glitchLine.toggleClass("glitchlineColored");
-    //   glitchMoveInt = setInterval(function() {
-    //     var leftMove = Math.round(Math.random() * 2);
-    //     var top = glitchLine.css("top");
-    //     glitchImg.css({
-    //       marginLeft: leftMove + "px",
-    //       marginTop: -parseInt(top) + "px"
-    //     });
-    //   }, beatMs);
-    // }, beatMs*8);
-    /* Glitch for slider - end code */
-
-    /* Slide change */
-    // let slideId = setInterval(nextSlide, beatMs*8);
-    // window.intervals.push(slideId);
-
-    function nextSlide() {
-        var curSlide = (0, _jquery2.default)(".slides li.current");
-        //console.log(curSlide);
-        var nxtSlide = curSlide.next();
-        if (nxtSlide.length === 0) {
-            nxtSlide = (0, _jquery2.default)(".slides li:first");
-        }
-        curSlide.removeClass("current");
-        nxtSlide.addClass("current");
-        glitchImg.attr("src", nxtSlide.find("img").attr("src"));
-        // $("#slideClip").show()
-        // setTimeout(function() {
-        //   $("#slideClip").hide()
-        // }, beatMs); //beatMs represents the duration of slide noise clip
-    }
-};
-
-var stopShow = exports.stopShow = function stopShow() {
-    var _window = window,
-        intervals = _window.intervals;
-
-    intervals.forEach(function (int) {
-        clearInterval(int);
-    });
-
-    (0, _jquery2.default)("#glitchline").remove();
-
-    window.intervals = [];
-};
-
-/***/ }),
-/* 47 */,
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -30486,7 +30441,7 @@ var DateAndTimeDisplay = function (_React$Component) {
                 animation: "blur " + beatMs * 2 + "ms infinite"
             };
 
-            var info = count % 2 === 0 ? date.toDateString() : date.toLocaleTimeString();
+            var info = count % 2 === 0 ? date.toDateString() : date.toLocaleTimeString() + " PST";
 
             return _react2.default.createElement(
                 "div",
@@ -30500,6 +30455,97 @@ var DateAndTimeDisplay = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = DateAndTimeDisplay;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.stopShow = exports.initializeShow = undefined;
+
+var _jquery = __webpack_require__(2);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initializeShow = exports.initializeShow = function initializeShow() {
+    var bpm = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 120;
+
+    stopShow();
+    var beatMs = 60000 / bpm;
+
+    var slider = (0, _jquery2.default)("#slider");
+    var curSlide = (0, _jquery2.default)("li.slides.current");
+    var glitchLine = (0, _jquery2.default)("<div id='glitchline'><img></div>") /*.appendTo(slider)*/;
+    var imgUrl = curSlide.find("img").attr("src");
+    var glitchImg = glitchLine.find("img");
+    glitchImg.attr("src", imgUrl);
+    var ttop = Math.round(Math.random() * (curSlide.height() - glitchLine.height()));
+    glitchLine.css("top", ttop + "px");
+    glitchImg.css("margin-top", -ttop + "px");
+    glitchLine.appendTo(slider);
+    var glitchMoveInt;
+    var glitchInt = setInterval(function () {
+        if (glitchMoveInt) {
+            clearInterval(glitchMoveInt);
+        };
+        // replace with redux
+        window.intervals.push(glitchInt);
+        //
+        var top = Math.round(Math.random() * 50);
+        glitchLine.css("top", top + "vh");
+        glitchImg.css("margin-top", -top + "px");
+        glitchLine.toggleClass("glitchlineColored");
+        glitchMoveInt = setInterval(function () {
+            var leftMove = Math.round(Math.random() * 2);
+            var top = glitchLine.css("top");
+            glitchImg.css({
+                marginLeft: leftMove + "px",
+                marginTop: -parseInt(top) + "px"
+            });
+        }, beatMs / 8);
+    }, beatMs * 8);
+    /* Glitch for slider - end code */
+
+    /* Slide change */
+    var slideId = setInterval(nextSlide, beatMs * 8);
+    window.intervals.push(slideId);
+
+    function nextSlide() {
+        var curSlide = (0, _jquery2.default)(".slides li.current");
+        //   //console.log(curSlide);
+        //   var nxtSlide = curSlide.next();
+        //   if (nxtSlide.length === 0) {
+        //     nxtSlide = $(".slides li:first");
+        //   }
+        //   curSlide.removeClass("current");
+        //   nxtSlide.addClass("current");
+        glitchImg.attr("src", curSlide.find("img").attr("src"));
+        // $("#slideClip").show()
+        // setTimeout(function() {
+        //   $("#slideClip").hide()
+        // }, beatMs); //beatMs represents the duration of slide noise clip
+    }
+};
+
+var stopShow = exports.stopShow = function stopShow() {
+    var _window = window,
+        intervals = _window.intervals;
+
+    intervals.forEach(function (int) {
+        clearInterval(int);
+    });
+
+    (0, _jquery2.default)("#glitchline").remove();
+
+    window.intervals = [];
+};
 
 /***/ })
 /******/ ]);

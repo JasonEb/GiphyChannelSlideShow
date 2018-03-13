@@ -13,7 +13,7 @@ import * as spotifyUtil from '../util/spotifyUtil'
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack }
+      this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack}
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
       this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
@@ -26,6 +26,7 @@ class Slider extends React.Component {
       gifUtil.fetchGiphyChannel(id).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        oldUrls = Shuffle(oldUrls)
         this.setState({urls: oldUrls})
         slideUtil.initializeShow(window.tempo)
       })
@@ -39,6 +40,7 @@ class Slider extends React.Component {
         }
         let oldUrls = this.state.urls
         res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
+        oldUrls = Shuffle(oldUrls)
         this.setState({urls: oldUrls})
         slideUtil.initializeShow(window.tempo)
       })
@@ -57,6 +59,7 @@ class Slider extends React.Component {
             oldUrls.push(url)
           }
         })
+        oldUrls = Shuffle(oldUrls)
         this.setState({urls: oldUrls})
         if (this.state.searchVisible) { this.setState({searchVisible: false})}
         slideUtil.initializeShow(window.tempo)
@@ -131,13 +134,20 @@ class Slider extends React.Component {
 
       this.updateCurrentlyPlaying()
 
-      let rng = Math.ceil(Math.random()*9)
+      let rng = Math.floor(Math.random()*3)
+      rng = rng <= 1 ? 0 : Math.ceil(Math.random()*3)
+
       switch (rng) {
         default:
+          // this.searchGiphy("sailor moon", "250")
+          // this.searchGiphy("mario nintendo", "150")
           this.fetchMyChannelGifs()
+          // this.searchGiphy("ssbm", "200")
+          // this.searchGiphy("street fighter", "150")
           break;
         case 2:
-          this.searchGiphy("luigi stare", "150")
+          // this.searchGiphy("luigi stare", "150")
+          this.searchGiphy("smashbros", "150")
           break;
         case 3:
           this.searchGiphy("nintendo animation", "200")
@@ -156,16 +166,14 @@ class Slider extends React.Component {
           this.fetchChannelGifs("6343")
           break;
         case 1:
-          this.searchGiphy("sailor moon", "250")
+          this.fetchMyChannelGifs()
           break; 
       }
     }
 
     render() {
-      let { urls, searchCard, currentTrack } = this.state
+      let { urls, searchCard, currentTrack, notShuffle } = this.state
       let {tempo} = window
-      urls = Shuffle(urls)
-      urls = Shuffle.pick(urls, {picks: 29})
 
       let {artist, songTitle, bpm} = this.props
 
@@ -183,9 +191,9 @@ class Slider extends React.Component {
           handleKeyPress={this.handleKeyPress}              
         />
         <SlideClip url={urls[0]} />
+        <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} />
         <AudioFeaturesCard />
 
-        <GifsList gifUrls={urls.slice(1, urls.length - 1)} tempo={tempo} />
       </div>
     }
   }

@@ -5,22 +5,29 @@ class CurrentTrackDisplay extends React.Component {
         super(props)
         let {currentTrack} = this.props
         let {name, artists, album} = currentTrack.item
-        artists = artists.map( (artist) => { return artist.name}).join(", ")
 
         this.rotateInfo = this.rotateInfo.bind(this)
         this.toggle = this.toggle.bind(this)
+        this.formatArtistsData = this.formatArtistsData.bind(this)
         this.state = {
             count: 0, 
             info: [
                 `Song: ${name}`,
-                `Artists: ${artists}`,
+                this.formatArtistsData(artists),
                 `Album: ${album.name}`], 
             idx: 0,
             visible: false,
             loopId: 0
         }
     }
-
+    formatArtistsData(artistsData) {
+        let artists = artistsData.map( (artist) => { return artist.name}).join(", ")
+        let text = 'Artists'
+        if (artistsData.length === 1) {
+            text = `Artist`
+        }
+        return `${text}: ${artists}`
+    }
     rotateInfo() {
         let {count, info} = this.state
         let idx = count % info.length

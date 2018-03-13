@@ -80,6 +80,18 @@ export const filteredGiphy = (url) => {
         //nintendo
         'https://media.giphy.com/media/N9rNFHB72eIw/giphy.gif',
         'https://media.giphy.com/media/S0dxdpIyDNOxi/giphy.gif',
+        'https://media.giphy.com/media/GG4n7LfpWdlhS/giphy.gif',
+        'https://media.giphy.com/media/F1EBQr1Vz5ZCM/giphy.gif',
+        'https://media.giphy.com/media/XyfJNYbiSzYWY/giphy.gif',
+        'https://media.giphy.com/media/Ecz1rmF6ioxzy/giphy.gif',
+        'https://media.giphy.com/media/D8NgeNXALLBWE/giphy.gif',
+        // mario nintendo 
+        'https://media.giphy.com/media/vRFFDHJRuBBPW/giphy.gif',
+        'https://media.giphy.com/media/s5InywO5jPS2Q/giphy.gif',
+        'https://media.giphy.com/media/1Pfd5qmaqBvjO/giphy.gif',
+        'https://media.giphy.com/media/ZMIiowTaw05H2/giphy.gif',
+
+
         //neons
         'https://media.giphy.com/media/xUOxfaAKhzC0oiCOhG/giphy.gif',
         'https://media.giphy.com/media/3ohs82QgSrufH5ZdkI/giphy.gif',
@@ -87,7 +99,28 @@ export const filteredGiphy = (url) => {
         'https://media.giphy.com/media/xUOxf3f85d9JvMrgIg/giphy.gif',
         'https://media.giphy.com/media/l1KdbJpTr5ou0kWB2/giphy.gif',
         'https://media.giphy.com/media/l44QtQcQ0JUozPmve/giphy.gif',
-        'https://media.giphy.com/media/xThuWk6BrQheZMf1NS/giphy.gif'
+        'https://media.giphy.com/media/xThuWk6BrQheZMf1NS/giphy.gif',
+        'https://media.giphy.com/media/JIHBwty4qGsUM/giphy.gif',
+        'https://media.giphy.com/media/26FPuTAUDw7GUmYIo/giphy.gif',
+        'https://media.giphy.com/media/xUOxfaybRlOU2GTsVq/giphy.gif',
+
+        //drumming
+        'https://media.giphy.com/media/GPwqerVOHdbRS/giphy.gif',
+        'https://media.giphy.com/media/jABQhAeOSx8pW/giphy.gif',
+
+        //street fighter
+        'https://media.giphy.com/media/Qkn68VhjJzIKk/giphy.gif',
+
+        //smashbros
+        'https://media.giphy.com/media/KFGs6Cd7QWIak/giphy.gif',
+        'https://media.giphy.com/media/GcePL61Xt4zEQ/giphy.gif',
+
+        //vhs
+        'https://media.giphy.com/media/AgTXXhw81sloI/giphy.gif',
+        'https://media.giphy.com/media/TI9ggBf9WQIlq/giphy.gif',
+        'https://media.giphy.com/media/OtbXtyvid45QA/giphy.gif',
+        'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif',
+        'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif'
     ]
 
     //extract id
