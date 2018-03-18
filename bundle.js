@@ -29151,11 +29151,11 @@ var Slider = function (_React$Component) {
       var rng = Math.floor(Math.random() * 3);
       rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 3);
 
-      switch (rng) {
+      switch (0) {
         default:
-          // this.searchGiphy("sailor moon", "250")
+          this.searchGiphy("flamingo", "110");
           // this.searchGiphy("mario nintendo", "150")
-          this.fetchMyChannelGifs();
+          // this.fetchMyChannelGifs()
           // this.searchGiphy("ssbm", "200")
           // this.searchGiphy("street fighter", "150")
           break;
@@ -29264,7 +29264,7 @@ var GifsList = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (GifsList.__proto__ || Object.getPrototypeOf(GifsList)).call(this, props));
 
     _this.gifsCycle = _this.gifsCycle.bind(_this);
-    _this.state = { idx: 0, rhythmFactor: 12, intervalId: '' };
+    _this.state = { idx: 0, rhythmFactor: 8, intervalId: '' };
     _this.play = _this.play.bind(_this);
     return _this;
   }
@@ -29753,7 +29753,7 @@ var AudioFeaturesCard = function (_React$Component) {
                     _react2.default.createElement(
                         'li',
                         null,
-                        'Mario a-go-go baby'
+                        'I love platforms and platform culture'
                     ),
                     _react2.default.createElement(
                         'li',

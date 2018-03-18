@@ -28,7 +28,7 @@ class AudioFeaturesCard extends React.Component {
             <li>start_of_fade_out {audioAnalysis.track.start_of_fade_out}</li>
             <li>duration_ms {audioFeatures.duration_ms/ 1000} </li>
             <li><br/></li>
-            <li>Mario a-go-go baby</li>
+            <li>I love platforms and platform culture</li>
             <li><br/></li>
             <li>Built with tech from Spotify, Giphy, StreamLabs, and Twitch</li>
         </ul>)

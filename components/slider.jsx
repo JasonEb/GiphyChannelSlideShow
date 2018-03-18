@@ -137,11 +137,11 @@ class Slider extends React.Component {
       let rng = Math.floor(Math.random()*3)
       rng = rng <= 1 ? 0 : Math.ceil(Math.random()*3)
 
-      switch (rng) {
+      switch (0) {
         default:
-          // this.searchGiphy("sailor moon", "250")
+          this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
-          this.fetchMyChannelGifs()
+          // this.fetchMyChannelGifs()
           // this.searchGiphy("ssbm", "200")
           // this.searchGiphy("street fighter", "150")
           break;

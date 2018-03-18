@@ -3,10 +3,10 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  z-index: 100;
+  z-index: 91;
   position: relative;
   background:#000;
-  mix-blend-mode: difference;
+  /* mix-blend-mode: difference; */
 }
 .scanline{
   width:100%;
@@ -24,6 +24,7 @@
   font-size:3em;
   font-family: "VT323", monospace;
   font-weight:bold;
+  z-index: 93;
 }
 .audio_features ul:nth-child(1){
   color:red;

@@ -5,7 +5,7 @@ class GifsList extends React.Component {
     constructor(props) {
       super(props)
       this.gifsCycle = this.gifsCycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 12, intervalId: '' }
+      this.state = { idx: 0, rhythmFactor: 8, intervalId: '' }
       this.play = this.play.bind(this)
     }
 
