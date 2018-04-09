@@ -46,8 +46,8 @@ class Slider extends React.Component {
       })
     }
 
-    searchGiphy(input="", limit="128") {
-      gifUtil.fetchSearchTerms(input, limit).then( (res) => {
+    searchGiphy(input="", limit="128", offset) {
+      gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
           let {url} = giphy.images.original
@@ -107,7 +107,8 @@ class Slider extends React.Component {
     updateCurrentlyPlaying () {
       //periodically check track status
       let checkInterval = 60000 / window.tempo * 12
-      let self = this;
+      let self = this
+
       setInterval( () => {
         spotifyUtil.getCurrentTrack(()=>{}).then( (res) => {
           let previousId = window.currentTrack.item.id
@@ -135,15 +136,15 @@ class Slider extends React.Component {
       this.updateCurrentlyPlaying()
 
       let rng = Math.floor(Math.random()*3)
+      let offset = Math.floor(Math.random()*100)
       rng = rng <= 1 ? 0 : Math.ceil(Math.random()*3)
-
+      
       switch (0) {
         default:
-          this.searchGiphy("flamingo", "110")
+          // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          // this.searchGiphy("ssbm", "200")
-          // this.searchGiphy("street fighter", "150")
+          this.searchGiphy("puppy dog", "150", offset)
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")

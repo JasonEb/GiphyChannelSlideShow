@@ -30,10 +30,10 @@ export const fetchGiphyChannel = (id="2579919") => {
     })
 }
 
-export const fetchSearchTerms = (searchStr, limit="32") => {
+export const fetchSearchTerms = (searchStr, limit="32", offset="0") => {
     // 6343 for matt horror work
     let query = searchStr.replace(" ", "%20")
-    let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=0&limit=${limit}`
+    let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=${offset}&limit=${limit}`
     return $.ajax({
         method: 'GET',
         url: url
@@ -120,7 +120,12 @@ export const filteredGiphy = (url) => {
         'https://media.giphy.com/media/TI9ggBf9WQIlq/giphy.gif',
         'https://media.giphy.com/media/OtbXtyvid45QA/giphy.gif',
         'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif',
-        'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif'
+        'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif',
+
+        //american flag
+        'https://media.giphy.com/media/GHZ9RZFGqsWbK/giphy.gif',
+        'https://media.giphy.com/media/3oriOiFbufnNR5zMVq/giphy.gif',
+        'https://media.giphy.com/media/W0pRWPuxooMzC/giphy.gif'
     ]
 
     //extract id

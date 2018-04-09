@@ -4,8 +4,7 @@
   "description": "A website that cycles through Gifs from a Giphy Channel",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack",
-    "webpackw": "webpack -w",
+    "webpack": "webpack -w",
     "ws": "ws"
   },
   "repository": {

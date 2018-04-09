@@ -25,7 +25,7 @@ export const initializeShow = (bpm = 120) => {
       var top = Math.round(Math.random() * (50));
       glitchLine.css("top", top + "vh");
       glitchImg.css("margin-top", -top + "px");
-      glitchLine.toggleClass("glitchlineColored");
+      glitchLine.css("height", top*2 + "px")
       glitchMoveInt = setInterval(function() {
         var leftMove = Math.round(Math.random() * 2);
         var top = glitchLine.css("top");

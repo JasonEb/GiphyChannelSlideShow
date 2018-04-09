@@ -5,17 +5,22 @@ class SlideClip extends React.Component {
     constructor(props) {
       super(props)
       this.state = { visible: true,
-        mixBlendMode: "hard-light",
+        mixBlendMode: "unset",
         rhythm: 1, 
         beatDiv: 4, 
         flashMax: 3, 
         measures:8 }
       this.toggle = this.toggle.bind(this)
+      this.toggleEffect = this.toggleEffect.bind(this)
       this.flash = this.flash.bind(this)
     }
 
     toggle() {
       this.setState({visible: !this.state.visible})
+    }
+
+    toggleEffect() {
+      this.setState({mixBlendMode: "hard-light"})
     }
 
     flash() {
@@ -37,6 +42,16 @@ class SlideClip extends React.Component {
       let beatMs = 60000/(window.tempo);
       let {measures} = this.state
       let id = setInterval( () => this.flash() , beatMs*measures); //beatMs represents the duration of slide noise clip
+
+      // change mix mode after halfway
+      let {sections} = window.audioAnalysis
+      let section = sections[ Math.ceil(sections.length / 2)]
+      let timestamp = section.start * 1000
+
+      let progressMs = window.currentTrack.progress_ms
+      window.networkDelay = Date.now() - window.beginT
+      timestamp = timestamp - progressMs - window.networkDelay
+      window.setTimeout(() => this.toggleEffect(), timestamp)
     }
 
     render() {

@@ -11231,12 +11231,13 @@ var SlideClip = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (SlideClip.__proto__ || Object.getPrototypeOf(SlideClip)).call(this, props));
 
     _this.state = { visible: true,
-      mixBlendMode: "hard-light",
+      mixBlendMode: "unset",
       rhythm: 1,
       beatDiv: 4,
       flashMax: 3,
       measures: 8 };
     _this.toggle = _this.toggle.bind(_this);
+    _this.toggleEffect = _this.toggleEffect.bind(_this);
     _this.flash = _this.flash.bind(_this);
     return _this;
   }
@@ -11245,6 +11246,11 @@ var SlideClip = function (_React$Component) {
     key: "toggle",
     value: function toggle() {
       this.setState({ visible: !this.state.visible });
+    }
+  }, {
+    key: "toggleEffect",
+    value: function toggleEffect() {
+      this.setState({ mixBlendMode: "hard-light" });
     }
   }, {
     key: "flash",
@@ -11283,6 +11289,19 @@ var SlideClip = function (_React$Component) {
       var id = setInterval(function () {
         return _this3.flash();
       }, beatMs * measures); //beatMs represents the duration of slide noise clip
+
+      // change mix mode after halfway
+      var sections = window.audioAnalysis.sections;
+
+      var section = sections[Math.ceil(sections.length / 2)];
+      var timestamp = section.start * 1000;
+
+      var progressMs = window.currentTrack.progress_ms;
+      window.networkDelay = Date.now() - window.beginT;
+      timestamp = timestamp - progressMs - window.networkDelay;
+      window.setTimeout(function () {
+        return _this3.toggleEffect();
+      }, timestamp);
     }
   }, {
     key: "render",
@@ -29044,12 +29063,14 @@ var Slider = function (_React$Component) {
   }, {
     key: 'searchGiphy',
     value: function searchGiphy() {
+      var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+
       var _this4 = this;
 
-      var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
       var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "128";
+      var offset = arguments[2];
 
-      gifUtil.fetchSearchTerms(input, limit).then(function (res) {
+      gifUtil.fetchSearchTerms(input, limit, offset).then(function (res) {
         var oldUrls = _this4.state.urls;
         res.data.forEach(function (giphy) {
           var url = giphy.images.original.url;
@@ -29116,6 +29137,7 @@ var Slider = function (_React$Component) {
       //periodically check track status
       var checkInterval = 60000 / window.tempo * 12;
       var self = this;
+
       setInterval(function () {
         spotifyUtil.getCurrentTrack(function () {}).then(function (res) {
           var previousId = window.currentTrack.item.id;
@@ -29149,15 +29171,15 @@ var Slider = function (_React$Component) {
       this.updateCurrentlyPlaying();
 
       var rng = Math.floor(Math.random() * 3);
+      var offset = Math.floor(Math.random() * 100);
       rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 3);
 
       switch (0) {
         default:
-          this.searchGiphy("flamingo", "110");
+          // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          // this.searchGiphy("ssbm", "200")
-          // this.searchGiphy("street fighter", "150")
+          this.searchGiphy("puppy dog", "150", offset);
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")
@@ -29437,10 +29459,11 @@ var fetchGiphyChannel = exports.fetchGiphyChannel = function fetchGiphyChannel()
 
 var fetchSearchTerms = exports.fetchSearchTerms = function fetchSearchTerms(searchStr) {
     var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "32";
+    var offset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "0";
 
     // 6343 for matt horror work
     var query = searchStr.replace(" ", "%20");
-    var url = 'https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=' + query + '&offset=0&limit=' + limit;
+    var url = 'https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=' + query + '&offset=' + offset + '&limit=' + limit;
     return $.ajax({
         method: 'GET',
         url: url
@@ -29477,7 +29500,10 @@ var filteredGiphy = exports.filteredGiphy = function filteredGiphy(url) {
     'https://media.giphy.com/media/KFGs6Cd7QWIak/giphy.gif', 'https://media.giphy.com/media/GcePL61Xt4zEQ/giphy.gif',
 
     //vhs
-    'https://media.giphy.com/media/AgTXXhw81sloI/giphy.gif', 'https://media.giphy.com/media/TI9ggBf9WQIlq/giphy.gif', 'https://media.giphy.com/media/OtbXtyvid45QA/giphy.gif', 'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif', 'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif'];
+    'https://media.giphy.com/media/AgTXXhw81sloI/giphy.gif', 'https://media.giphy.com/media/TI9ggBf9WQIlq/giphy.gif', 'https://media.giphy.com/media/OtbXtyvid45QA/giphy.gif', 'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif', 'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif',
+
+    //american flag
+    'https://media.giphy.com/media/GHZ9RZFGqsWbK/giphy.gif', 'https://media.giphy.com/media/3oriOiFbufnNR5zMVq/giphy.gif', 'https://media.giphy.com/media/W0pRWPuxooMzC/giphy.gif'];
 
     //extract id
     var idx = url.indexOf("/media/");
@@ -30501,7 +30527,7 @@ var initializeShow = exports.initializeShow = function initializeShow() {
         var top = Math.round(Math.random() * 50);
         glitchLine.css("top", top + "vh");
         glitchImg.css("margin-top", -top + "px");
-        glitchLine.toggleClass("glitchlineColored");
+        glitchLine.css("height", top * 2 + "px");
         glitchMoveInt = setInterval(function () {
             var leftMove = Math.round(Math.random() * 2);
             var top = glitchLine.css("top");
