@@ -10,6 +10,8 @@ import GiphySearchCard from './giphySearchCard'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
 import * as spotifyUtil from '../util/spotifyUtil'
 
+import TwitchChat from './twitchChat'
+
 class Slider extends React.Component {
     constructor(props){
       super(props)
@@ -46,7 +48,8 @@ class Slider extends React.Component {
       })
     }
 
-    searchGiphy(input="", limit="128", offset) {
+    searchGiphy(input="", limit="128") {
+      let offset = Math.floor(Math.random()*100)
       gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
@@ -136,7 +139,6 @@ class Slider extends React.Component {
       this.updateCurrentlyPlaying()
 
       let rng = Math.floor(Math.random()*3)
-      let offset = Math.floor(Math.random()*100)
       rng = rng <= 1 ? 0 : Math.ceil(Math.random()*3)
       
       switch (0) {
@@ -144,7 +146,7 @@ class Slider extends React.Component {
           // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          this.searchGiphy("puppy dog", "150", offset)
+          this.searchGiphy("glitch", "150")
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")
@@ -194,6 +196,7 @@ class Slider extends React.Component {
         <SlideClip url={urls[0]} />
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} />
         <AudioFeaturesCard />
+        <TwitchChat />
 
       </div>
     }

@@ -11550,7 +11550,7 @@ var _slider = __webpack_require__(31);
 
 var _slider2 = _interopRequireDefault(_slider);
 
-var _sliderControls = __webpack_require__(47);
+var _sliderControls = __webpack_require__(48);
 
 var slideUtil = _interopRequireWildcard(_sliderControls);
 
@@ -28996,6 +28996,10 @@ var _spotifyUtil = __webpack_require__(17);
 
 var spotifyUtil = _interopRequireWildcard(_spotifyUtil);
 
+var _twitchChat = __webpack_require__(47);
+
+var _twitchChat2 = _interopRequireDefault(_twitchChat);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -29063,13 +29067,12 @@ var Slider = function (_React$Component) {
   }, {
     key: 'searchGiphy',
     value: function searchGiphy() {
-      var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-
       var _this4 = this;
 
+      var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
       var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "128";
-      var offset = arguments[2];
 
+      var offset = Math.floor(Math.random() * 100);
       gifUtil.fetchSearchTerms(input, limit, offset).then(function (res) {
         var oldUrls = _this4.state.urls;
         res.data.forEach(function (giphy) {
@@ -29171,7 +29174,6 @@ var Slider = function (_React$Component) {
       this.updateCurrentlyPlaying();
 
       var rng = Math.floor(Math.random() * 3);
-      var offset = Math.floor(Math.random() * 100);
       rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 3);
 
       switch (0) {
@@ -29179,7 +29181,7 @@ var Slider = function (_React$Component) {
           // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          this.searchGiphy("puppy dog", "150", offset);
+          this.searchGiphy("glitch", "150");
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")
@@ -29238,7 +29240,8 @@ var Slider = function (_React$Component) {
         }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo }),
-        _react2.default.createElement(_audioFeaturesCard2.default, null)
+        _react2.default.createElement(_audioFeaturesCard2.default, null),
+        _react2.default.createElement(_twitchChat2.default, null)
       );
     }
   }]);
@@ -30484,6 +30487,163 @@ exports.default = DateAndTimeDisplay;
 
 /***/ }),
 /* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TwitchChat = function (_React$Component) {
+    _inherits(TwitchChat, _React$Component);
+
+    function TwitchChat(props) {
+        _classCallCheck(this, TwitchChat);
+
+        var _this = _possibleConstructorReturn(this, (TwitchChat.__proto__ || Object.getPrototypeOf(TwitchChat)).call(this, props));
+
+        _this.username = 'interpretivedashdance';
+        _this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu';
+        _this.channel = '#hugs86';
+        _this.server = 'irc-ws.chat.twitch.tv';
+        _this.port = 443;
+        _this.webSocket = new WebSocket('wss://' + _this.server + ':' + _this.port + '/', 'irc');
+
+        _this.onMessage = _this.onMessage.bind(_this);
+        _this.onError = _this.onError.bind(_this);
+        _this.onClose = _this.onClose.bind(_this);
+        _this.onOpen = _this.onOpen.bind(_this);
+
+        _this.parseMessage = _this.parseMessage.bind(_this);
+        _this.closeChat = _this.closeChat.bind(_this);
+        _this.openChat = _this.openChat.bind(_this);
+        return _this;
+    }
+
+    _createClass(TwitchChat, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.openChat();
+        }
+    }, {
+        key: 'openChat',
+        value: function openChat() {
+            this.webSocket.onmessage = this.onMessage.bind(this);
+            this.webSocket.onerror = this.onError.bind(this);
+            this.webSocket.onclose = this.onClose;
+            this.webSocket.onopen = this.onOpen.bind(this);
+        }
+    }, {
+        key: 'onMessage',
+        value: function onMessage(message) {
+            // console.log("Message: ", message.data)
+            if (message !== null) {
+                var parsed = this.parseMessage(message.data);
+                if (parsed !== null) {
+                    if (parsed.command === "PRIVMSG") {} else if (parsed.command === "PING") {
+                        this.webSocket.send("PONG :" + parsed.message);
+                    }
+                    console.log(parsed.message);
+                }
+            }
+        }
+    }, {
+        key: 'parseMessage',
+        value: function parseMessage(rawMessage) {
+            var parsedMessage = {
+                message: null,
+                tags: null,
+                command: null,
+                original: rawMessage,
+                channel: null,
+                username: null
+            };
+
+            if (rawMessage[0] === '@') {
+                var tagIndex = rawMessage.indexOf(' '),
+                    userIndex = rawMessage.indexOf(' ', tagIndex + 1),
+                    commandIndex = rawMessage.indexOf(' ', userIndex + 1),
+                    channelIndex = rawMessage.indexOf(' ', commandIndex + 1),
+                    messageIndex = rawMessage.indexOf(':', channelIndex + 1);
+
+                parsedMessage.tags = rawMessage.slice(0, tagIndex);
+                parsedMessage.username = rawMessage.slice(tagIndex + 2, rawMessage.indexOf('!'));
+                parsedMessage.command = rawMessage.slice(userIndex + 1, commandIndex);
+                parsedMessage.channel = rawMessage.slice(commandIndex + 1, channelIndex);
+                parsedMessage.message = rawMessage.slice(messageIndex + 1);
+            } else if (rawMessage.startsWith("PING")) {
+                parsedMessage.command = "PING";
+                parsedMessage.message = rawMessage.split(":")[1];
+            }
+
+            return parsedMessage;
+        }
+    }, {
+        key: 'onClose',
+        value: function onClose() {
+            console.log('Disconnected from the chat server.');
+        }
+    }, {
+        key: 'closeChat',
+        value: function closeChat() {
+            if (this.webSocket) {
+                this.webSocket.close();
+            }
+        }
+    }, {
+        key: 'onOpen',
+        value: function onOpen() {
+            var socket = this.webSocket;
+
+            if (socket !== null && socket.readyState === 1) {
+                console.log('Connecting and authenticating...');
+
+                socket.send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership');
+                socket.send('PASS ' + this.password);
+                socket.send('NICK ' + this.username);
+                socket.send('JOIN ' + this.channel);
+                socket.send('PRIVMSG ' + this.channel + ':Testing!');
+            }
+        }
+    }, {
+        key: 'onError',
+        value: function onError(msg) {
+            console.log('Twitch Chat Error: ', msg);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'h1',
+                null,
+                'Twitch Chat'
+            );
+        }
+    }]);
+
+    return TwitchChat;
+}(_react2.default.Component);
+
+exports.default = TwitchChat;
+
+/***/ }),
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
