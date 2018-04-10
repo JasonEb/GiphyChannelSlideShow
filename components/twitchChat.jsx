@@ -3,9 +3,12 @@ import React from 'react'
 class TwitchChat extends React.Component {
     constructor(props){
         super(props)
+        this.state = {
+            messages: []
+        }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
-        this.channel = '#hugs86';
+        this.channel = '#legend0flucky';
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
@@ -37,10 +40,20 @@ class TwitchChat extends React.Component {
             var parsed = this.parseMessage(message.data);
             if(parsed !== null){
                 if(parsed.command === "PRIVMSG") {
+                    // console.log("PRIVMSG: ", parsed)
                 } else if(parsed.command === "PING") {
                     this.webSocket.send("PONG :" + parsed.message);
                 }
-                console.log(parsed.message)
+
+                if(parsed.username !== null) {
+                    let {messages} = this.state
+                    // cap messages
+                    if (messages.length > 100) {
+                        messages = messages.slice(0, 10)
+                    }
+                    messages.push(parsed.username + ":" + parsed.message)
+                    this.setState({messages: messages})
+                }
             }
         }
     }
@@ -104,8 +117,28 @@ class TwitchChat extends React.Component {
     }
 
     render() {
+        let chat = this.state.messages.map((msg, idx)=>{
+            return <li key={idx}>{msg}</li>
+        })
+
         return(
-            <h1>Twitch Chat</h1>
+            <div id="twitch_chat">
+                <ul>
+                    {chat.slice(Math.max(chat.length - 10, 1))}
+                </ul>
+                <ul>
+                    {chat.slice(Math.max(chat.length - 10, 1))}
+                </ul>
+                <ul>
+                    {chat.slice(Math.max(chat.length - 10, 1))}
+                </ul>
+                <ul>
+                    {chat.slice(Math.max(chat.length - 10, 1))}
+                </ul>
+                <ul>
+                    {chat.slice(Math.max(chat.length - 10, 1))}
+                </ul>
+            </div>
         )
     }
 }

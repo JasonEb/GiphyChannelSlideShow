@@ -1,0 +1,57 @@
+div#twitch_chat {
+    color: grey;
+    background-color: black;
+    mix-blend-mode: darken;
+    font-family: "VT323", monospace;
+    font-weight: bold;
+    font-size: 3em;
+    z-index: 99;
+    position: fixed;
+    padding-top: 10vh;
+    width: 100vw;
+    height: 80vh;
+    animation: myJerk 6ms infinite;
+}
+
+@keyframes myJerk {
+    0%{
+        padding-left: 0px;
+    }
+    75%{
+        padding-left: 1px;
+    }
+    100%{
+        padding-left: 0px;
+    }
+}
+
+div#twitch_chat ul {
+    position: absolute;
+}
+li {
+    width: 70vw;
+}
+
+div#twitch_chat ul:nth-child(1){
+    color:red;
+    margin-left:-2px;
+    -webkit-filter: blur(1px);
+}
+div#twitch_chat ul:nth-child(2){
+    color:green;
+    margin-left:2px;
+    -webkit-filter: blur(1px);
+}
+div#twitch_chat ul:nth-child(3){
+    color:blue;
+    position:20px 0;
+    -webkit-filter: blur(1px);
+}
+div#twitch_chat ul:nth-child(4){
+    color: grey;
+    -webkit-filter: blur(1px);
+}
+div#twitch_chat ul:nth-child(5){
+    color:rgba(255,255,255,0.4);
+    -webkit-filter: blur(5px);
+}
