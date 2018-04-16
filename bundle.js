@@ -11326,7 +11326,8 @@ var SlideClip = function (_React$Component) {
         zIndex: '91',
         marginTop: '5vh',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        visibility: this.props.visibility ? "visible" : "hidden"
       };
 
       return _react2.default.createElement("div", { id: "slideClip", style: style });
@@ -29018,13 +29019,21 @@ var Slider = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).call(this, props));
 
-    _this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack };
+    _this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack,
+      twitchChatVisibility: false,
+      titleCardVisibility: true,
+      titleCardBlendMode: 'unset',
+      gifsListVisibility: true,
+      slideClipVisibility: true,
+      audioFeaturesVisibility: false
+    };
     _this.fetchChannelGifs = _this.fetchChannelGifs.bind(_this);
     _this.fetchMyChannelGifs = _this.fetchMyChannelGifs.bind(_this);
     _this.searchGiphy = _this.searchGiphy.bind(_this);
     _this.handleKeyPress = _this.handleKeyPress.bind(_this);
     _this.channelSelect = _this.channelSelect.bind(_this);
     _this.updateCurrentlyPlaying = _this.updateCurrentlyPlaying.bind(_this);
+    _this.sequenceCards = _this.sequenceCards.bind(_this);
     return _this;
   }
 
@@ -29215,6 +29224,60 @@ var Slider = function (_React$Component) {
           this.searchGiphy("dogs", "200");
           break;
       }
+
+      this.sequenceCards();
+    }
+  }, {
+    key: 'sequenceCards',
+    value: function sequenceCards() {
+      var _this5 = this;
+
+      var sections = window.audioAnalysis.sections;
+
+      var section = sections.find(function (section) {
+        return section.start > 12;
+      });
+      var duration = section.start * 1000;
+      var progressMs = window.currentTrack.progress_ms;
+      var beatMs = 60000 / section.tempo;
+      window.networkDelay = Date.now() - window.beginT;
+      //intro card
+
+      duration = duration - progressMs - window.networkDelay;
+      window.setTimeout(function () {
+        _this5.setState({
+          titleCardVisibility: false
+        });
+      }, duration);
+
+      //titleCard blend effect
+      window.setTimeout(function () {
+        _this5.setState({ titleCardBlendMode: "hard-light" });
+      }, duration / 2);
+
+      //half way
+      section = sections[Math.ceil(sections.length / 2)];
+      var timestamp = section.start * 1000;
+      beatMs = 60000 / section.tempo;
+      progressMs = window.currentTrack.progress_ms;
+      timestamp = timestamp - progressMs - window.networkDelay;
+      window.setTimeout(function () {
+        _this5.setState({
+          twitchChatVisibility: true
+        });
+      }, timestamp);
+      window.setTimeout(function () {
+        _this5.setState({
+          twitchChatVisibility: false
+        });
+      }, timestamp + beatMs * 32);
+
+      //outro 
+      section = sections[sections.length - 1];
+      var timeStamp = section.start * 1000 - progressMs - window.networkDelay;
+      window.setTimeout(function () {
+        _this5.setState({ titleCardVisibility: true });
+      }, timeStamp);
     }
   }, {
     key: 'render',
@@ -29224,19 +29287,24 @@ var Slider = function (_React$Component) {
           searchCard = _state.searchCard,
           currentTrack = _state.currentTrack,
           notShuffle = _state.notShuffle;
+      var _state2 = this.state,
+          titleCardVisibility = _state2.titleCardVisibility,
+          titleCardBlendMode = _state2.titleCardBlendMode,
+          twitchChatVisibility = _state2.twitchChatVisibility,
+          gifsListVisibility = _state2.gifsListVisibility,
+          slideClipVisibility = _state2.slideClipVisibility;
       var _window = window,
           tempo = _window.tempo;
       var _props = this.props,
           artist = _props.artist,
           songTitle = _props.songTitle,
           bpm = _props.bpm;
-
+      //         <AudioFeaturesCard />
 
       return _react2.default.createElement(
         'div',
         { id: 'slider', onKeyPress: this.handleKeyPress, tabIndex: '1' },
         _react2.default.createElement(_vhrOverlay2.default, { currentTrack: currentTrack }),
-        _react2.default.createElement(_audioFeaturesCard2.default, null),
         _react2.default.createElement(_giphySearchCard2.default, { visible: this.state.searchVisible,
           channelSelect: this.channelSelect,
           searchGiphy: this.searchGiphy,
@@ -29244,10 +29312,12 @@ var Slider = function (_React$Component) {
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle,
           channelSelect: this.channelSelect,
           searchGiphy: this.searchGiphy,
-          handleKeyPress: this.handleKeyPress }),
-        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo }),
-        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
-        _react2.default.createElement(_twitchChat2.default, { visibility: false })
+          handleKeyPress: this.handleKeyPress,
+          visibility: titleCardVisibility,
+          blendMode: titleCardBlendMode }),
+        _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo, visibility: gifsListVisibility }),
+        _react2.default.createElement(_slideClip2.default, { url: urls[0], visibility: slideClipVisibility }),
+        _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility })
       );
     }
   }]);
@@ -29342,10 +29412,12 @@ var GifsList = function (_React$Component) {
       var gifSlides = urls.slice(1, urls.length).map(function (url, idx) {
         return _react2.default.createElement(_gifSlide2.default, { url: url, key: idx, className: 'slides' });
       });
-
+      var style = {
+        visibility: this.props.visibility ? "visible" : "hidden"
+      };
       return _react2.default.createElement(
         'ul',
-        { className: 'slides' },
+        { className: 'slides', style: style },
         _react2.default.createElement(_gifSlide2.default, { url: urls[idx], className: 'slides current' })
       );
     }
@@ -29577,44 +29649,35 @@ var TitleCard = function (_React$Component) {
     function TitleCard(props) {
         _classCallCheck(this, TitleCard);
 
-        var _this = _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).call(this, props));
-
-        _this.state = { visible: true, mixBlendMode: "normal" };
-        _this.toggle = _this.toggle.bind(_this);
-        return _this;
+        return _possibleConstructorReturn(this, (TitleCard.__proto__ || Object.getPrototypeOf(TitleCard)).call(this, props));
     }
 
     _createClass(TitleCard, [{
         key: 'toggle',
         value: function toggle() {
-            this.setState({ visible: !this.state.visible });
+            // this.setState({visible: !this.state.visible})
         }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            // let {sections} = window.audioAnalysis
+            // let section = sections.find( (section) => {
+            //   return section.start > 12
+            // })
+            // let duration = section.start * 1000
+            // let progressMs = window.currentTrack.progress_ms
 
-            var sections = window.audioAnalysis.sections;
+            // window.networkDelay = Date.now() - window.beginT
+            // duration = duration - progressMs - window.networkDelay
 
-            var section = sections.find(function (section) {
-                return section.start > 12;
-            });
-            var duration = section.start * 1000;
-            var progressMs = window.currentTrack.progress_ms;
-
-            //intro card
-            window.networkDelay = Date.now() - window.beginT;
-            duration = duration - progressMs - window.networkDelay;
-            window.setTimeout(this.toggle, duration);
-
-            //titleCard blend effect
-            window.setTimeout(function () {
-                _this2.setState({ mixBlendMode: "hard-light" });
-            }, duration / 2);
-            //outro 
-            section = sections[sections.length - 1];
-            var timeStamp = section.start * 1000 - progressMs - window.networkDelay;
-            window.setTimeout(this.toggle, timeStamp);
+            // //titleCard blend effect
+            // window.setTimeout(()=>{
+            //     this.setState({mixBlendMode: "hard-light"})
+            // }, duration / 2)
+            // //outro 
+            // section = sections[sections.length - 1]
+            // let timeStamp = section.start * 1000 - progressMs - window.networkDelay
+            // window.setTimeout(this.toggle, timeStamp)
         }
     }, {
         key: 'render',
@@ -29635,13 +29698,9 @@ var TitleCard = function (_React$Component) {
                     artist
                 ));
             }
-            var _state = this.state,
-                visible = _state.visible,
-                mixBlendMode = _state.mixBlendMode;
-
             var style = {
-                display: visible ? null : "none",
-                mixBlendMode: mixBlendMode
+                visibility: this.props.visibility ? "visible" : "hidden",
+                mixBlendMode: this.props.blendMode
             };
 
             return _react2.default.createElement(
@@ -30526,8 +30585,7 @@ var TwitchChat = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TwitchChat.__proto__ || Object.getPrototypeOf(TwitchChat)).call(this, props));
 
         _this.state = {
-            messages: [],
-            visibility: false
+            messages: []
         };
         _this.username = 'interpretivedashdance';
         _this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu';
@@ -30660,7 +30718,7 @@ var TwitchChat = function (_React$Component) {
             var side = void 0;
             var chatMsg = void 0;
             var lastMsg = { props: { username: '' } };
-            var style = { visibility: this.state.visibility ? "visible" : "hidden" };
+            var style = { visibility: this.props.visibility ? "visible" : "hidden" };
             var chat = this.state.messages.map(function (msg, idx) {
                 // logic here is that chat messages should alternate left and right
                 // UNLESS there's repeated messages by the same user, then it should be the same

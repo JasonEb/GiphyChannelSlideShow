@@ -72,7 +72,8 @@ class SlideClip extends React.Component {
         zIndex: '91',
         marginTop: '5vh',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        visibility: this.props.visibility ? "visible" : "hidden"
       }
 
       return <div id="slideClip" style={style}></div>

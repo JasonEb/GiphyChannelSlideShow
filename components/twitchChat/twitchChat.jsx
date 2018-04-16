@@ -4,8 +4,7 @@ class TwitchChat extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            messages: [],
-            visibility: false
+            messages: []
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
@@ -125,7 +124,7 @@ class TwitchChat extends React.Component {
         let side;
         let chatMsg; 
         let lastMsg = {props: {username: ''}};
-        let style = { visibility: this.state.visibility ? "visible" : "hidden" }
+        let style = { visibility: this.props.visibility ? "visible" : "hidden" }
         let chat = this.state.messages.map((msg, idx)=>{
             // logic here is that chat messages should alternate left and right
             // UNLESS there's repeated messages by the same user, then it should be the same

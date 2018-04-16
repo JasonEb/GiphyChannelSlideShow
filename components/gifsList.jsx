@@ -42,8 +42,10 @@ class GifsList extends React.Component {
       let gifSlides = urls.slice(1,urls.length).map((url, idx) =>{
         return <GifSlide url={url} key={idx} className="slides"/>
       })
-
-      return <ul className="slides">
+      let style = {
+        visibility: this.props.visibility ? "visible" : "hidden"
+      }
+      return <ul className="slides" style={style}>
       <GifSlide url={urls[idx]} className="slides current"/>
     </ul>
     }

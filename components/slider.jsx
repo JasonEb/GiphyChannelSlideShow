@@ -15,13 +15,21 @@ import TwitchChat from './twitchChat/twitchChat'
 class Slider extends React.Component {
     constructor(props){
       super(props)
-      this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack}
+      this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack,
+        twitchChatVisibility: false,
+        titleCardVisibility: true,
+        titleCardBlendMode: 'unset',
+        gifsListVisibility: true,
+        slideClipVisibility: true,
+        audioFeaturesVisibility: false
+      }
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
       this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
       this.handleKeyPress = this.handleKeyPress.bind(this)
       this.channelSelect = this.channelSelect.bind(this)
       this.updateCurrentlyPlaying = this.updateCurrentlyPlaying.bind(this)
+      this.sequenceCards = this.sequenceCards.bind(this)
     }
 
     fetchChannelGifs(id) {
@@ -181,30 +189,86 @@ class Slider extends React.Component {
           break; 
       }
 
+      this.sequenceCards()
+    }
+
+    sequenceCards(){
+      let {sections} = window.audioAnalysis
+      let section = sections.find( (section) => {
+        return section.start > 12
+      })
+      let duration = section.start * 1000
+      let progressMs = window.currentTrack.progress_ms
+      let beatMs = 60000/(section.tempo)
+      window.networkDelay = Date.now() - window.beginT
+      //intro card
+
+      duration = duration - progressMs - window.networkDelay
+      window.setTimeout(() => {
+        this.setState({
+          titleCardVisibility: false
+        })
+      }, duration)
+
+      //titleCard blend effect
+      window.setTimeout(()=>{
+          this.setState({titleCardBlendMode: "hard-light"})
+      }, duration / 2)
+
+      //half way
+      section = sections[ Math.ceil(sections.length / 2)]
+      let timestamp = section.start * 1000
+      beatMs = 60000/(section.tempo)
+      progressMs = window.currentTrack.progress_ms
+      timestamp = timestamp - progressMs - window.networkDelay
+      window.setTimeout(() => {
+        this.setState({
+          twitchChatVisibility: true
+        })
+      }, timestamp)
+      window.setTimeout(() => {
+        this.setState({
+          twitchChatVisibility: false
+        })       
+      }, (timestamp + beatMs*32))
+
+
+      //outro 
+      section = sections[sections.length - 1]
+      let timeStamp = section.start * 1000 - progressMs - window.networkDelay
+      window.setTimeout(()=>{
+        this.setState({titleCardVisibility: true})
+      }, timeStamp)
     }
 
     render() {
       let { urls, searchCard, currentTrack, notShuffle } = this.state
+      let { titleCardVisibility,titleCardBlendMode, twitchChatVisibility,
+        gifsListVisibility, slideClipVisibility
+       } = this.state
       let {tempo} = window
 
       let {artist, songTitle, bpm} = this.props
-
+//         <AudioFeaturesCard />
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
         <VhrOverlay currentTrack={currentTrack} />
 
-        <AudioFeaturesCard />
         <GiphySearchCard visible={this.state.searchVisible} 
           channelSelect={this.channelSelect}
           searchGiphy={this.searchGiphy}
           handleKeyPress={this.handleKeyPress} />
+
         <TitleCard artist={artist} songTitle={songTitle}
           channelSelect={this.channelSelect}
           searchGiphy={this.searchGiphy}
-          handleKeyPress={this.handleKeyPress} />
-        <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} />
-        <SlideClip url={urls[0]} />
+          handleKeyPress={this.handleKeyPress}
+          visibility={titleCardVisibility}
+          blendMode={titleCardBlendMode} />
 
-        <TwitchChat visibility={false} />
+        <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
+        <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
+
+        <TwitchChat visibility={twitchChatVisibility} />
 
 
       </div>
