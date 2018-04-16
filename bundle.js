@@ -11324,7 +11324,7 @@ var SlideClip = function (_React$Component) {
         backgroundColor: 'black',
         backgroundPosition: 'center',
         zIndex: '91',
-        marginTop: '5%',
+        marginTop: '5vh',
         marginLeft: 'auto',
         marginRight: 'auto'
       };
@@ -29033,7 +29033,8 @@ var Slider = function (_React$Component) {
     value: function fetchChannelGifs(id) {
       var _this2 = this;
 
-      gifUtil.fetchGiphyChannel(id).then(function (res) {
+      var offset = Math.floor(Math.random() * 75);
+      gifUtil.fetchGiphyChannel(id, offset).then(function (res) {
         var oldUrls = _this2.state.urls;
         res.data.forEach(function (giphy) {
           return oldUrls.push(giphy.images.original.url);
@@ -29050,18 +29051,22 @@ var Slider = function (_React$Component) {
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "1";
 
+      var oldUrls = void 0;
+
       gifUtil.fetchMyGiphys(page).then(function (res) {
         if (res.next) {
-          var _page = res.next[res.next.length - 1];
-          _this3.fetchMyChannelGifs(_page);
+          page = res.next[res.next.length - 1];
+          return _this3.fetchMyChannelGifs(page);
         }
-        var oldUrls = _this3.state.urls;
+        debugger;
+        oldUrls = _this3.state.urls;
         res.results.forEach(function (giphy) {
           return oldUrls.push(giphy.images.original.url);
         });
         oldUrls = (0, _shuffleArray2.default)(oldUrls);
         _this3.setState({ urls: oldUrls });
-        slideUtil.initializeShow(window.tempo);
+        console.log("oldurls: ", oldUrls);
+        return slideUtil.initializeShow(window.tempo);
       });
     }
   }, {
@@ -29146,9 +29151,10 @@ var Slider = function (_React$Component) {
           var previousId = window.currentTrack.item.id;
           var newId = res.item.id;
 
-          console.log("interval", checkInterval);
           if (newId !== previousId) {
-            window.location.href = "http://127.0.0.1:8000";
+            // todo update this
+            var idx = window.location.href.indexOf("/#");
+            window.location = window.location.href.slice(0, idx);
           }
           self.setState({ currentTrack: res });
         });
@@ -29163,6 +29169,7 @@ var Slider = function (_React$Component) {
       // "6191" for cartoony 
       // check valence. If below a certain threshold, show "dark" show
       // 0.360 is feels happiness
+
       var _window$audioFeatures = window.audioFeatures,
           valence = _window$audioFeatures.valence,
           danceability = _window$audioFeatures.danceability,
@@ -29174,18 +29181,19 @@ var Slider = function (_React$Component) {
       this.updateCurrentlyPlaying();
 
       var rng = Math.floor(Math.random() * 3);
-      rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 3);
+      rng = rng <= 1 ? 0 : Math.ceil(Math.random() * 7);
 
-      switch (0) {
+      switch (rng) {
         default:
           // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          this.searchGiphy("glitch", "150");
+          // this.searchGiphy("glitch", "150")
+          this.fetchChannelGifs();
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")
-          this.searchGiphy("smashbros", "150");
+          this.searchGiphy("ssbm", "150");
           break;
         case 3:
           this.searchGiphy("nintendo animation", "200");
@@ -29197,14 +29205,14 @@ var Slider = function (_React$Component) {
           this.searchGiphy("pixel sprite background", "200");
           break;
         case 6:
-          this.searchGiphy("hanna barbera", "150");
+          this.searchGiphy("retro", "150");
           break;
         case 7:
           //darkness gifs
           this.fetchChannelGifs("6343");
           break;
         case 1:
-          this.fetchMyChannelGifs();
+          this.searchGiphy("dogs", "200");
           break;
       }
     }
@@ -29228,20 +29236,18 @@ var Slider = function (_React$Component) {
         'div',
         { id: 'slider', onKeyPress: this.handleKeyPress, tabIndex: '1' },
         _react2.default.createElement(_vhrOverlay2.default, { currentTrack: currentTrack }),
+        _react2.default.createElement(_audioFeaturesCard2.default, null),
         _react2.default.createElement(_giphySearchCard2.default, { visible: this.state.searchVisible,
           channelSelect: this.channelSelect,
           searchGiphy: this.searchGiphy,
-          handleKeyPress: this.handleKeyPress
-        }),
+          handleKeyPress: this.handleKeyPress }),
         _react2.default.createElement(_titleCard2.default, { artist: artist, songTitle: songTitle,
           channelSelect: this.channelSelect,
           searchGiphy: this.searchGiphy,
-          handleKeyPress: this.handleKeyPress
-        }),
-        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
+          handleKeyPress: this.handleKeyPress }),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo }),
-        _react2.default.createElement(_audioFeaturesCard2.default, null),
-        _react2.default.createElement(_twitchChat2.default, null)
+        _react2.default.createElement(_slideClip2.default, { url: urls[0] }),
+        _react2.default.createElement(_twitchChat2.default, { visibility: false })
       );
     }
   }]);
@@ -29450,9 +29456,10 @@ var fetchLocalGifUrls = exports.fetchLocalGifUrls = function fetchLocalGifUrls()
 
 var fetchGiphyChannel = exports.fetchGiphyChannel = function fetchGiphyChannel() {
     var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "2579919";
+    var offset = arguments[1];
 
     // 6343 for matt horror work
-    var url = 'https://api.giphy.com/v1/channels/' + id + '/gifs?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&offset=0&limit=100';
+    var url = 'https://api.giphy.com/v1/channels/' + id + '/gifs?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&offset=0&limit=150&offset=' + offset;
     // let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=cpHZy144063Z5Y1Y5yctNwoUmw8OjDIY&offset=0&limit=100`
     return $.ajax({
         method: 'GET',
@@ -30518,9 +30525,13 @@ var TwitchChat = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TwitchChat.__proto__ || Object.getPrototypeOf(TwitchChat)).call(this, props));
 
+        _this.state = {
+            messages: [],
+            visibility: false
+        };
         _this.username = 'interpretivedashdance';
         _this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu';
-        _this.channel = '#hugs86';
+        _this.channel = '#mang0';
         _this.server = 'irc-ws.chat.twitch.tv';
         _this.port = 443;
         _this.webSocket = new WebSocket('wss://' + _this.server + ':' + _this.port + '/', 'irc');
@@ -30542,6 +30553,11 @@ var TwitchChat = function (_React$Component) {
             this.openChat();
         }
     }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.closeChat();
+        }
+    }, {
         key: 'openChat',
         value: function openChat() {
             this.webSocket.onmessage = this.onMessage.bind(this);
@@ -30556,10 +30572,22 @@ var TwitchChat = function (_React$Component) {
             if (message !== null) {
                 var parsed = this.parseMessage(message.data);
                 if (parsed !== null) {
-                    if (parsed.command === "PRIVMSG") {} else if (parsed.command === "PING") {
+                    if (parsed.command === "PRIVMSG") {
+                        // console.log("PRIVMSG: ", parsed)
+                    } else if (parsed.command === "PING") {
                         this.webSocket.send("PONG :" + parsed.message);
                     }
-                    console.log(parsed.message);
+
+                    if (parsed.username !== null) {
+                        var messages = this.state.messages;
+                        // cap messages
+
+                        if (messages.length > 100) {
+                            messages = messages.slice(0, 10);
+                        }
+                        messages.push(parsed);
+                        this.setState({ messages: messages });
+                    }
                 }
             }
         }
@@ -30629,10 +30657,71 @@ var TwitchChat = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var side = void 0;
+            var chatMsg = void 0;
+            var lastMsg = { props: { username: '' } };
+            var style = { visibility: this.state.visibility ? "visible" : "hidden" };
+            var chat = this.state.messages.map(function (msg, idx) {
+                // logic here is that chat messages should alternate left and right
+                // UNLESS there's repeated messages by the same user, then it should be the same
+                if (lastMsg.props.username === msg.username) {
+                    side = lastMsg.props.className;
+                } else if (idx % 2 === 0) {
+                    side = 'left';
+                } else {
+                    side = 'right';
+                }
+
+                if (side === 'left') {
+                    chatMsg = _react2.default.createElement(
+                        'li',
+                        { key: idx, className: 'left', username: msg.username },
+                        msg.username,
+                        ' -> ',
+                        msg.message
+                    );
+                } else {
+                    chatMsg = _react2.default.createElement(
+                        'li',
+                        { key: idx, className: 'right', username: msg.username },
+                        msg.message,
+                        ' <- ',
+                        msg.username
+                    );
+                }
+
+                lastMsg = chatMsg;
+                return chatMsg;
+            });
+
             return _react2.default.createElement(
-                'h1',
-                null,
-                'Twitch Chat'
+                'div',
+                { id: 'twitch_chat', style: style },
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    chat.slice(Math.max(chat.length - 10, 1))
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    chat.slice(Math.max(chat.length - 10, 1))
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    chat.slice(Math.max(chat.length - 10, 1))
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    chat.slice(Math.max(chat.length - 10, 1))
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    chat.slice(Math.max(chat.length - 10, 1))
+                )
             );
         }
     }]);

@@ -10,7 +10,7 @@ import GiphySearchCard from './giphySearchCard'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
 import * as spotifyUtil from '../util/spotifyUtil'
 
-import TwitchChat from './twitchChat'
+import TwitchChat from './twitchChat/twitchChat'
 
 class Slider extends React.Component {
     constructor(props){
@@ -25,7 +25,8 @@ class Slider extends React.Component {
     }
 
     fetchChannelGifs(id) {
-      gifUtil.fetchGiphyChannel(id).then( (res) => {
+      let offset = Math.floor(Math.random()*75)
+      gifUtil.fetchGiphyChannel(id, offset).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         oldUrls = Shuffle(oldUrls)
@@ -35,16 +36,20 @@ class Slider extends React.Component {
     }
 
     fetchMyChannelGifs(page="1") {
+      let oldUrls;
+
       gifUtil.fetchMyGiphys(page).then( (res) => {
         if (res.next) {
-          let page = res.next[res.next.length - 1]
-          this.fetchMyChannelGifs(page)
+          page = res.next[res.next.length - 1]
+          return this.fetchMyChannelGifs(page)
         }
-        let oldUrls = this.state.urls
+        debugger
+        oldUrls = this.state.urls
         res.results.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
         oldUrls = Shuffle(oldUrls)
         this.setState({urls: oldUrls})
-        slideUtil.initializeShow(window.tempo)
+        console.log("oldurls: ", oldUrls)
+        return slideUtil.initializeShow(window.tempo)
       })
     }
 
@@ -117,9 +122,10 @@ class Slider extends React.Component {
           let previousId = window.currentTrack.item.id
           let newId = res.item.id
 
-          console.log("interval", checkInterval)
           if (newId !== previousId) {
-            window.location.href = "http://127.0.0.1:8000"
+            // todo update this
+            let idx = window.location.href.indexOf("/#")
+            window.location = window.location.href.slice(0,idx)
           }
           self.setState({currentTrack: res})
         })
@@ -133,24 +139,26 @@ class Slider extends React.Component {
       // "6191" for cartoony 
       // check valence. If below a certain threshold, show "dark" show
       // 0.360 is feels happiness
+
       let {valence, danceability, energy, tempo} = window.audioFeatures
       console.log("valence: ", valence, "danceability:", danceability, "energy: ", energy, "tempo: ", tempo)  
 
       this.updateCurrentlyPlaying()
 
       let rng = Math.floor(Math.random()*3)
-      rng = rng <= 1 ? 0 : Math.ceil(Math.random()*3)
+      rng = rng <= 1 ? 0 : Math.ceil(Math.random()*7)
       
-      switch (0) {
+      switch (rng) {
         default:
           // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
-          this.searchGiphy("glitch", "150")
+          // this.searchGiphy("glitch", "150")
+          this.fetchChannelGifs();
           break;
         case 2:
           // this.searchGiphy("luigi stare", "150")
-          this.searchGiphy("smashbros", "150")
+          this.searchGiphy("ssbm", "150")
           break;
         case 3:
           this.searchGiphy("nintendo animation", "200")
@@ -162,16 +170,17 @@ class Slider extends React.Component {
           this.searchGiphy("pixel sprite background", "200")
           break;
         case 6:
-          this.searchGiphy("hanna barbera", "150")
+        this.searchGiphy("retro", "150")
           break;
         case 7:
           //darkness gifs
           this.fetchChannelGifs("6343")
           break;
         case 1:
-          this.fetchMyChannelGifs()
+          this.searchGiphy("dogs", "200")
           break; 
       }
+
     }
 
     render() {
@@ -183,20 +192,20 @@ class Slider extends React.Component {
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
         <VhrOverlay currentTrack={currentTrack} />
 
+        <AudioFeaturesCard />
         <GiphySearchCard visible={this.state.searchVisible} 
           channelSelect={this.channelSelect}
           searchGiphy={this.searchGiphy}
-          handleKeyPress={this.handleKeyPress}       
-        />
+          handleKeyPress={this.handleKeyPress} />
         <TitleCard artist={artist} songTitle={songTitle}
           channelSelect={this.channelSelect}
           searchGiphy={this.searchGiphy}
-          handleKeyPress={this.handleKeyPress}              
-        />
-        <SlideClip url={urls[0]} />
+          handleKeyPress={this.handleKeyPress} />
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} />
-        <AudioFeaturesCard />
-        <TwitchChat />
+        <SlideClip url={urls[0]} />
+
+        <TwitchChat visibility={false} />
+
 
       </div>
     }

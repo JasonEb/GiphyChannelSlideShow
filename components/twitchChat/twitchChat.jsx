@@ -4,11 +4,12 @@ class TwitchChat extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            messages: []
+            messages: [],
+            visibility: false
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
-        this.channel = '#hugs86';
+        this.channel = '#mang0';
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
@@ -25,6 +26,10 @@ class TwitchChat extends React.Component {
 
     componentDidMount(){
         this.openChat()
+    }
+
+    componentWillUnmount(){
+        this.closeChat()
     }
 
     openChat(){
@@ -120,6 +125,7 @@ class TwitchChat extends React.Component {
         let side;
         let chatMsg; 
         let lastMsg = {props: {username: ''}};
+        let style = { visibility: this.state.visibility ? "visible" : "hidden" }
         let chat = this.state.messages.map((msg, idx)=>{
             // logic here is that chat messages should alternate left and right
             // UNLESS there's repeated messages by the same user, then it should be the same
@@ -142,7 +148,7 @@ class TwitchChat extends React.Component {
         })
 
         return(
-            <div id="twitch_chat">
+            <div id="twitch_chat" style={style}>
                 <ul>
                     {chat.slice(Math.max(chat.length - 10, 1))}
                 </ul>
