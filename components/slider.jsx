@@ -86,7 +86,7 @@ class Slider extends React.Component {
       this.setState({ urls: [] })
       switch (key) {
         case "1":
-          this.fetchMyChannelGifs()
+          this.fetchChannelGifs()
           break;
         case "2":
           this.fetchChannelGifs("6343")
@@ -154,7 +154,7 @@ class Slider extends React.Component {
       this.updateCurrentlyPlaying()
 
       let rng = Math.floor(Math.random()*3)
-      rng = rng <= 1 ? 0 : Math.ceil(Math.random()*7)
+      rng = rng <= 1 ? 0 : Math.ceil(Math.random()*6)
       
       switch (rng) {
         default:
@@ -184,7 +184,7 @@ class Slider extends React.Component {
           //darkness gifs
           this.fetchChannelGifs("6343")
           break;
-        case 1:
+        case 8:
           this.searchGiphy("dogs", "200")
           break; 
       }
@@ -216,7 +216,7 @@ class Slider extends React.Component {
       }, duration / 2)
 
       //half way
-      section = sections[ Math.ceil(sections.length / 2)]
+      section = sections[ Math.round(sections.length / 2)]
       let timestamp = section.start * 1000
       beatMs = 60000/(section.tempo)
       progressMs = window.currentTrack.progress_ms
@@ -232,24 +232,39 @@ class Slider extends React.Component {
         })       
       }, (timestamp + beatMs*32))
 
+      //0.75 the way
+      section = sections[ Math.floor(sections.length * 0.75)]
+      timestamp = section.start * 1000
+      timestamp = timestamp - progressMs - window.networkDelay
+      beatMs = 60000/(section.tempo)
+      window.setTimeout(() => {
+        this.setState({
+          audioFeaturesVisibility: true
+        })
+      }, timestamp)
+      window.setTimeout(() => {
+        this.setState({
+          audioFeaturesVisibility: false
+        })       
+      }, (timestamp + beatMs*16))
 
       //outro 
       section = sections[sections.length - 1]
-      let timeStamp = section.start * 1000 - progressMs - window.networkDelay
+      timestamp = section.start * 1000 - progressMs - window.networkDelay
       window.setTimeout(()=>{
         this.setState({titleCardVisibility: true})
-      }, timeStamp)
+      }, timestamp)
     }
 
     render() {
       let { urls, searchCard, currentTrack, notShuffle } = this.state
       let { titleCardVisibility,titleCardBlendMode, twitchChatVisibility,
-        gifsListVisibility, slideClipVisibility
+        gifsListVisibility, slideClipVisibility, audioFeaturesVisibility
        } = this.state
       let {tempo} = window
 
       let {artist, songTitle, bpm} = this.props
-//         <AudioFeaturesCard />
+        
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
         <VhrOverlay currentTrack={currentTrack} />
 
@@ -267,9 +282,9 @@ class Slider extends React.Component {
 
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
         <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
-
+        <img className="dj" src="https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif" />
         <TwitchChat visibility={twitchChatVisibility} />
-
+        <AudioFeaturesCard visibility={audioFeaturesVisibility} />
 
       </div>
     }

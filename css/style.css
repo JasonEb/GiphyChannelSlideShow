@@ -35,3 +35,24 @@ body {
   *:focus{
     outline:none;
   }
+
+ img.dj {
+  filter: blur(1px) opacity(0.99) brightness(0.01) drop-shadow(0px 0px 1px rgba(255, 255, 255, 0));
+  position: absolute;
+  left: 34vw;
+  top: 58vh;
+  transform: scale(4);
+  z-index: 101;
+  mix-blend-mode: hard-light;
+  animation: djDance 6s infinite;
+  animation-timing-function: step-start;
+}
+
+@keyframes djDance {
+  50% {
+    transform: scale(4) scaleX(-1);
+  }
+  100% {
+    transform: scale(4) scaleX(1);
+  }
+}

@@ -26,7 +26,7 @@
     width: 100%;
     height: 70vh;
     position:absolute;
-    margin-top: 5%;
+    margin-top: 7vh;
   }
   #slider li.current img {
     display: inline;
@@ -37,9 +37,11 @@
     width: 100%;
     height: 50px;
     position: absolute;
-    z-index: 91;
+    z-index: 89;
     overflow: hidden;
-    margin-top: 5%;
+    margin-top: 7vh;
+    visibility: visible;
+    mix-blend-mode: hard-light;
   }
   #glitchline img {
     width: 100%;
