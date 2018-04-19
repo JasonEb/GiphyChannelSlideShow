@@ -70,7 +70,7 @@ class SlideClip extends React.Component {
         backgroundColor: 'black',
         backgroundPosition: 'center',
         zIndex: '91',
-        marginTop: '5vh',
+        marginTop: '7vh',
         marginLeft: 'auto',
         marginRight: 'auto',
         visibility: this.props.visibility ? "visible" : "hidden"
