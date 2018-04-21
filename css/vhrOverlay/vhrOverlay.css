@@ -18,10 +18,12 @@ div#vhr_grid {
     margin-top: 1%;
     margin-left: 10%;
     margin-right: 10%;
-    border-image-source: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/bjjnyco/camera-viewfinder-with-white-frame-and-red-record-button_hvipsjmog_thumbnail-full01.png);
+    border-image-source: url('./ViewFinderFrame.png');
     border-image-slice: 50%;
     border-image-width: 6em;
     box-shadow: 10em;
+    display:flex;
+    justify-content: center;
 }
 
 @keyframes pulse {

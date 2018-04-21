@@ -29316,7 +29316,7 @@ var Slider = function (_React$Component) {
           artist = _props.artist,
           songTitle = _props.songTitle,
           bpm = _props.bpm;
-
+      // <img className="dj" src="https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif" />
 
       return _react2.default.createElement(
         'div',
@@ -29334,7 +29334,6 @@ var Slider = function (_React$Component) {
           blendMode: titleCardBlendMode }),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo, visibility: gifsListVisibility }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0], visibility: slideClipVisibility }),
-        _react2.default.createElement('img', { className: 'dj', src: 'https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif' }),
         _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility, currentTrack: currentTrack }),
         _react2.default.createElement(_audioFeaturesCard2.default, { visibility: audioFeaturesVisibility })
       );
@@ -30646,7 +30645,7 @@ var TwitchChat = function (_React$Component) {
                             return artist.name;
                         }).join(", ");
 
-                        this.webSocket.send('PRIVMSG ' + this.channel + ' :The song is "' + name + '", by ' + artist);
+                        this.webSocket.send('PRIVMSG ' + this.channel + ' :The song is "' + name + '", by ' + artist + ' ');
                     }
                 }
             }

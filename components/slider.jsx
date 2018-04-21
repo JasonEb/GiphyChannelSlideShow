@@ -264,7 +264,7 @@ class Slider extends React.Component {
       let {tempo} = window
 
       let {artist, songTitle, bpm} = this.props
-        
+      // <img className="dj" src="https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif" />
       return <div id="slider" onKeyPress={this.handleKeyPress}  tabIndex="1" >
         <VhrOverlay currentTrack={currentTrack} />
 
@@ -282,7 +282,6 @@ class Slider extends React.Component {
 
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
         <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
-        <img className="dj" src="https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif" />
 
         <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} />
 

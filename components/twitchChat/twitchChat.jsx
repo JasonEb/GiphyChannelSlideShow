@@ -66,7 +66,7 @@ class TwitchChat extends React.Component {
                     let {name, artists} = currentTrack.item
                     let artist = artists.map( (artist) => { return artist.name}).join(", ")
 
-                    this.webSocket.send(`PRIVMSG ${this.channel} :The song is "${name}", by ${artist}`);
+                    this.webSocket.send(`PRIVMSG ${this.channel} :The song is "${name}", by ${artist} `);
                 }
             }
         }
