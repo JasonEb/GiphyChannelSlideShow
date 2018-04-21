@@ -29335,7 +29335,7 @@ var Slider = function (_React$Component) {
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo, visibility: gifsListVisibility }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0], visibility: slideClipVisibility }),
         _react2.default.createElement('img', { className: 'dj', src: 'https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif' }),
-        _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility }),
+        _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility, currentTrack: currentTrack }),
         _react2.default.createElement(_audioFeaturesCard2.default, { visibility: audioFeaturesVisibility })
       );
     }
@@ -30637,7 +30637,16 @@ var TwitchChat = function (_React$Component) {
 
                     // query handler
                     if (parsed.message && parsed.message.startsWith("!song")) {
-                        this.webSocket.send("PRIVMSG " + this.channel + " :" + "Testing display track info");
+                        var currentTrack = this.props.currentTrack;
+                        var _currentTrack$item = currentTrack.item,
+                            name = _currentTrack$item.name,
+                            artists = _currentTrack$item.artists;
+
+                        var artist = artists.map(function (artist) {
+                            return artist.name;
+                        }).join(", ");
+
+                        this.webSocket.send('PRIVMSG ' + this.channel + ' :The song is "' + name + '", by ' + artist);
                     }
                 }
             }

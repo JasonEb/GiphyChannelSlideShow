@@ -62,7 +62,11 @@ class TwitchChat extends React.Component {
 
                 // query handler
                 if (parsed.message && parsed.message.startsWith("!song")) {
-                    this.webSocket.send("PRIVMSG " + this.channel + " :" + "Testing display track info");
+                    let {currentTrack} = this.props
+                    let {name, artists} = currentTrack.item
+                    let artist = artists.map( (artist) => { return artist.name}).join(", ")
+
+                    this.webSocket.send(`PRIVMSG ${this.channel} :The song is "${name}", by ${artist}`);
                 }
             }
         }

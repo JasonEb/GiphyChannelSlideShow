@@ -283,7 +283,9 @@ class Slider extends React.Component {
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
         <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
         <img className="dj" src="https://media.giphy.com/media/9W3vciwN2JAsg/giphy.gif" />
-        <TwitchChat visibility={twitchChatVisibility} />
+
+        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} />
+
         <AudioFeaturesCard visibility={audioFeaturesVisibility} />
 
       </div>
