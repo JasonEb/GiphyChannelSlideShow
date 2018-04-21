@@ -1,4 +1,5 @@
 import React from 'react'
+import { parse } from 'querystring';
 
 class TwitchChat extends React.Component {
     constructor(props){
@@ -8,7 +9,7 @@ class TwitchChat extends React.Component {
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
-        this.channel = '#mang0';
+        this.channel = '#interpretivedashdance';
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
@@ -44,10 +45,10 @@ class TwitchChat extends React.Component {
             var parsed = this.parseMessage(message.data);
             if(parsed !== null){
                 if(parsed.command === "PRIVMSG") {
-                    // console.log("PRIVMSG: ", parsed)
+                    console.log("PRIVMSG: ", parsed)
                 } else if(parsed.command === "PING") {
                     this.webSocket.send("PONG :" + parsed.message);
-                }
+                } 
 
                 if(parsed.username !== null) {
                     let {messages} = this.state
@@ -57,6 +58,11 @@ class TwitchChat extends React.Component {
                     }
                     messages.push(parsed)
                     this.setState({messages: messages})
+                }
+
+                // query handler
+                if (parsed.message && parsed.message.startsWith("!song")) {
+                    this.webSocket.send("PRIVMSG " + this.channel + " :" + "Testing display track info");
                 }
             }
         }
@@ -87,7 +93,7 @@ class TwitchChat extends React.Component {
         } else if(rawMessage.startsWith("PING")) {
             parsedMessage.command = "PING";
             parsedMessage.message = rawMessage.split(":")[1];
-        }
+        } 
     
         return parsedMessage;
     }
@@ -112,7 +118,6 @@ class TwitchChat extends React.Component {
             socket.send('PASS ' + this.password);
             socket.send('NICK ' + this.username);
             socket.send('JOIN ' + this.channel);
-            socket.send('PRIVMSG ' + this.channel + ':Testing!');
         }
     }
 
