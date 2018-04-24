@@ -63,6 +63,9 @@ class Slider extends React.Component {
 
     searchGiphy(input="", limit="128") {
       let offset = Math.floor(Math.random()*100)
+      this.state.urls = []
+
+      // clear gif list
       gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => {
@@ -283,7 +286,7 @@ class Slider extends React.Component {
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
         <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
 
-        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} />
+        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} searchGiphy={this.searchGiphy}/>
 
         <AudioFeaturesCard visibility={audioFeaturesVisibility} />
 

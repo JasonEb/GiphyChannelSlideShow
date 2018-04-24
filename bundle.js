@@ -29087,6 +29087,9 @@ var Slider = function (_React$Component) {
       var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "128";
 
       var offset = Math.floor(Math.random() * 100);
+      this.state.urls = [];
+
+      // clear gif list
       gifUtil.fetchSearchTerms(input, limit, offset).then(function (res) {
         var oldUrls = _this4.state.urls;
         res.data.forEach(function (giphy) {
@@ -29334,7 +29337,7 @@ var Slider = function (_React$Component) {
           blendMode: titleCardBlendMode }),
         _react2.default.createElement(_gifsList2.default, { gifUrls: urls.slice(1, 29), tempo: tempo, visibility: gifsListVisibility }),
         _react2.default.createElement(_slideClip2.default, { url: urls[0], visibility: slideClipVisibility }),
-        _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility, currentTrack: currentTrack }),
+        _react2.default.createElement(_twitchChat2.default, { visibility: twitchChatVisibility, currentTrack: currentTrack, searchGiphy: this.searchGiphy }),
         _react2.default.createElement(_audioFeaturesCard2.default, { visibility: audioFeaturesVisibility })
       );
     }
@@ -30618,7 +30621,7 @@ var TwitchChat = function (_React$Component) {
                 var parsed = this.parseMessage(message.data);
                 if (parsed !== null) {
                     if (parsed.command === "PRIVMSG") {
-                        console.log("PRIVMSG: ", parsed);
+                        // console.log("PRIVMSG: ", parsed)
                     } else if (parsed.command === "PING") {
                         this.webSocket.send("PONG :" + parsed.message);
                     }
@@ -30646,6 +30649,12 @@ var TwitchChat = function (_React$Component) {
                         }).join(", ");
 
                         this.webSocket.send('PRIVMSG ' + this.channel + ' :The song is "' + name + '", by ' + artist + ' ');
+                    }
+
+                    if (parsed.message && parsed.message.startsWith("!giphy search")) {
+                        var idx = parsed.message.indexOf("search");
+                        var searchString = parsed.message.substring(idx + "search".length, parsed.message.length).trim();
+                        this.props.searchGiphy(searchString);
                     }
                 }
             }
@@ -30752,33 +30761,35 @@ var TwitchChat = function (_React$Component) {
                 return chatMsg;
             });
 
+            chat = chat.slice(Math.max(chat.length - 10, 1));
+
             return _react2.default.createElement(
                 'div',
                 { id: 'twitch_chat', style: style },
                 _react2.default.createElement(
                     'ul',
                     null,
-                    chat.slice(Math.max(chat.length - 10, 1))
+                    chat
                 ),
                 _react2.default.createElement(
                     'ul',
                     null,
-                    chat.slice(Math.max(chat.length - 10, 1))
+                    chat
                 ),
                 _react2.default.createElement(
                     'ul',
                     null,
-                    chat.slice(Math.max(chat.length - 10, 1))
+                    chat
                 ),
                 _react2.default.createElement(
                     'ul',
                     null,
-                    chat.slice(Math.max(chat.length - 10, 1))
+                    chat
                 ),
                 _react2.default.createElement(
                     'ul',
                     null,
-                    chat.slice(Math.max(chat.length - 10, 1))
+                    chat
                 )
             );
         }
