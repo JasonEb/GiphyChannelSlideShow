@@ -67,7 +67,7 @@ class SlideClip extends React.Component {
         backgroundImage: `url("${url}")`,
         backgroundSize: "contain",
         backgroundRepeat: 'no-repeat',
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
         backgroundPosition: 'center',
         zIndex: '91',
         marginTop: '7vh',
