@@ -5,7 +5,6 @@
   background-color: black;
   position: absolute;
   background-size: 100%;
-  display: inline;
   z-index: 99;
 }
 
@@ -19,7 +18,7 @@
 }
 
 .glitch .text {
-  -webkit-animation: jerkwhole 2.5s infinite;
+  animation: jerkwhole 2.5s infinite;
   position: relative;
   padding: 0;
   margin: 0;
@@ -32,8 +31,8 @@
   /* font-family: 'Press Start 2P'; */
   font-size: 4em;
   text-align: center;
-  -webkit-filter: blur(1px);
-  -webkit-animation: blur 30ms infinite, jerk 50ms infinite;
+  filter: blur(1px);
+  animation: blur 30ms infinite, jerk 50ms infinite;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 100vw;
@@ -43,49 +42,49 @@
   color: red;
   margin-left: 8px;
   margin-top: -2px;
-  -webkit-filter: blur(2px);
+  filter: blur(2px);
 }
 
 .glitch span:nth-child(2) {
   color: green;
   margin-left: 7px;
-  -webkit-filter: blur(2px);
+  filter: blur(2px);
 }
 
 .glitch span:nth-child(3) {
   color: blue;
   margin-left: -7px;
   margin-top: 4px;
-  -webkit-filter: blur(2px);
-  -webkit-animation: jerkblue .5s infinite;
+  filter: blur(2px);
+  animation: jerkblue .5s infinite;
 }
 
 .glitch span:nth-child(4) {
   color: white;
-  -webkit-filter: blur(1px);
+  filter: blur(1px);
   text-shadow: 0 0 50px rgba(255, 255, 255, 0.4);
 }
 
 .glitch span:nth-child(5) {
   color: rgba(255, 255, 255, 0.4);
-  -webkit-filter: blur(15px);
+  filter: blur(15px);
 }
 
-@-webkit-keyframes blur {
+@keyframes blur {
   0% {
-    -webkit-filter: blur(1px);
+    filter: blur(1px);
     opacity: 0.8;
   }
   50% {
-    -webkit-filter: blur(1px);
+    filter: blur(1px);
     opacity: 1;
   }
   100% {
-    -webkit-filter: blur(1px);
+    filter: blur(1px);
     opacity: 0.6;
   }
 }
-@-webkit-keyframes jerk {
+@keyframes jerk {
   50% {
     left: 2px;
   }
@@ -93,7 +92,7 @@
     left: 0;
   }
 }
-@-webkit-keyframes jerkup {
+@keyframes jerkup {
   50% {
     top: 2px;
   }
@@ -101,7 +100,7 @@
     top: 0;
   }
 }
-@-webkit-keyframes jerkblue {
+@keyframes jerkblue {
   0% {
     left: 0;
   }
@@ -121,7 +120,7 @@
     left: 10px;
   }
 }
-@-webkit-keyframes jerkgreen {
+@keyframes jerkgreen {
   0% {
     left: 0;
   }
@@ -141,33 +140,34 @@
     left: 15px;
   }
 }
-@-webkit-keyframes jerkwhole {
+
+@keyframes jerkwhole {
   40% {
     opacity: 1;
     top: 0;
     left: 0px;
-    -webkit-transform: scale(1, 1);
-    -webkit-transform: skew(0, 0);
+    transform: scale(1, 1);
+    transform: skew(0, 0);
   }
   41% {
     opacity: 0.8;
     top: 0px;
     left: -100px;
-    -webkit-transform: scale(1, 1.2);
-    -webkit-transform: skew(20deg, 0);
+    transform: scale(1, 1.2);
+    transform: skew(20deg, 0);
   }
   42% {
     opacity: 0.8;
     top: 0px;
     left: 50px;
-    -webkit-transform: scale(1, 1.2);
-    -webkit-transform: skew(-40deg, 0);
+    transform: scale(1, 1.2);
+    transform: skew(-40deg, 0);
   }
   43% {
     opacity: 1;
     top: 0;
     left: 0;
-    -webkit-transform: scale(1, 1);
-    -webkit-transform: skew(0, 0);
+    transform: scale(1, 1);
+    transform: skew(0, 0);
   }
 }

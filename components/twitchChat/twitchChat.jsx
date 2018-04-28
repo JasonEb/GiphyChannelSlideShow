@@ -74,6 +74,11 @@ class TwitchChat extends React.Component {
                     let searchString = parsed.message.substring(idx + "search".length, parsed.message.length).trim()
                     this.props.searchGiphy(searchString)
                 }
+
+                
+                if (parsed.message && parsed.message.startsWith("!shuffle")) {
+                    return this.props.shuffleCurrentCards()
+                }
             }
         }
     }
@@ -139,7 +144,10 @@ class TwitchChat extends React.Component {
         let side;
         let chatMsg; 
         let lastMsg = {props: {username: ''}};
-        let style = { visibility: this.props.visibility ? "visible" : "hidden" }
+        let style = { 
+            visibility: this.props.visibility ? "visible" : "hidden",
+            mixBlendMode: this.props.blendMode
+         }
         let chat = this.state.messages.map((msg, idx)=>{
             // logic here is that chat messages should alternate left and right
             // UNLESS there's repeated messages by the same user, then it should be the same

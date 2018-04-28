@@ -5,7 +5,6 @@ class SlideClip extends React.Component {
     constructor(props) {
       super(props)
       this.state = { visible: true,
-        mixBlendMode: "unset",
         rhythm: 1, 
         beatDiv: 4, 
         flashMax: 3, 
@@ -43,31 +42,22 @@ class SlideClip extends React.Component {
       let {measures} = this.state
       let id = setInterval( () => this.flash() , beatMs*measures); //beatMs represents the duration of slide noise clip
 
-      // change mix mode after halfway
-      let {sections} = window.audioAnalysis
-      let section = sections[ Math.ceil(sections.length / 2)]
-      let timestamp = section.start * 1000
-
-      let progressMs = window.currentTrack.progress_ms
-      window.networkDelay = Date.now() - window.beginT
-      timestamp = timestamp - progressMs - window.networkDelay
-      window.setTimeout(() => this.toggleEffect(), timestamp)
     }
 
     render() {
       let {url} = this.props
-      let {visible, mixBlendMode} = this.state
+      let {visible} = this.state
 
       let style = {
         display: visible ? null : 'none',
-        mixBlendMode: mixBlendMode,
+        mixBlendMode: this.props.blendMode,
         width: '100%',
         height: '70vh',
         position: 'absolute',
         backgroundImage: `url("${url}")`,
         backgroundSize: "contain",
         backgroundRepeat: 'no-repeat',
-        backgroundColor: 'transparent',
+        backgroundColor: 'black',
         backgroundPosition: 'center',
         zIndex: '91',
         marginTop: '7vh',

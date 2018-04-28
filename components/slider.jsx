@@ -17,10 +17,12 @@ class Slider extends React.Component {
       super(props)
       this.state = { urls: [], searchVisible: false, currentTrack: window.currentTrack,
         twitchChatVisibility: false,
+        twitchChatBlendMode: "hard-light",
         titleCardVisibility: true,
         titleCardBlendMode: 'unset',
         gifsListVisibility: true,
         slideClipVisibility: true,
+        slideClipBlendMode: 'unset',
         audioFeaturesVisibility: false
       }
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
@@ -30,6 +32,7 @@ class Slider extends React.Component {
       this.channelSelect = this.channelSelect.bind(this)
       this.updateCurrentlyPlaying = this.updateCurrentlyPlaying.bind(this)
       this.sequenceCards = this.sequenceCards.bind(this)
+      this.shuffleCurrentCards = this.shuffleCurrentCards.bind(this)
     }
 
     fetchChannelGifs(id) {
@@ -37,8 +40,7 @@ class Slider extends React.Component {
       gifUtil.fetchGiphyChannel(id, offset).then( (res) => {
         let oldUrls = this.state.urls
         res.data.forEach( (giphy) => oldUrls.push(giphy.images.original.url) )
-        oldUrls = Shuffle(oldUrls)
-        this.setState({urls: oldUrls})
+        this.setState({urls: Shuffle(oldUrls)})
         slideUtil.initializeShow(window.tempo)
       })
     }
@@ -126,7 +128,7 @@ class Slider extends React.Component {
     updateCurrentlyPlaying () {
       //periodically check track status
       let checkInterval = 60000 / window.tempo * 12
-      let self = this
+      // let self = this
 
       setInterval( () => {
         spotifyUtil.getCurrentTrack(()=>{}).then( (res) => {
@@ -138,7 +140,7 @@ class Slider extends React.Component {
             let idx = window.location.href.indexOf("/#")
             window.location = window.location.href.slice(0,idx)
           }
-          self.setState({currentTrack: res})
+          this.setState({currentTrack: res})
         })
       }, checkInterval)
     }
@@ -159,11 +161,13 @@ class Slider extends React.Component {
       let rng = Math.floor(Math.random()*3)
       rng = rng <= 1 ? 0 : Math.ceil(Math.random()*6)
       
-      switch (rng) {
+      switch (0) {
         default:
           // this.searchGiphy("flamingo", "110")
           // this.searchGiphy("mario nintendo", "150")
           // this.fetchMyChannelGifs()
+          this.searchGiphy("@kekeflipnote", "150")
+          // this.fetchChannelGifs("7144")
           // this.searchGiphy("glitch", "150")
           this.fetchChannelGifs();
           break;
@@ -192,6 +196,7 @@ class Slider extends React.Component {
           break; 
       }
 
+      this.shuffleCurrentCards()
       this.sequenceCards()
     }
 
@@ -226,7 +231,8 @@ class Slider extends React.Component {
       timestamp = timestamp - progressMs - window.networkDelay
       window.setTimeout(() => {
         this.setState({
-          twitchChatVisibility: true
+          twitchChatVisibility: true,
+          slideClipBlendMode: "hard-light"
         })
       }, timestamp)
       window.setTimeout(() => {
@@ -258,11 +264,15 @@ class Slider extends React.Component {
         this.setState({titleCardVisibility: true})
       }, timestamp)
     }
+    
+    shuffleCurrentCards() {
+      this.setState({urls: Shuffle(this.state.urls)})
+    }
 
     render() {
       let { urls, searchCard, currentTrack, notShuffle } = this.state
-      let { titleCardVisibility,titleCardBlendMode, twitchChatVisibility,
-        gifsListVisibility, slideClipVisibility, audioFeaturesVisibility
+      let { titleCardVisibility,titleCardBlendMode, twitchChatVisibility, twitchChatBlendMode,
+        gifsListVisibility, slideClipVisibility, audioFeaturesVisibility, slideClipBlendMode
        } = this.state
       let {tempo} = window
 
@@ -284,9 +294,10 @@ class Slider extends React.Component {
           blendMode={titleCardBlendMode} />
 
         <GifsList gifUrls={urls.slice(1, 29)} tempo={tempo} visibility={gifsListVisibility} />
-        <SlideClip url={urls[0]} visibility={slideClipVisibility}/>
+        <SlideClip url={urls[0]} visibility={slideClipVisibility} blendMode={slideClipBlendMode}/>
 
-        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} searchGiphy={this.searchGiphy}/>
+        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode}
+          searchGiphy={this.searchGiphy} shuffleCurrentCards={this.shuffleCurrentCards} />
 
         <AudioFeaturesCard visibility={audioFeaturesVisibility} />
 

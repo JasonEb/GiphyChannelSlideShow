@@ -1,7 +1,6 @@
 div#twitch_chat {
     color: grey;
     background-color: black;
-    mix-blend-mode: hard-light;
     font-family: "VT323", monospace;
     font-weight: bold;
     font-size: 3em;
