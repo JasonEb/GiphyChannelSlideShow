@@ -46,11 +46,13 @@ class SlideClip extends React.Component {
 
     render() {
       let {url} = this.props
+      let beatMs = 60000/(window.tempo);
       let {visible} = this.state
 
       let style = {
         display: visible ? null : 'none',
         mixBlendMode: this.props.blendMode,
+        animation: `swing linear ${beatMs*8}ms infinite`,
         width: '100%',
         height: '70vh',
         position: 'absolute',

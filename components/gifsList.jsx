@@ -42,11 +42,14 @@ class GifsList extends React.Component {
       let gifSlides = urls.slice(1,urls.length).map((url, idx) =>{
         return <GifSlide url={url} key={idx} className="slides"/>
       })
+
+      let beatMs = 60000/(window.tempo);
       let style = {
-        visibility: this.props.visibility ? "visible" : "hidden"
+        visibility: this.props.visibility ? "visible" : "hidden",
+        animation: `swing linear ${beatMs*8}ms infinite`
       }
       return <ul className="slides" style={style}>
-      <GifSlide url={urls[idx]} className="slides current"/>
+      <GifSlide url={urls[idx]} className="slides current" style={{}} />
     </ul>
     }
 }
