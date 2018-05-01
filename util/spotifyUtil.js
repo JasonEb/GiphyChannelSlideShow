@@ -32,19 +32,32 @@ export const getAuthTokenImplicit = () => {
 
     const clientId = 'a1725413073e48a697827b4895650356'
     const redirectUri = 'http://127.0.0.1:8000'
+    // , 'playlist-modify-private', 'playlist-modify-public'
     const scopes = [
         'user-read-currently-playing'
-    ];
-
+    ]
+    let scopeStr = encodeURIComponent(scopes.join(" "))
     // If there is no token, redirect to Spotify authorization
+    // https://accounts.spotify.com/en/authorize?client_id=a1725413073e48a697827b4895650356&redirect_uri=http:%2F%2F127.0.0.1:8000&scope=user-read-currently-playing%20playlist-modify-private%20playlist-modify-public&response_type=token
     if (!_token) {
-        window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token`;
+        window.location = `${authEndpoint}?&response_type=token&client_id=${clientId}&scope=${scopeStr}&redirect_uri=${redirectUri}`;
     }
 }
+
+// spotify info
+// spotify:user:22evmk3v6uybspigu2xinbgey
+// playlist:6ydEo5XgdHzRN3XHhg1TMw
 
 export const setAuthToken = () => {
     let str = window.location.hash.slice(14,182)
     window.spotifyAuthToken = str
+}
+
+export const addSongToPlaylist = (spotifuUrl) => {
+    return $.ajax({
+        method: 'POST',
+        url: `https://api.spotify.com/v1/me/player/currently-playing`
+    })   
 }
 
 export const getCurrentTrack = (fn) => {
