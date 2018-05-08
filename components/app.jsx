@@ -1,7 +1,8 @@
 import React from 'react'
-import { Route, Switch, NavLink } from 'react-router-dom'
+import { Route, Switch, NavLink, withRouter} from 'react-router-dom'
 
 import Slider from './slider'
+import OverlaySlider from './overlaySlider'
 
 import * as spotifyUtil from '../util/spotifyUtil';
 
@@ -9,7 +10,7 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            spotifyAuthToken: '123test',
+            spotifyAuthToken: '',
             currentTrack: {
                 item: {duration_ms: 0, name: "", artists: [""], album: ""}
             },
@@ -63,46 +64,64 @@ class App extends React.Component {
         }
 
         this.setupSpotify = this.setupSpotify.bind(this)
+        this.spotifyWorker = this.spotifyWorker.bind(this)
     }
     
     setupSpotify() {
-        let token = spotifyUtil.setAuthToken()
+        let token = window.location.hash.slice(14,182)
         this.setState({spotifyAuthToken: token})
-        spotifyUtil.setAuthToken()
+        spotifyUtil.setAuthToken(token)
 
+        //fill data
         spotifyUtil.getCurrentTrack().then( (res) => {
             spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
                 spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
                     this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
+                    let tempo = res2.sections[0].tempo
+                    this.state.spotifyLoopId = this.spotifyWorker(tempo)
                 })
             })
         })
     }
 
+    spotifyWorker(tempo) {
+        let beatMs = 60000 / tempo
+        return setInterval(()=> {
+            spotifyUtil.getCurrentTrack().then((res)=>{
+                this.setState({currentTrack: res})
+            })
+        }, beatMs*4)
+    }
+
     componentDidMount() {
-        if (window.location.hash === '#/') {
-            spotifyUtil.getAuthTokenImplicit()
+        if (window.location.hash === '') {
+            const returnUrl = 'http://127.0.0.1:8000'
+            spotifyUtil.getAuthTokenImplicit(returnUrl)
           } else {
             this.setupSpotify()
+            // figure out how to setup routes...
+            this.props.history.push("/overlay")
         }
     }
 
     render() {
-        let {currentTrack, audioAnalysis, audioFeatures} = this.state
-
+        let {currentTrack, audioAnalysis, audioFeatures, spotifyAuthToken} = this.state
+        // <Route path="/" render={
+        //     (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
+        // />
         return (
             <div id="app">
                 <Switch>
-                <Route path="/" render={
-                        (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
-                    />
+                <Route path="/overlay" render={
+                    (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                />
                 </Switch>
             </div>
         )
     }
 }
 
-export default App
+export default withRouter(App)
 
 // <div className="navBar">
 // <NavLink exact className="nav-item" activeStyle={{ fontWeight: 'bold' }} to='/'>Away Screen</NavLink>

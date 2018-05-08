@@ -16,27 +16,29 @@ class VhrOverlay extends React.Component {
     }
 
     componentDidMount() {
+        console.log("VHR overlay mounted")
     }
 
     render() {
-        let {audioFeatures, audioAnalysis} = window
+        let {audioFeatures, audioAnalysis, currentTrack} = this.props
         let {visible} = this.state
-
-        let {currentTrack} = this.props
+        let tempo = this.props.audioAnalysis.sections[0].tempo
         let {progress_ms} = currentTrack
         let {duration_ms} = currentTrack.item
         let batteryPct = 1 - progress_ms / duration_ms
         let rng = Math.ceil(Math.random() * 3)
-        let beat = 60000 / window.tempo / 1000 * rng;
+        let beat = 60000 / tempo / 1000 * rng;
 
         let gridStyle = {
             animation: `pulse ${beat}s infinite`
         }
+
+
+// <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} />
+// <DateAndTimeDisplay />
         return <div className="vhr_overlay" >
             <div id="vhr_grid" style={gridStyle} />
-            <Battery batteryPct={batteryPct} />
-            <CurrentTrackDisplay currentTrack={currentTrack} />
-            <DateAndTimeDisplay />
+            <Battery batteryPct={batteryPct} tempo={tempo}/>
       </div>
     }
   }

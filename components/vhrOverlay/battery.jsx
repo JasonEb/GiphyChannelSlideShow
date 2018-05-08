@@ -11,13 +11,9 @@ class battery extends React.Component {
         this.setState({visible: !this.state.visible})
     }
 
-    componentDidMount() {
-        console.log("Battery test")
-    }
-
     render() {
-        let { batteryPct } = this.props
-        let {tempo} = window
+        let { batteryPct } = this.props || 0
+        let {tempo} = this.props || 120
         let beatMs = 60000 / tempo
         let width = Math.round(76 * (batteryPct))
         let style = {
