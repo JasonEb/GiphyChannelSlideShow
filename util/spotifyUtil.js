@@ -49,8 +49,15 @@ export const getAuthTokenImplicit = () => {
 // playlist:6ydEo5XgdHzRN3XHhg1TMw
 
 export const setAuthToken = () => {
-    let str = window.location.hash.slice(14,182)
+    let str = window.location.hash.slice(15,183)
     window.spotifyAuthToken = str
+    $.ajaxSetup({
+        headers: { 'Content-Type': 'application/json',
+                   'Accept': 'application/json',
+                   'Authorization': `Bearer ${str}` }
+    });
+
+    return str
 }
 
 export const addSongToPlaylist = (spotifuUrl) => {

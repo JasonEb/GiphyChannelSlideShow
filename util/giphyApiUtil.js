@@ -2,6 +2,8 @@ import data1 from '../data/results_01.json'
 import data2 from '../data/results_02.json'
 import data3 from '../data/results_03.json'
 
+import $ from 'jquery'
+
 // hack code to load json api. manually have to extract gif ids and construct gif url.
 
 export const fetchLocalGifUrls = () => {

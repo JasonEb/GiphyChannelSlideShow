@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Slider from './components/slider.jsx';
 import * as slideUtil from './util/sliderControls';
 import $ from "jquery";
-import slideClip from './components/slideClip';
+import Root from './components/root';
 import * as spotifyUtil from './util/spotifyUtil';
 
 // og slider code
@@ -15,45 +15,51 @@ window.gifs = [];
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (window.location.hash == '') {
-    spotifyUtil.getAuthTokenImplicit()
-  } else {
-    spotifyUtil.setAuthToken()
-  }
-  const root = document.getElementById("root");
+  // if (window.location.hash == '') {
+  //   spotifyUtil.getAuthTokenImplicit()
+  // } else {
+  //   spotifyUtil.setAuthToken()
+  // }
+  // const root = document.getElementById("root");
+  
+  // //poll spotify for information first and send it as props to slider
 
-  //poll spotify for information first and send it as props to slider
-
-  //setup
-  window.slideUtil = slideUtil;
-  window.currentTrack = ""
-  window.audioAnalysis = ""
+  // //setup
+  // window.slideUtil = slideUtil;
+  // var currentTrack = ""
+  // var audioAnalysis = ""
   window.spotifyUtil = spotifyUtil;
-  window.$ = $;
+  // window.$ = $;
 
-  //begin polling
-  spotifyUtil.setupHeaders()
-  window.beginT = Date.now()
+  // //begin polling
+  // spotifyUtil.setupHeaders()
+  // var beginT = Date.now()
 
-  spotifyUtil.getCurrentAudioAnalysisAndFeatures().then( () => {
-    window.tempo = window.audioAnalysis.sections[1].tempo
-    window.tempo = parseFloat(window.tempo)
-    console.log(`tempo set! ${window.tempo} bpm`)
+  // spotifyUtil.getCurrentAudioAnalysisAndFeatures().then( (res) => {
+  //   debugger
+  //   let tempo = window.audioAnalysis.sections[1].tempo
 
-    let {name, artists} = window.currentTrack.item
-    let artist = artists.map( (artist) => { return artist.name}).join(", ")
+  //   tempo = parseFloat(tempo)
 
-    const refreshPage = () => { location.reload() }
+  //   console.log(`tempo set! ${tempo} bpm`)
 
-    console.log(window.audioAnalysis.sections)
+  //   let {name, artists} = currentTrack.item
+  //   let artist = artists.map( (artist) => { return artist.name}).join(", ")
 
-    //set a Timeout to refresh page for a new song
-    let { currentTrack } = window
-    let resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms
-    console.log("reset time: ", resetTime/1000);
-    setTimeout( refreshPage , resetTime )
+  //   const refreshPage = () => { location.reload() }
 
-    //at this point all audio analysis and features is fetched
-    ReactDOM.render(<Slider artist={artist} songTitle={name} />, root)
-  })
+  //   console.log(audioAnalysis.sections)
+
+  //   //set a Timeout to refresh page for a new song
+  //   let { currentTrack } = window
+  //   let resetTime = currentTrack.item.duration_ms - currentTrack.progress_ms
+  //   console.log("reset time: ", resetTime/1000);
+  //   setTimeout( refreshPage , resetTime )
+
+  //   //at this point all audio analysis and features is fetched
+
+    
+  // })
+
+  ReactDOM.render(<Root />, root)
 });
