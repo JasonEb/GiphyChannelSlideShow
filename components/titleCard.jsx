@@ -32,14 +32,14 @@ class TitleCard extends React.Component {
     }
 
     render() {
-        let {artist, songTitle} = this.props
+        let {artists, name} = this.props.currentTrack.item
         let text = []
-        for(let i = 0; i < 4; i++) { text.push(<span key={i}>
-            "{songTitle}"
+        artists = artists.map( (artist) => { return artist.name}).join(", ")
+        for (let i = 0; i < 4; i++) { text.push(<span key={i}>
+            "{name}"
             <br/>
-            {artist}
-        </span>)
-        }
+            {artists}
+        </span>)}
         let style = {
             visibility: this.props.visibility ? "visible" : "hidden",
             mixBlendMode : this.props.blendMode

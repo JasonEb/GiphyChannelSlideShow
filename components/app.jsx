@@ -3,6 +3,7 @@ import { Route, Switch, NavLink, withRouter} from 'react-router-dom'
 
 import Slider from './slider'
 import OverlaySlider from './overlaySlider'
+import GifBox from './gifBox.jsx'
 
 import * as spotifyUtil from '../util/spotifyUtil';
 
@@ -12,7 +13,8 @@ class App extends React.Component {
         this.state = {
             spotifyAuthToken: '',
             currentTrack: {
-                item: {duration_ms: 0, name: "", artists: [""], album: ""}
+                item: {duration_ms: 0, name: "", artists: [""], album: "", id: "initial"},
+                progress_ms: 60000
             },
             audioAnalysis: {
                 bars: [{start: 0.26534, duration: 1.97734, confidence: 0.32}],
@@ -92,7 +94,7 @@ class App extends React.Component {
             spotifyUtil.getCurrentTrack().then((res)=>{
                 this.setState({currentTrack: res})
             })
-        }, beatMs*16)
+        }, beatMs*8)
     }
 
     componentDidMount() {
@@ -103,7 +105,7 @@ class App extends React.Component {
             this.setupSpotify()
 
             // figure out how to auto redirect routes...
-            this.props.history.push("/jukebox")
+            this.props.history.push("/gifbox")
         }
     }
 
@@ -142,8 +144,8 @@ class App extends React.Component {
                     <Route path="/overlay" render={
                         (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
-                    <Route path="/jukebox" render={
-                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                    <Route path="/gifbox" render={
+                        (props) => <GifBox {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
                 </Switch>
             </div>

@@ -33,15 +33,12 @@ class VhrOverlay extends React.Component {
             animation: `pulse ${beat}s infinite`
         }
 
-
-// <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} />
-// <DateAndTimeDisplay />
         return <div className="vhr_overlay" >
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} tempo={tempo}/>
             <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} />
             <DateAndTimeDisplay tempo={tempo} />
-      </div>
+        </div>
     }
   }
 
