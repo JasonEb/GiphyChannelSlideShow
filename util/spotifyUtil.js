@@ -11,7 +11,7 @@ export const setupHeaders = () => {
     });
 }
 
-export const getAuthTokenImplicit = () => {
+export const getAuthTokenImplicit = (url) => {
     // Get the hash of the url
     const hash = window.location.hash
         .substring(1)
@@ -29,9 +29,12 @@ export const getAuthTokenImplicit = () => {
     let _token = hash.access_token;
 
     const authEndpoint = 'https://accounts.spotify.com/authorize'
-
+    
+    // v 1.0 = 'a1725413073e48a697827b4895650356'
+    // const clientId = '76838704e3d141acb61be1dbd05726b2'
     const clientId = 'a1725413073e48a697827b4895650356'
-    const redirectUri = 'http://127.0.0.1:8000'
+    
+    const redirectUri = url
     // , 'playlist-modify-private', 'playlist-modify-public'
     const scopes = [
         'user-read-currently-playing'
@@ -48,9 +51,8 @@ export const getAuthTokenImplicit = () => {
 // spotify:user:22evmk3v6uybspigu2xinbgey
 // playlist:6ydEo5XgdHzRN3XHhg1TMw
 
-export const setAuthToken = () => {
-    let str = window.location.hash.slice(15,183)
-    window.spotifyAuthToken = str
+export const setAuthToken = (str) => {
+    window.spotifyAuthToken = str //ToDo remove this
     $.ajaxSetup({
         headers: { 'Content-Type': 'application/json',
                    'Accept': 'application/json',

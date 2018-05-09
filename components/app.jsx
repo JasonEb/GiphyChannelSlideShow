@@ -65,6 +65,7 @@ class App extends React.Component {
 
         this.setupSpotify = this.setupSpotify.bind(this)
         this.spotifyWorker = this.spotifyWorker.bind(this)
+        this.spotifyLoopId = 99
     }
     
     setupSpotify() {
@@ -78,7 +79,8 @@ class App extends React.Component {
                 spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
                     this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
                     let tempo = res2.sections[0].tempo
-                    this.state.spotifyLoopId = this.spotifyWorker(tempo)
+                    this.spotifyLoopId = this.spotifyWorker(tempo)
+                    console.log("Initial Spotify Loop ID: ", this.spotifyLoopId)
                 })
             })
         })
@@ -90,7 +92,7 @@ class App extends React.Component {
             spotifyUtil.getCurrentTrack().then((res)=>{
                 this.setState({currentTrack: res})
             })
-        }, beatMs*4)
+        }, beatMs*16)
     }
 
     componentDidMount() {
@@ -99,9 +101,34 @@ class App extends React.Component {
             spotifyUtil.getAuthTokenImplicit(returnUrl)
           } else {
             this.setupSpotify()
-            // figure out how to setup routes...
-            this.props.history.push("/overlay")
+
+            // figure out how to auto redirect routes...
+            this.props.history.push("/jukebox")
         }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        let currentTrack = this.state.currentTrack
+        let oldTrack = prevState.currentTrack
+
+        if (currentTrack.item.name !== oldTrack.item.name) { 
+            //update state
+            //clear loops
+
+            //begin loops
+
+            //initialize data data
+            spotifyUtil.getCurrentTrack().then( (res) => {
+                spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
+                    spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
+                        this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
+                        let tempo = res2.sections[0].tempo
+                        clearInterval(this.spotifyLoopId)
+                        this.spotifyLoopId = this.spotifyWorker(tempo)
+                    })
+                })
+            })
+        }            
     }
 
     render() {
@@ -112,9 +139,12 @@ class App extends React.Component {
         return (
             <div id="app">
                 <Switch>
-                <Route path="/overlay" render={
-                    (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
-                />
+                    <Route path="/overlay" render={
+                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                    />
+                    <Route path="/jukebox" render={
+                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                    />
                 </Switch>
             </div>
         )

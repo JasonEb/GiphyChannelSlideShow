@@ -39,6 +39,7 @@ class VhrOverlay extends React.Component {
         return <div className="vhr_overlay" >
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} tempo={tempo}/>
+            <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} />
       </div>
     }
   }
