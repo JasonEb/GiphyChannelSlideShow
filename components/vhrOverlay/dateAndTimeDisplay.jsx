@@ -6,7 +6,8 @@ class DateAndTimeDisplay extends React.Component {
 
         this.rotateInfo = this.rotateInfo.bind(this)
         this.toggle = this.toggle.bind(this)
-        this.state = { date: new Date(), loopId: 0, count: 0 }
+        this.state = { date: new Date(), count: 0 }
+        this.loopId = 0
     }
 
     rotateInfo() {
@@ -17,22 +18,36 @@ class DateAndTimeDisplay extends React.Component {
     toggle() {
         this.setState({visible: !this.state.visible})
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.tempo !== this.props.tempo){
+            clearInterval(this.loopId)
+            let {tempo} = nextProps
+            let beatMs = 60000 / tempo
+            this.loopId = setInterval(this.rotateInfo,beatMs*16)
+        }
+    }
+
     componentDidMount() {
-        let {tempo} = window
+        let {tempo} = this.props
         let beatMs = 60000 / tempo
-        this.state.loopId = setInterval(this.rotateInfo,beatMs*16)
+        this.loopId = setInterval(this.rotateInfo,beatMs*16)
     }
 
     render() {
         let {date, count} = this.state
-        let {tempo} = window
+        let {tempo} = this.props || 120
         let beatMs = 60000 / tempo
 
         let style = {
             animation: `blur ${beatMs*2}ms infinite`
         }
 
-        let info = count % 2 === 0 ? date.toDateString() : date.toLocaleTimeString() + " PST"
+        let hours = date.getHours()
+        let minutes = date.getMinutes()
+        minutes = minutes < 10 ? '0' + minutes : minutes
+
+        let info = count % 2 === 0 ? date.toDateString() : `${hours}:${minutes}` + " PST"
 
         return <div id="date_and_time_display" style={style}>{info}</div>
     }
