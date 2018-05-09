@@ -13,6 +13,7 @@ class GifBox extends React.Component {
 
       this.sequenceTitleCardBehavior = this.sequenceTitleCardBehavior.bind(this)
       this.resetState = this.resetState.bind(this)
+      this.titleCardIntroId = null
     }
 
     resetState(){
@@ -25,17 +26,17 @@ class GifBox extends React.Component {
       if (nextProps.currentTrack.item.id !== this.props.currentTrack.item.id ) {
         clearTimeout(this.titleCardIntroId)
         this.resetState()
-        this.sequenceTitleCardBehavior()
+        this.sequenceTitleCardBehavior(nextProps)
       }
     }
 
-    sequenceTitleCardBehavior() {
-      let {sections} = this.props.audioAnalysis
+    sequenceTitleCardBehavior(props) {
+      let {sections} = props.audioAnalysis
       let section = sections.find( (section) => {
         return section.start > 12
       })
       let duration = section.start * 1000
-      let progressMs = this.props.currentTrack.progress_ms
+      let progressMs = props.currentTrack.progress_ms
       let beatMs = 60000/(section.tempo)
       window.networkDelay = Date.now() - window.beginT
       //intro card

@@ -73,23 +73,23 @@ class CurrentTrackDisplay extends React.Component {
             })
 
             clearInterval(this.trackInfoLoopId)
-            clearInterval(this.introId)
+            clearTimeout(this.introId)
             clearTimeout(this.outroId)
             this.trackInfoLoopId = setInterval(()=>{
                 this.rotateInfo()
             }, beatMs*12)
-            this.sequenceBehavior()
+            this.sequenceBehavior(nextProps)
         }
     }
 
     //investigate why intro and outro sequences aren't working
-    sequenceBehavior() {
-        let {sections} = this.props.audioAnalysis
+    sequenceBehavior(props) {
+        let {sections} = props.audioAnalysis
         let section = sections.find( (section) => {
           return section.start > 12
         })
         let duration = section.start * 1000
-        let progressMs = this.props.currentTrack.progress_ms
+        let progressMs = props.currentTrack.progress_ms
 
         window.networkDelay = Date.now() - window.beginT
         //  - window.networkDelay
