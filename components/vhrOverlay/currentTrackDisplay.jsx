@@ -91,10 +91,9 @@ class CurrentTrackDisplay extends React.Component {
         let duration = section.start * 1000
         let progressMs = props.currentTrack.progress_ms
 
-        window.networkDelay = Date.now() - window.beginT
-        //  - window.networkDelay
+        let {networkDelay} = this.props
         duration = duration - progressMs
-        this.introId = window.setTimeout(this.toggle, duration)
+        this.introId = setTimeout(this.toggle, duration)
 
         //outro 
         section = sections[sections.length - 1]

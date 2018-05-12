@@ -7,7 +7,7 @@ class AudioFeaturesCard extends React.Component {
     }
 
     textGenerator() {
-        let {audioFeatures, audioAnalysis} = window
+        let {audioFeatures, audioAnalysis} = this.props
         let max = Math.floor(Math.random() * 6 + 1)
         let text = []
         for(let i = 0; i < max; i++) { text.push(<ul key={i}>
@@ -17,8 +17,6 @@ class AudioFeaturesCard extends React.Component {
             <li>tempo {audioFeatures.tempo}</li>
             <li>key {audioFeatures.key}</li>
             <li>time_signature {audioFeatures.time_signature}</li>
-            <li>end_of_fade_in {audioAnalysis.track.end_of_fade_in}</li>
-            <li>start_of_fade_out {audioAnalysis.track.start_of_fade_out}</li>
             <li>duration_ms {audioFeatures.duration_ms/ 1000} </li>
             <li><br/></li>
             <li>I love platforms and platform culture</li>

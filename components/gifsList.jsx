@@ -5,7 +5,8 @@ class GifsList extends React.Component {
     constructor(props) {
       super(props)
       this.gifsCycle = this.gifsCycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8, intervalId: '' }
+      this.state = { idx: 0, rhythmFactor: 8 }
+      this.intervalId = ''
       this.play = this.play.bind(this)
     }
 
@@ -20,20 +21,25 @@ class GifsList extends React.Component {
       }
     }
 
-    play() {
-      let {tempo} = this.props
+    play(props) {
+      let {tempo} = props
       let {rhythmFactor} = this.state
       let beatMs = 60000 / tempo
-      let {intervalId} = this.state
+      let {intervalId} = this
       if (intervalId !== '') {
         clearInterval(intervalId)
       }
-      let id = setInterval(this.gifsCycle, beatMs*rhythmFactor)
-      this.setState({intervalId : id})  
+      this.intervalId = setInterval(this.gifsCycle, beatMs*rhythmFactor)
     }
 
-    componentDidMount () {
-      this.play()
+    componentDidMount() {
+      this.play(this.props)
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if(nextProps.tempo !== this.props.tempo) {
+        this.play(nextProps)
+      }
     }
 
     render() {

@@ -12,9 +12,10 @@ class App extends React.Component {
         super(props)
         this.state = {
             spotifyAuthToken: '',
+            networkDelay: Date.now(),
             currentTrack: {
-                item: {duration_ms: 0, name: "", artists: [""], album: "", id: "initial"},
-                progress_ms: 60000
+                item: { duration_ms: 0, name: "", artists: [""], album: "", id: "initial"},
+                progress_ms: 60000,
             },
             audioAnalysis: {
                 bars: [{start: 0.26534, duration: 1.97734, confidence: 0.32}],
@@ -27,7 +28,7 @@ class App extends React.Component {
                     loudness:-11.28,
                     mode:1,
                     mode_confidence:0,
-                    start:13,
+                    start:17,
                     tempo:120.54,
                     tempo_confidence:0.36,
                     time_signature:4,
@@ -76,13 +77,17 @@ class App extends React.Component {
         spotifyUtil.setAuthToken(token)
 
         //fill data
+        
         spotifyUtil.getCurrentTrack().then( (res) => {
+            let beginT = Date.now()
             spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
                 spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
-                    this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
+                    this.setState({currentTrack: res, 
+                        audioFeatures: res1, audioAnalysis: res2, 
+                        networkDelay: Date.now() - beginT})
                     let tempo = res2.sections[0].tempo
+                    clearInterval(this.spotifyLoopId)
                     this.spotifyLoopId = this.spotifyWorker(tempo)
-                    console.log("Initial Spotify Loop ID: ", this.spotifyLoopId)
                 })
             })
         })
@@ -109,43 +114,52 @@ class App extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    //todo
+    // figure out why titlecard visibility is not working with beginT network delay
+    
+    ComponentDidUpdate(prevProps, prevState) {
         let currentTrack = this.state.currentTrack
-        let oldTrack = prevState.currentTrack
+        let prevTrack = prevState.currentTrack
 
-        if (currentTrack.item.name !== oldTrack.item.name) { 
+        if (currentTrack.item.id !== prevTrack.item.id) { 
             //update state
             //clear loops
 
             //begin loops
 
-            //initialize data data
+            //initialize data
+            
             spotifyUtil.getCurrentTrack().then( (res) => {
+                let beginT = Date.now()
                 spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
                     spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
-                        this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
+                        this.setState({currentTrack: res, 
+                            audioFeatures: res1, audioAnalysis: res2,
+                            networkDelay: Date.now() - beginT })
                         let tempo = res2.sections[0].tempo
                         clearInterval(this.spotifyLoopId)
                         this.spotifyLoopId = this.spotifyWorker(tempo)
                     })
                 })
             })
-        }            
+        }      
     }
 
     render() {
-        let {currentTrack, audioAnalysis, audioFeatures, spotifyAuthToken} = this.state
+        let {currentTrack, audioAnalysis, audioFeatures, spotifyAuthToken, networkDelay} = this.state
+        let {initialSpotifyCall} = this
         // <Route path="/" render={
         //     (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
         // />
         return (
             <div id="app">
                 <Switch>
-                    <Route path="/overlay" render={
-                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                    <Route exact path="/gifbox" render={
+                        (props) => <GifBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} initialSpotifyCall={initialSpotifyCall} />}
                     />
-                    <Route path="/gifbox" render={
-                        (props) => <GifBox {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+
+                    <Route exact path="/overlay" render={
+                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
                 </Switch>
             </div>
