@@ -8,10 +8,11 @@ class SlideClip extends React.Component {
         rhythm: 1, 
         beatDiv: 4, 
         flashMax: 3, 
-        measures:8 }
+        measures:12 }
       this.toggle = this.toggle.bind(this)
       this.toggleEffect = this.toggleEffect.bind(this)
       this.flash = this.flash.bind(this)
+      this.loopId = 26
     }
 
     toggle() {
@@ -37,16 +38,23 @@ class SlideClip extends React.Component {
       }
     }
 
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.url !== this.props.url){
+        clearInterval(this.loopId)
+        let beatMs = 60000/(nextProps.audioFeatures.tempo);
+        let {measures} = this.state
+        this.loopId = setInterval( () => this.flash() , beatMs*measures); 
+      }
+    }
     componentDidMount() {
-      let beatMs = 60000/(window.tempo);
+      let beatMs = 60000/(this.props.audioFeatures.tempo);
       let {measures} = this.state
-      let id = setInterval( () => this.flash() , beatMs*measures); //beatMs represents the duration of slide noise clip
-
+      this.loopId = setInterval( () => this.flash() , beatMs*measures); //beatMs represents the duration of slide noise clip
     }
 
     render() {
-      let {url} = this.props
-      let beatMs = 60000/(window.tempo);
+      let {url, audioFeatures } = this.props
+      let beatMs = 60000/(audioFeatures.tempo);
       let {visible} = this.state
 
       let style = {

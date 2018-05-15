@@ -51,17 +51,17 @@ class CurrentTrackDisplay extends React.Component {
         // check if not initial track
         // if actual track, start loop display
         // if a new track reset?
-        let {tempo} = this.props.audioAnalysis.sections[0]
-        let beatMs = 60000 / tempo
-        let nextTrack = nextProps.currentTrack
-        let oldTrack = this.props.currentTrack
+        let nextTrack = nextProps.trackId
+        let oldTrack = this.props.trackId
 
-        if (nextTrack.item.id !== oldTrack.item.id) {
+        if (nextTrack !== oldTrack) {
             //reset inner state
             //clear all loops
             //begin new loop
             //  set new outro
-            let {name, artists, album} = nextTrack.item
+            let {name, artists, album} = nextProps.currentTrack.item
+            let beatMs = 60000 / nextProps.audioAnalysis.sections[0].tempo
+            
             this.setState({
                 count: 0, 
                 info: [
@@ -82,7 +82,6 @@ class CurrentTrackDisplay extends React.Component {
         }
     }
 
-    //investigate why intro and outro sequences aren't working
     sequenceBehavior(props) {
         let {sections} = props.audioAnalysis
         let section = sections.find( (section) => {
@@ -91,7 +90,7 @@ class CurrentTrackDisplay extends React.Component {
         let duration = section.start * 1000
         let progressMs = props.currentTrack.progress_ms
 
-        let {networkDelay} = this.props
+        let {networkDelay} = props
         duration = duration - progressMs - networkDelay
         this.introId = setTimeout(this.toggle, duration)
 

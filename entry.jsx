@@ -9,7 +9,6 @@ import * as spotifyUtil from './util/spotifyUtil';
 // og slider code
 /* Glitch for slider */
 window.intervals = [];
-window.gifs = [];
 
 // spotify implicit grant token
 

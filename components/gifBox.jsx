@@ -84,6 +84,7 @@ class GifBox extends React.Component {
       clearTimeout(this.ids.titleCardEffect)
       clearTimeout(this.ids.halfWayMark)
       clearTimeout(this.ids.outro)
+      slideUtil.stopShow()
       
       let {sections} = props.audioAnalysis
       let section = sections.find( (section) => {
@@ -118,7 +119,8 @@ class GifBox extends React.Component {
       this.ids.halfWayMark = setTimeout(()=>{
         this.setState({
           slideClipBlendMode: 'hard-light'
-        })        
+        })
+        slideUtil.initializeShow(section.tempo)        
       }, section.start * 1000)
 
       //outro 
@@ -130,9 +132,9 @@ class GifBox extends React.Component {
     }
     
     componentDidMount() {
-      this.sequenceTitleCardBehavior(this.props)
+      // this.sequenceTitleCardBehavior(this.props)
       // this.searchGiphy("SSBM")
-      this.fetchChannelGifs()
+      // this.fetchChannelGifs()
     }
 
     render() {
