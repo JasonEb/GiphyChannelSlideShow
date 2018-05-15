@@ -20,7 +20,7 @@ class VhrOverlay extends React.Component {
     }
 
     render() {
-        let {audioFeatures, audioAnalysis, currentTrack} = this.props
+        let {audioFeatures, audioAnalysis, currentTrack, networkDelay} = this.props
         let {visible} = this.state
         let tempo = this.props.audioAnalysis.sections[0].tempo
         let {progress_ms} = currentTrack
@@ -36,7 +36,7 @@ class VhrOverlay extends React.Component {
         return <div className="vhr_overlay" >
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} tempo={tempo}/>
-            <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} />
+            <CurrentTrackDisplay currentTrack={currentTrack} audioAnalysis={audioAnalysis} networkDelay={networkDelay} />
             <DateAndTimeDisplay tempo={tempo} />
         </div>
     }

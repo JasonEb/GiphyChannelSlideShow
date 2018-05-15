@@ -28,6 +28,20 @@ class App extends React.Component {
                     loudness:-11.28,
                     mode:1,
                     mode_confidence:0,
+                    start:12,
+                    tempo:120.54,
+                    tempo_confidence:0.36,
+                    time_signature:4,
+                    time_signature_confidence:1
+                },
+                {
+                    confidence:1,
+                    duration: 8.7619,
+                    key:0,
+                    key_confidence:0,
+                    loudness:-11.28,
+                    mode:1,
+                    mode_confidence:0,
                     start:17,
                     tempo:120.54,
                     tempo_confidence:0.36,
@@ -117,7 +131,7 @@ class App extends React.Component {
     //todo
     // figure out why titlecard visibility is not working with beginT network delay
     
-    ComponentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState) {
         let currentTrack = this.state.currentTrack
         let prevTrack = prevState.currentTrack
 
@@ -126,7 +140,6 @@ class App extends React.Component {
             //clear loops
 
             //begin loops
-
             //initialize data
             
             spotifyUtil.getCurrentTrack().then( (res) => {
@@ -142,7 +155,8 @@ class App extends React.Component {
                     })
                 })
             })
-        }      
+        }
+        // return true      
     }
 
     render() {

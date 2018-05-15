@@ -56,7 +56,7 @@ class CurrentTrackDisplay extends React.Component {
         let nextTrack = nextProps.currentTrack
         let oldTrack = this.props.currentTrack
 
-        if (nextTrack.item.name !== oldTrack.item.name) {
+        if (nextTrack.item.id !== oldTrack.item.id) {
             //reset inner state
             //clear all loops
             //begin new loop
@@ -92,12 +92,12 @@ class CurrentTrackDisplay extends React.Component {
         let progressMs = props.currentTrack.progress_ms
 
         let {networkDelay} = this.props
-        duration = duration - progressMs
+        duration = duration - progressMs - networkDelay
         this.introId = setTimeout(this.toggle, duration)
 
         //outro 
         section = sections[sections.length - 1]
-        let timeStamp = section.start * 1000 - progressMs
+        let timeStamp = section.start * 1000 - progressMs - networkDelay
         this.outroId = setTimeout(function() {
             clearTimeout(this.trackInfoLoopId)
             this.setState({idx: 2})
@@ -105,10 +105,6 @@ class CurrentTrackDisplay extends React.Component {
     }
 
     componentDidMount() {
-        let {tempo} = this.props.audioAnalysis.sections[0]
-
-        let beatMs = 60000 / tempo
-        // this.state.loopId = setInterval(this.rotateInfo,beatMs*12)
         // console.log("Current Track and Display Mounted")
     }
 
