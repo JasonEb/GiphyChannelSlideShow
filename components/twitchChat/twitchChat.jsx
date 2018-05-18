@@ -9,7 +9,7 @@ class TwitchChat extends React.Component {
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
-        this.channel = '#interpretivedashdance';
+        this.channel = '#mang0';
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');

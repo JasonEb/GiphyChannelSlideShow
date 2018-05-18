@@ -17,6 +17,8 @@ class GifBox extends React.Component {
       this.state = {
         titleCardVisibility: true,
         titleCardBlendMode: 'unset',
+        twitchChatVisibility: false,
+        twitchChatBlendMode: "hard-light",
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
@@ -27,9 +29,18 @@ class GifBox extends React.Component {
       this.sequenceTitleCardBehavior = this.sequenceTitleCardBehavior.bind(this)
       this.resetState = this.resetState.bind(this)
       this.ids = {}
+      this.clearSequences = this.clearSequences.bind(this)
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
       this.handleKeyPress = this.handleKeyPress.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
+    }
+
+    clearSequences(){
+      let id;
+      for (id in this.ids) {
+        clearTimeout(this.ids[id])
+      }
+      slideUtil.stopShow()
     }
 
     fetchChannelGifs(id) {
@@ -65,11 +76,7 @@ class GifBox extends React.Component {
     }
 
     sequenceTitleCardBehavior(props) {
-      clearTimeout(this.ids.titleCardIntroId)
-      clearTimeout(this.ids.titleCardEffect)
-      clearTimeout(this.ids.halfWayMark)
-      clearTimeout(this.ids.outro)
-      slideUtil.stopShow()
+      this.clearSequences()
       
       let {sections} = props.audioAnalysis
       let section = sections.find( (section) => {
@@ -100,13 +107,23 @@ class GifBox extends React.Component {
       }, timestamp / 2 )
 
       //half way
-      section = sections[ Math.round(sections.length / 2) ]
+      section = sections[ Math.ceil(sections.length / 2) ]
+      timestamp = section.start * 1000 - networkDelay
+
       this.ids.halfWayMark = setTimeout(()=>{
         this.setState({
-          slideClipBlendMode: 'hard-light'
+          slideClipBlendMode: 'hard-light',
+          twitchChatVisibility: true
         })
         slideUtil.initializeShow(section.tempo)        
-      }, section.start * 1000 - networkDelay)
+      },timestamp)
+
+      this.ids.twitchChatOutroId = setTimeout(() => {
+        this.setState({
+          twitchChatVisibility: false
+        })       
+      }, (timestamp + beatMs*32))
+
 
       //outro 
       section = sections[sections.length - 1]
@@ -143,14 +160,14 @@ class GifBox extends React.Component {
         this.setState({urls: oldUrls, currentGiphyTerm: input})
         console.log("Urls count:", oldUrls.length)
         if (this.state.searchVisible) { this.setState({searchVisible: false})}
-        slideUtil.initializeShow(window.tempo)
       })      
     }
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
       let {titleCardVisibility, titleCardBlendMode, slideClipBlendMode,
-        slideClipVisibility, urls, searchVisible} = this.state
+        slideClipVisibility, urls, searchVisible,
+        twitchChatBlendMode, twitchChatVisibility} = this.state
       
       return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
         <VhrOverlay currentTrack={currentTrack} 
@@ -163,7 +180,7 @@ class GifBox extends React.Component {
           blendMode={titleCardBlendMode} />
 
         <GifsList gifUrls={urls.slice(1, 24)} tempo={audioFeatures.tempo} visibility={true} />
-
+        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} />
         <SlideClip url={urls[0]} visibility={slideClipVisibility} blendMode={slideClipBlendMode} audioFeatures={audioFeatures} />
       </div>
     }
