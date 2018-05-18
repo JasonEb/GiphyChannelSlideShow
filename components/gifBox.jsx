@@ -9,6 +9,7 @@ import TwitchChat from './twitchChat/twitchChat'
 import TitleCard from './titleCard.jsx'
 import GifsList from './gifsList.jsx'
 import SlideClip from './slideClip.jsx'
+import GiphySearchCard from './giphySearchCard'
 
 class GifBox extends React.Component {
     constructor(props){
@@ -17,7 +18,9 @@ class GifBox extends React.Component {
         titleCardVisibility: true,
         titleCardBlendMode: 'unset',
         slideClipVisibility: true,
+        searchVisible: false,
         slideClipBlendMode: 'unset',
+        currentGiphyTerm: 'ssbm',
         urls: []
       }
 
@@ -25,6 +28,8 @@ class GifBox extends React.Component {
       this.resetState = this.resetState.bind(this)
       this.ids = {}
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
+      this.handleKeyPress = this.handleKeyPress.bind(this)
+      this.searchGiphy = this.searchGiphy.bind(this)
     }
 
     fetchChannelGifs(id) {
@@ -37,30 +42,10 @@ class GifBox extends React.Component {
       })
     }
 
-    searchGiphy(input="", limit=128) {
-      let offset = Math.round(Math.random()*100)
-      this.state.urls = []
-
-      // clear gif list
-      gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
-        let oldUrls = this.state.urls
-        console.log("Res data", res.data)
-        res.data.forEach( (giphy) => {
-          let {url} = giphy.images.original
-
-          //filtering inappropriate gifs
-          if (gifUtil.filteredGiphy(url)) { 
-            console.log("Skipped ", url)
-          } else {
-            oldUrls.push(url)
-          }
-        })
-
-        oldUrls = Shuffle(oldUrls)
-        this.setState({urls: oldUrls})
-        console.log("Urls count:", oldUrls.length)
-        if (this.state.searchVisible) { this.setState({searchVisible: false})}
-      })      
+    handleKeyPress (e) {
+      if (e.key === "`") {
+        this.setState({searchVisible: !this.state.searchVisible})
+      } 
     }
 
     resetState(){
@@ -75,7 +60,7 @@ class GifBox extends React.Component {
       if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
         this.resetState()
         this.sequenceTitleCardBehavior(nextProps)
-        this.searchGiphy("SSBM")
+        this.searchGiphy(this.state.currentGiphyTerm)
       }
     }
 
@@ -112,7 +97,7 @@ class GifBox extends React.Component {
         this.setState({
           titleCardBlendMode: 'hard-light'
         })
-      }, timestamp / 2)
+      }, timestamp / 2 )
 
       //half way
       section = sections[ Math.round(sections.length / 2) ]
@@ -121,7 +106,7 @@ class GifBox extends React.Component {
           slideClipBlendMode: 'hard-light'
         })
         slideUtil.initializeShow(section.tempo)        
-      }, section.start * 1000)
+      }, section.start * 1000 - networkDelay)
 
       //outro 
       section = sections[sections.length - 1]
@@ -137,17 +122,45 @@ class GifBox extends React.Component {
       // this.fetchChannelGifs()
     }
 
+    searchGiphy(input="", limit="26") {
+      let offset = Math.floor(Math.random()*100)
+      this.state.urls = []
+
+      // clear gif list
+      gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
+        let oldUrls = this.state.urls
+        res.data.forEach( (giphy) => {
+          let {url} = giphy.images.original
+
+          //filtering inappropriate gifs
+          if (gifUtil.filteredGiphy(url)) { 
+            console.log("Skipped ", url)
+          } else {
+            oldUrls.push(url)
+          }
+        })
+        oldUrls = Shuffle(oldUrls)
+        this.setState({urls: oldUrls, currentGiphyTerm: input})
+        console.log("Urls count:", oldUrls.length)
+        if (this.state.searchVisible) { this.setState({searchVisible: false})}
+        slideUtil.initializeShow(window.tempo)
+      })      
+    }
+
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
-      let {titleCardVisibility, titleCardBlendMode, slideClipBlendMode,slideClipVisibility, urls} = this.state
+      let {titleCardVisibility, titleCardBlendMode, slideClipBlendMode,
+        slideClipVisibility, urls, searchVisible} = this.state
       
-      return <div id="slider" tabIndex="1" >
+      return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
         <VhrOverlay currentTrack={currentTrack} 
-                    audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
-
+          audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
+        <GiphySearchCard visible={this.state.searchVisible} 
+          searchGiphy={this.searchGiphy}
+          handleKeyPress={this.handleKeyPress} />
         <TitleCard currentTrack={currentTrack}
-                  visibility={titleCardVisibility}
-                  blendMode={titleCardBlendMode} />
+          visibility={titleCardVisibility}
+          blendMode={titleCardBlendMode} />
 
         <GifsList gifUrls={urls.slice(1, 24)} tempo={audioFeatures.tempo} visibility={true} />
 

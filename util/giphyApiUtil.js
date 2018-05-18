@@ -22,6 +22,8 @@ export const fetchLocalGifUrls = () => {
     return urls;
 }
 
+
+
 export const fetchGiphyChannel = (id="2579919", offset) => {
     // 6343 for matt horror work
     let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&offset=0&limit=150&offset=${offset}`
@@ -32,7 +34,7 @@ export const fetchGiphyChannel = (id="2579919", offset) => {
     })
 }
 
-export const fetchSearchTerms = (searchStr, limit="32", offset="0") => {
+export const fetchSearchTerms = (searchStr, limit="128", offset="0") => {
     // 6343 for matt horror work
     let query = searchStr.replace(" ", "%20")
     let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=${offset}&limit=${limit}`
