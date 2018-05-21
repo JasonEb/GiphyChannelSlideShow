@@ -47,7 +47,7 @@ export const fetchSearchTerms = (searchStr, limit="128", offset="0") => {
 export const fetchMyGiphys = (page="1") => {
     return $.ajax({
         method: 'GET',
-        url: `https://giphy.com/api/v1/channels/2579919/gifs/?page=${page}`
+        url: `https://giphy.com/api/v1/channels/2579919/gifs/?is=1&json=true&page=${page}`
     })
 }
 

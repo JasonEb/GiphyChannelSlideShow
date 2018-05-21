@@ -31,6 +31,7 @@ class GifBox extends React.Component {
       this.ids = {}
       this.clearSequences = this.clearSequences.bind(this)
       this.fetchChannelGifs = this.fetchChannelGifs.bind(this)
+      this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
       this.handleKeyPress = this.handleKeyPress.bind(this)
       this.searchGiphy = this.searchGiphy.bind(this)
     }
@@ -53,6 +54,19 @@ class GifBox extends React.Component {
       })
     }
 
+    fetchMyChannelGifs(page="1") {
+      let oldUrls = this.state.urls
+
+      gifUtil.fetchMyGiphys(page).then( (res) => {
+        if (res.next) {
+          page = res.next[res.next.length - 1]
+          this.fetchMyChannelGifs(page)
+        }
+        let newUrls = res.results.map((result)=>{ return result.images.original.url})
+        this.setState({urls: Shuffle([...oldUrls, ...newUrls]), currentGiphyTerm: "@scruggs"})
+      })
+    }
+
     handleKeyPress (e) {
       if (e.key === "`") {
         this.setState({searchVisible: !this.state.searchVisible})
@@ -63,6 +77,9 @@ class GifBox extends React.Component {
       this.setState({
         titleCardVisibility: true,
         titleCardBlendMode: 'unset',
+        twitchChatVisibility: false,
+        twitchChatBlendMode: "hard-light",
+        searchVisible: false,
         slideClipBlendMode: 'unset',
       })
     }
@@ -119,8 +136,10 @@ class GifBox extends React.Component {
       },timestamp)
 
       this.ids.twitchChatOutroId = setTimeout(() => {
+        let {urls} = this.state
         this.setState({
-          twitchChatVisibility: false
+          twitchChatVisibility: false,
+          urls: [urls[0], Shuffle(urls[1, urls.length - 1])]
         })       
       }, (timestamp + beatMs*32))
 
@@ -132,35 +151,38 @@ class GifBox extends React.Component {
         this.setState({titleCardVisibility: true})
       }, timestamp)
     }
-    
-    componentDidMount() {
-      // this.sequenceTitleCardBehavior(this.props)
-      // this.searchGiphy("SSBM")
-      // this.fetchChannelGifs()
-    }
 
     searchGiphy(input="", limit="26") {
       let offset = Math.floor(Math.random()*100)
       this.state.urls = []
 
-      // clear gif list
-      gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
-        let oldUrls = this.state.urls
-        res.data.forEach( (giphy) => {
-          let {url} = giphy.images.original
+      if(input === "@scruggs") {
+        this.fetchMyChannelGifs()
+      } else {
+        // clear gif list
+        gifUtil.fetchSearchTerms(input, limit, offset).then( (res) => {
+          let oldUrls = this.state.urls
+          res.data.forEach( (giphy) => {
+            let {url} = giphy.images.original
 
-          //filtering inappropriate gifs
-          if (gifUtil.filteredGiphy(url)) { 
-            console.log("Skipped ", url)
-          } else {
-            oldUrls.push(url)
-          }
+            //filtering inappropriate gifs
+            if (gifUtil.filteredGiphy(url)) { 
+              console.log("Skipped ", url)
+            } else {
+              oldUrls.push(url)
+            }
+          })
+          oldUrls = Shuffle(oldUrls)
+          this.setState({urls: oldUrls, currentGiphyTerm: input})
         })
-        oldUrls = Shuffle(oldUrls)
-        this.setState({urls: oldUrls, currentGiphyTerm: input})
-        console.log("Urls count:", oldUrls.length)
-        if (this.state.searchVisible) { this.setState({searchVisible: false})}
-      })      
+      }
+      if (this.state.searchVisible) { this.setState({searchVisible: false})}
+    }
+    
+    componentDidMount() {
+      // this.sequenceTitleCardBehavior(this.props)
+      // this.searchGiphy("SSBM")
+      // this.fetchChannelGifs()
     }
 
     render() {
