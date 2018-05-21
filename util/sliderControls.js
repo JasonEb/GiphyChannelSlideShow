@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 export const initializeShow = (bpm = 120) => {
-    stopShow();
+    // stopShow();
     let beatMs = 60000/(bpm);
 
     var slider = $("#slider");
@@ -36,7 +36,7 @@ export const initializeShow = (bpm = 120) => {
       }, beatMs/8);
     }, beatMs*8);
     /* Glitch for slider - end code */
-    
+    window.intervals.push(glitchMoveInt)
     /* Slide change */
     let slideId = setInterval(nextSlide, beatMs*8);
     window.intervals.push(slideId);
@@ -56,6 +56,8 @@ export const initializeShow = (bpm = 120) => {
       //   $("#slideClip").hide()
       // }, beatMs); //beatMs represents the duration of slide noise clip
     }
+
+    return 
 }
 
 export const stopShow = () => {
@@ -63,7 +65,7 @@ export const stopShow = () => {
     intervals.forEach((int)=>{
         clearInterval(int);
     })
-    
+
     $("#glitchline").remove()
 
     window.intervals = [];
