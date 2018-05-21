@@ -8,9 +8,8 @@ class SlideClip extends React.Component {
         rhythm: 1, 
         beatDiv: 4, 
         flashMax: 3, 
-        measures:12 }
+        measures:8 }
       this.toggle = this.toggle.bind(this)
-      this.toggleEffect = this.toggleEffect.bind(this)
       this.flash = this.flash.bind(this)
       this.loopId = 26
     }
@@ -19,12 +18,8 @@ class SlideClip extends React.Component {
       this.setState({visible: !this.state.visible})
     }
 
-    toggleEffect() {
-      this.setState({mixBlendMode: "hard-light"})
-    }
-
-    flash() {
-      let beatMs = 60000/(window.tempo);
+    flash(tempo) {
+      let beatMs = 60000/(tempo);
       let {rhythm,beatDiv, flashMax } = this.state
       let max = Math.floor(Math.random() * flashMax);
 
@@ -41,11 +36,12 @@ class SlideClip extends React.Component {
     componentWillReceiveProps(nextProps) {
       if (nextProps.url !== this.props.url){
         clearInterval(this.loopId)
-        let beatMs = 60000/(nextProps.audioFeatures.tempo);
         let {measures} = this.state
-        this.loopId = setInterval( () => this.flash() , beatMs*measures); 
+        let beatMs = 60000 / nextProps.audioFeatures.tempo
+        this.loopId = setInterval( () => this.flash(nextProps.audioFeatures.tempo) , beatMs*measures); 
       }
     }
+
     componentDidMount() {
       let beatMs = 60000/(this.props.audioFeatures.tempo);
       let {measures} = this.state
@@ -60,7 +56,7 @@ class SlideClip extends React.Component {
       let style = {
         display: visible ? null : 'none',
         mixBlendMode: this.props.blendMode,
-        animation: `swing linear ${beatMs*8}ms infinite`,
+        // animation: `swing linear ${beatMs*8}ms infinite`,
         width: '100%',
         height: '70vh',
         position: 'absolute',
