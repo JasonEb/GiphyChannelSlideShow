@@ -2,7 +2,7 @@
   color: white;
   width: 100%;
   height: 100vh;
-  background-color: black;
+  background-color: var(--main-bg, black);
   position: absolute;
   background-size: 100%;
   z-index: 99;

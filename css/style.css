@@ -14,6 +14,7 @@ html{
     margin: 0;
     padding: 0;
     /* filter:sepia(1.0); */
+    --main-bg: black
 }
 
 body {
@@ -21,7 +22,7 @@ body {
     padding: 0;
     width: 100vw;
     overflow: hidden;
-    background-color: black;
+    background-color: var(--main-bg, black);
   }
 
   *,

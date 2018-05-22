@@ -18,9 +18,9 @@
     z-index: 90;
   }
 
-  /* #slideClip {
-    display: none;
-  } */
+  #slideClip {
+    background-color: var(--main-bg, black)
+  }
   
   #slider li img {
     width: 100%;
