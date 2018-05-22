@@ -2,10 +2,17 @@ import React from 'react';
 import * as spotifyUtil from '../util/spotifyUtil'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
 import TwitchChat from './twitchChat/twitchChat'
+import GiphySearchCard from './giphySearchCard'
 
 class OverlaySlider extends React.Component {
     constructor(props){
       super(props)
+      this.state = {
+        twitchChatVisibility: false,
+        twitchChatBlendMode: "hard-light",
+        searchVisible: false    
+      }
+      this.handleKeyPress = this.handleKeyPress.bind(this)
     }
     
     componentDidMount() {
@@ -13,14 +20,28 @@ class OverlaySlider extends React.Component {
       document.body.style.setProperty('--main-bg', 'green')
     }
 
+    handleKeyPress (e) {
+      if (e.key === "`") {
+        this.setState({searchVisible: !this.state.searchVisible})
+      } 
+    }
+
+
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
-
-      return <div id="slider" tabIndex="1" >
+      let {twitchChatBlendMode, twitchChatVisibility} = this.state
+      
+      return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
         <VhrOverlay currentTrack={currentTrack} 
         audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} 
         />
+
+        <GiphySearchCard visible={this.state.searchVisible} 
+          searchGiphy={()=>{}}
+          handleKeyPress={this.handleKeyPress} />
+
+        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} />
       </div>
     }
   }

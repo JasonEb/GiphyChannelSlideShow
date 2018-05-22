@@ -1,5 +1,6 @@
 import React from 'react'
-import GiphySearchBar from './giphySearchBar';
+import GiphySearchBar from './giphySearchBar'
+import NavMenu from './navMenu'
 
 class GiphySearchCard extends React.Component {
 
@@ -13,6 +14,8 @@ class GiphySearchCard extends React.Component {
                 channelSelect={this.props.channelSelect}
                 searchGiphy={this.props.searchGiphy}
                 handleKeyPress={this.props.handleKeyPress} />
+            
+            <NavMenu />
         </div>
     }
   }
