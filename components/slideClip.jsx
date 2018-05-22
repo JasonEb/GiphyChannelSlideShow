@@ -7,10 +7,10 @@ class SlideClip extends React.Component {
       this.state = { visible: true,
         rhythm: 1, 
         beatDiv: 4, 
-        flashMax: 3, 
-        measures:8 }
+        flashMax: 3}
       this.toggle = this.toggle.bind(this)
       this.flash = this.flash.bind(this)
+      this.onError = this.onError.bind(this)
       this.loopId = 26
     }
 
@@ -36,7 +36,10 @@ class SlideClip extends React.Component {
     componentWillReceiveProps(nextProps) {
       if (nextProps.url !== this.props.url){
         clearInterval(this.loopId)
-        let {measures} = this.state
+        
+        // dynamic measure matching
+        let measures = nextProps.audioFeatures.danceability <= 0.400 ? 12 : 8
+
         let beatMs = 60000 / nextProps.audioFeatures.tempo
         this.loopId = setInterval( () => this.flash(nextProps.audioFeatures.tempo) , beatMs*measures); 
       }
@@ -46,6 +49,14 @@ class SlideClip extends React.Component {
       let beatMs = 60000/(this.props.audioFeatures.tempo);
       let {measures} = this.state
       this.loopId = setInterval( () => this.flash() , beatMs*measures); //beatMs represents the duration of slide noise clip
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.loopId)
+    }
+
+    onError(err) {
+      debugger
     }
 
     render() {
@@ -63,7 +74,6 @@ class SlideClip extends React.Component {
         backgroundImage: `url("${url}")`,
         backgroundSize: "contain",
         backgroundRepeat: 'no-repeat',
-        backgroundColor: 'black',
         backgroundPosition: 'center',
         zIndex: '91',
         marginTop: '7vh',
@@ -72,7 +82,7 @@ class SlideClip extends React.Component {
         visibility: this.props.visibility ? "visible" : "hidden"
       }
 
-      return <div id="slideClip" style={style}></div>
+      return <div id="slideClip" style={style} onError={this.onError} ></div>
     }
   }
 

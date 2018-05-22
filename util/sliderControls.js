@@ -1,7 +1,6 @@
 import $ from 'jquery';
 
 export const initializeShow = (bpm = 120) => {
-    // stopShow();
     let beatMs = 60000/(bpm);
 
     var slider = $("#slider");

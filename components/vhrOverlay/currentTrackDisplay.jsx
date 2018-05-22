@@ -28,23 +28,24 @@ class CurrentTrackDisplay extends React.Component {
 
         this.sequenceBehavior = this.sequenceBehavior.bind(this)
     }
-    formatArtistsData(artistsData) {
-        let artists = artistsData.map( (artist) => { return artist.name}).join(", ")
-        let text = 'Artists'
-        if (artistsData.length === 1) {
-            text = `Artist`
-        }
-        return `${text}: ${artists}`
+
+    componentDidMount() {
+        // console.log("Current Track and Display Mounted"
+        clearInterval(this.trackInfoLoopId)
+        clearTimeout(this.introId)
+        clearTimeout(this.outroId)   
+        let beatMs = 60000 / this.props.audioAnalysis.sections[1].tempo
+        this.trackInfoLoopId = window.setInterval(()=>{
+            this.rotateInfo()
+            if ( window.location.uref == "http://127.0.0.1:8000/overlay"){ debugger }
+        }, beatMs*12)
+        this.sequenceBehavior(this.props)
     }
 
-    rotateInfo() {
-        let {count, info} = this.state
-        let idx = count % info.length
-        this.setState({count: count + 1, idx: idx})    
-    }
-    
-    toggle() {
-        this.setState({visible: !this.state.visible})
+    componentWillUnmount() {
+        clearInterval(this.trackInfoLoopId)
+        clearTimeout(this.introId)
+        clearTimeout(this.outroId)       
     }
 
     componentWillReceiveProps(nextProps) {
@@ -82,6 +83,25 @@ class CurrentTrackDisplay extends React.Component {
         }
     }
 
+    formatArtistsData(artistsData) {
+        let artists = artistsData.map( (artist) => { return artist.name}).join(", ")
+        let text = 'Artists'
+        if (artistsData.length === 1) {
+            text = `Artist`
+        }
+        return `${text}: ${artists}`
+    }
+
+    rotateInfo() {
+        let {count, info} = this.state
+        let idx = count % info.length
+        this.setState({count: count + 1, idx: idx})    
+    }
+    
+    toggle() {
+        this.setState({visible: !this.state.visible})
+    }
+
     sequenceBehavior(props) {
         let {sections} = props.audioAnalysis
         let section = sections.find( (section) => {
@@ -103,9 +123,7 @@ class CurrentTrackDisplay extends React.Component {
         }.bind(this), timeStamp)
     }
 
-    componentDidMount() {
-        // console.log("Current Track and Display Mounted")
-    }
+
 
     render() {
         let {info, idx, visible} = this.state

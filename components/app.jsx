@@ -107,13 +107,18 @@ class App extends React.Component {
         })
     }
 
-    spotifyWorker(tempo) {
+    spotifyWorker(tempo = 120) {
         let beatMs = 60000 / tempo
+        if (beatMs * 12 < 4000) { debugger }
         return setInterval(()=> {
             spotifyUtil.getCurrentTrack().then((res)=>{
                 this.setState({currentTrack: res})
-            })
-        }, beatMs*8)
+            }).catch((res)=>{ 
+                debugger
+                const returnUrl = 'http://127.0.0.1:8000'
+                spotifyUtil.getAuthTokenImplicit(returnUrl)
+             })
+        }, beatMs*12)
     }
 
     componentDidMount() {
@@ -126,6 +131,10 @@ class App extends React.Component {
             // figure out how to auto redirect routes...
             this.props.history.push("/gifbox")
         }
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.spotifyLoopId)
     }
 
     //todo
@@ -173,7 +182,7 @@ class App extends React.Component {
                     />
 
                     <Route exact path="/overlay" render={
-                        (props) => <OverlaySlider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
+                        (props) => <OverlaySlider {...props} networkDelay={networkDelay} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
                 </Switch>
             </div>

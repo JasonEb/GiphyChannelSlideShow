@@ -7,27 +7,19 @@ class OverlaySlider extends React.Component {
     constructor(props){
       super(props)
     }
-
-    // spotifyUtil.getCurrentTrack().then( (res) => {
-    //     spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
-    //         spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
-    //             this.setState({currentTrack: res, audioFeatures: res1, audioAnalysis: res2})
-    //         })
-    //     })
-    // })
-
     
     componentDidMount() {
       console.log("Component mounted?")
+      document.body.style.setProperty('--main-bg', 'green')
     }
 
 
     render() {
-      let {currentTrack, audioAnalysis, audioFeatures} = this.props
+      let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
 
       return <div id="slider" tabIndex="1" >
         <VhrOverlay currentTrack={currentTrack} 
-        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}
+        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} 
         />
       </div>
     }

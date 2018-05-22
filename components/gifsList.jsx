@@ -36,6 +36,11 @@ class GifsList extends React.Component {
       this.play(this.props)
     }
 
+    componentWillUnmount() {
+      let {intervalId} = this
+      clearInterval(intervalId)
+    }
+
     componentWillReceiveProps(nextProps) {
       if(nextProps.tempo !== this.props.tempo) {
         this.play(nextProps)

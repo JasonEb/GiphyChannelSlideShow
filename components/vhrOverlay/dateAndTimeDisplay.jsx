@@ -34,6 +34,10 @@ class DateAndTimeDisplay extends React.Component {
         this.loopId = setInterval(this.rotateInfo,beatMs*16)
     }
 
+    componentWillUnmount() {
+        clearInterval(this.loopId)
+    }
+
     render() {
         let {date, count} = this.state
         let {tempo} = this.props || 120

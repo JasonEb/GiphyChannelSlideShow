@@ -5,11 +5,11 @@ class TwitchChat extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            messages: []
+            messages: [],
+            channel: "#mang0"
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
-        this.channel = '#mang0';
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
@@ -66,7 +66,7 @@ class TwitchChat extends React.Component {
                     let {name, artists} = currentTrack.item
                     let artist = artists.map( (artist) => { return artist.name}).join(", ")
 
-                    this.webSocket.send(`PRIVMSG ${this.channel} :The song is "${name}", by ${artist} `);
+                    this.webSocket.send(`PRIVMSG ${this.state.channel} :The song is "${name}", by ${artist} `);
                 }
 
                 if (parsed.message && parsed.message.startsWith("!giphy search")) {
@@ -132,12 +132,19 @@ class TwitchChat extends React.Component {
             socket.send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership');
             socket.send('PASS ' + this.password);
             socket.send('NICK ' + this.username);
-            socket.send('JOIN ' + this.channel);
+            socket.send('JOIN ' + this.state.channel);
         }
     }
 
     onError(msg) {
         console.log('Twitch Chat Error: ', msg)
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.channel !== prevState.channnel) {
+            this.closeChat()
+            this.openChat()
+        }
     }
 
     render() {

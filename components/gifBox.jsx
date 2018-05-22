@@ -22,7 +22,7 @@ class GifBox extends React.Component {
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
-        currentGiphyTerm: 'ssbm',
+        currentGiphyTerm: 'glitch',
         urls: []
       }
 
@@ -44,6 +44,26 @@ class GifBox extends React.Component {
       slideUtil.stopShow()
     }
 
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
+        this.resetState()
+        this.searchGiphy(this.state.currentGiphyTerm)
+        this.sequenceTitleCardBehavior(nextProps)
+        console.table(nextProps.audioFeatures)
+      }
+    }
+
+    componentDidMount() {
+      document.body.style.setProperty('--main-bg', 'black')
+      this.resetState()
+      this.sequenceTitleCardBehavior(this.props)
+      this.searchGiphy(this.state.currentGiphyTerm)
+    }
+
+    componentWillUnmount(){
+      this.clearSequences()
+    }
+
     fetchChannelGifs(id) {
       let offset = Math.floor(Math.random()*75)
       gifUtil.fetchGiphyChannel(id, offset).then( (res) => {
@@ -55,13 +75,12 @@ class GifBox extends React.Component {
     }
 
     fetchMyChannelGifs(page="1") {
-      let oldUrls = this.state.urls
-
       gifUtil.fetchMyGiphys(page).then( (res) => {
         if (res.next) {
           page = res.next[res.next.length - 1]
           this.fetchMyChannelGifs(page)
         }
+        let oldUrls = this.state.urls
         let newUrls = res.results.map((result)=>{ return result.images.original.url})
         this.setState({urls: Shuffle([...oldUrls, ...newUrls]), currentGiphyTerm: "@scruggs"})
       })
@@ -84,14 +103,6 @@ class GifBox extends React.Component {
       })
     }
 
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
-        this.resetState()
-        this.sequenceTitleCardBehavior(nextProps)
-        this.searchGiphy(this.state.currentGiphyTerm)
-      }
-    }
-
     sequenceTitleCardBehavior(props) {
       this.clearSequences()
       
@@ -110,24 +121,24 @@ class GifBox extends React.Component {
       console.log("netWorkDelay at sequenceTitleBehavior", networkDelay)
       let timestamp = duration - progressMs - networkDelay
       console.log("timestamp at gifBox: ", timestamp)
-      this.ids.titleCardIntroId = setTimeout(() => {
+      this.ids.titleCardIntroA = setTimeout(() => {
         this.setState({
           titleCardVisibility: false
         })
       }, timestamp)
     
       //intro card effect
-      this.ids.titleCardEffect = setTimeout(() => {
+      this.ids.titleCardB = setTimeout(() => {
         this.setState({
           titleCardBlendMode: 'hard-light'
         })
       }, timestamp / 2 )
 
       //half way
-      section = sections[ Math.ceil(sections.length / 2) ]
-      timestamp = section.start * 1000 - networkDelay
+      section = sections[ Math.round(sections.length / 2) ]
+      timestamp = section.start * 1000 - networkDelay - progressMs
 
-      this.ids.halfWayMark = setTimeout(()=>{
+      this.ids.halfWayMarkA = setTimeout(()=>{
         this.setState({
           slideClipBlendMode: 'hard-light',
           twitchChatVisibility: true
@@ -135,14 +146,15 @@ class GifBox extends React.Component {
         slideUtil.initializeShow(section.tempo)        
       },timestamp)
 
-      this.ids.twitchChatOutroId = setTimeout(() => {
+      beatMs = 60000/(section.tempo)
+      this.ids.halfWayMarkB = setTimeout(()=>{
         let {urls} = this.state
+        let newUrls = [urls[0], ...Shuffle(urls.slice(1, urls.length - 1))]
         this.setState({
           twitchChatVisibility: false,
-          urls: [urls[0], Shuffle(urls[1, urls.length - 1])]
-        })       
-      }, (timestamp + beatMs*32))
-
+          urls: newUrls
+        })  
+      },timestamp + beatMs*16)
 
       //outro 
       section = sections[sections.length - 1]
@@ -177,12 +189,6 @@ class GifBox extends React.Component {
         })
       }
       if (this.state.searchVisible) { this.setState({searchVisible: false})}
-    }
-    
-    componentDidMount() {
-      // this.sequenceTitleCardBehavior(this.props)
-      // this.searchGiphy("SSBM")
-      // this.fetchChannelGifs()
     }
 
     render() {
