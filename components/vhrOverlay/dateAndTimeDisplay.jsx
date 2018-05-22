@@ -12,7 +12,7 @@ class DateAndTimeDisplay extends React.Component {
 
     rotateInfo() {
         let {count} = this.state
-        this.setState({count: count + 1})    
+        this.setState({count: count + 1, date: new Date()})    
     }
 
     toggle() {

@@ -141,7 +141,7 @@ class TwitchChat extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.channel !== prevState.channnel) {
+        if (this.state.channel !== prevState.channel) {
             this.closeChat()
             this.openChat()
         }
