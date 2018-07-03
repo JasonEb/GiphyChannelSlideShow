@@ -18,7 +18,7 @@ class App extends React.Component {
                 progress_ms: 60000,
             },
             audioAnalysis: {
-                bars: [{start: 0.26534, duration: 1.97734, confidence: 0.32}],
+                bars: [{start: 0.26534, duration: 1.97734, confidence: 0.32}],  
                 beats: [{start: 0.26534, duration: 0.48953, confidence: 0.668}],
                 sections: [{
                     confidence:1,
@@ -99,7 +99,7 @@ class App extends React.Component {
                     this.setState({currentTrack: res, 
                         audioFeatures: res1, audioAnalysis: res2, 
                         networkDelay: Date.now() - beginT})
-                    let tempo = res2.sections[0].tempo
+                    let tempo = res1.tempo
                     clearInterval(this.spotifyLoopId)
                     this.spotifyLoopId = this.spotifyWorker(tempo)
                 })
@@ -109,7 +109,6 @@ class App extends React.Component {
 
     spotifyWorker(tempo = 120) {
         let beatMs = 60000 / tempo
-        if (beatMs * 12 < 4000) { debugger }
         return setInterval(()=> {
             spotifyUtil.getCurrentTrack().then((res)=>{
                 this.setState({currentTrack: res})
@@ -127,7 +126,7 @@ class App extends React.Component {
           } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/gifbox")
+            this.props.history.push("/overlay")
         }
     }
 
@@ -156,7 +155,7 @@ class App extends React.Component {
                         this.setState({currentTrack: res, 
                             audioFeatures: res1, audioAnalysis: res2,
                             networkDelay: Date.now() - beginT })
-                        let tempo = res2.sections[0].tempo
+                        let tempo = res1.tempo
                         clearInterval(this.spotifyLoopId)
                         this.spotifyLoopId = this.spotifyWorker(tempo)
                     })
@@ -168,7 +167,6 @@ class App extends React.Component {
 
     render() {
         let {currentTrack, audioAnalysis, audioFeatures, spotifyAuthToken, networkDelay} = this.state
-        let {initialSpotifyCall} = this
         // <Route path="/" render={
         //     (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
         // />
@@ -176,7 +174,7 @@ class App extends React.Component {
             <div id="app">
                 <Switch>
                     <Route exact path="/gifbox" render={
-                        (props) => <GifBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} initialSpotifyCall={initialSpotifyCall} />}
+                        (props) => <GifBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
                     />
 
                     <Route exact path="/overlay" render={

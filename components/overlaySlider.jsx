@@ -17,7 +17,8 @@ class OverlaySlider extends React.Component {
     
     componentDidMount() {
       console.log("Component mounted?")
-      document.body.style.setProperty('--main-bg', 'green')
+      document.body.style.setProperty('--main-bg', '#00ffff')
+      document.title = "Overlay"
     }
 
     handleKeyPress (e) {
@@ -40,8 +41,6 @@ class OverlaySlider extends React.Component {
         <GiphySearchCard visible={this.state.searchVisible} 
           searchGiphy={()=>{}}
           handleKeyPress={this.handleKeyPress} />
-
-        <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} />
       </div>
     }
   }
