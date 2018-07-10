@@ -61,7 +61,7 @@ class CurrentTrackDisplay extends React.Component {
             //begin new loop
             //  set new outro
             let {name, artists, album} = nextProps.currentTrack.item
-            let beatMs = 60000 / nextProps.audioAnalysis.sections[0].tempo
+            let beatMs = 60000 / nextProps.tempo
             
             this.setState({
                 count: 0, 
@@ -127,10 +127,8 @@ class CurrentTrackDisplay extends React.Component {
 
     render() {
         let {info, idx, visible} = this.state
-        let {tempo} = this.props.audioAnalysis.sections[0]
-
+        let {tempo} = this.props
         let beatMs = 60000 / tempo
-
         let style = {
             display: visible ? null : 'none',
             animation: `blur ${beatMs*2}ms infinite`

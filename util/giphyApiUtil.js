@@ -36,18 +36,27 @@ export const fetchGiphyChannel = (id="2579919", offset) => {
 
 export const fetchSearchTerms = (searchStr, limit="128", offset="0") => {
     // 6343 for matt horror work
+    let headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Methods': "GET,HEAD,OPTIONS",
+        'Access-Control-Allow-Headers': 'Content-Type, Accept, x-requested-with, cache-control'
+    }
+
     let query = searchStr.replace(" ", "%20")
-    let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=${offset}&limit=${limit}`
+    let url = `https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=${query}&offset=${offset}&limit=${limit}&rating=pg-13`
     return $.ajax({
         method: 'GET',
-        url: url
+        url: url,
+        headers: headers
     })
 }
 
 export const fetchMyGiphys = (page="1") => {
+
     return $.ajax({
         method: 'GET',
-        url: `https://giphy.com/api/v1/channels/2579919/gifs/?is=1&json=true&page=${page}`
+        url: `https://giphy.com/api/v1/channels/2579919/gifs/?is=1&json=true&page=${page}`,
     })
 }
 
@@ -129,7 +138,26 @@ export const filteredGiphy = (url) => {
         //american flag
         'https://media.giphy.com/media/GHZ9RZFGqsWbK/giphy.gif',
         'https://media.giphy.com/media/3oriOiFbufnNR5zMVq/giphy.gif',
-        'https://media.giphy.com/media/W0pRWPuxooMzC/giphy.gif'
+        'https://media.giphy.com/media/W0pRWPuxooMzC/giphy.gif',
+
+        //tennis
+        'https://media.giphy.com/media/1aEldfdIJgFjO/giphy.gif',
+        'https://media.giphy.com/media/hny6GR6bh2uZy/giphy.gif',
+        'https://media.giphy.com/media/f1J0GlG71C9IQ/giphy.gif',
+        'https://media.giphy.com/media/3o7aCYYpM8saDOBalG/giphy.gif',
+        'https://media.giphy.com/media/xT9IgxdH7BOSflrHKo/giphy.gif',
+        'https://media.giphy.com/media/ZyDgv2gK4jOhO/giphy.gif',
+        'https://media.giphy.com/media/GuNY7esNu6ReU/giphy.gif',
+        'https://media.giphy.com/media/d0dhYPhfGHBdu/giphy.gif',
+        'https://media.giphy.com/media/uKmJiL7hQJ2kE/giphy.gif',
+        'https://media.giphy.com/media/pybd5zj5xJ7na/giphy.gif',
+        'https://media.giphy.com/media/ZlVe9QI6N6P0k/giphy.gif',
+
+        //3rd strike
+        'https://media.giphy.com/media/oKbvpzdyDDaJW/giphy.gif',
+        'https://media.giphy.com/media/c8M5x5Cehjbl6/giphy.gif',
+        'https://media.giphy.com/media/11N2FBY8UBjFUk/giphy.gif',
+        'https://media.giphy.com/media/oiGNCCRnjmP1m/giphy.gif',
     ]
 
     //extract id
@@ -137,4 +165,13 @@ export const filteredGiphy = (url) => {
     var id = url.slice(idx + 7, url.length)
 
     return list.some((bannedUrl) => { return bannedUrl.includes(id) })
+}
+
+export const setupHeaders = () => {
+    //change this eventually
+    $.ajaxSetup({
+        headers: { 'Content-Type': 'application/json',
+                   'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*' }
+    });
 }

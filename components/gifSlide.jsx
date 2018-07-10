@@ -13,7 +13,7 @@ class GifSlide extends React.Component {
     render() {
     let {url, className } = this.props
       return <li className={className}>
-        <img src={url} alt={"Test"} crossOrigin="anonymous" onError={this.onError} />
+        <img src={url} alt={""} crossOrigin={"anonymous"} onError={this.onError} />
       </li>
     }
 }

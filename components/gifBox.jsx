@@ -22,7 +22,7 @@ class GifBox extends React.Component {
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
-        currentGiphyTerm: 'street+fighter+3',
+        currentGiphyTerm: 'mario+tennis',
         urls: []
       }
 
@@ -197,10 +197,9 @@ class GifBox extends React.Component {
       let {titleCardVisibility, titleCardBlendMode, slideClipBlendMode,
         slideClipVisibility, urls, searchVisible,
         twitchChatBlendMode, twitchChatVisibility} = this.state
-      
+        // <VhrOverlay currentTrack={currentTrack} 
+        //   audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
       return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
-        <VhrOverlay currentTrack={currentTrack} 
-          audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
         <GiphySearchCard visible={this.state.searchVisible} 
           searchGiphy={this.searchGiphy}
           handleKeyPress={this.handleKeyPress} />
