@@ -6,7 +6,6 @@ div#search_card{
     position: relative;
     background-color: transparent;
     color: white;
-    animation: blur 30ms infinite, jerk 50ms infinite;
   }
 
   ul.nav_menu {
@@ -19,6 +18,7 @@ div#search_card{
     font-family: "VT323", monospace;
     font-weight: bold;
     color: grey;
+    animation: blur 30ms infinite, jerk 50ms infinite;
   }
 
   .scanline{

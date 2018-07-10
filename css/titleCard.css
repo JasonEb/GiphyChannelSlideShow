@@ -6,6 +6,7 @@
   position: absolute;
   background-size: 100%;
   z-index: 99;
+  will-change: transform;
 }
 
 .glitch {

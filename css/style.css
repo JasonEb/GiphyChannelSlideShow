@@ -14,7 +14,7 @@ html{
     margin: 0;
     padding: 0;
     /* filter:sepia(1.0); */
-    --main-bg: black
+    --main-bg: black;
 }
 
 body {
