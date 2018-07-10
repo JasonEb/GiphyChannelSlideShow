@@ -61,7 +61,7 @@ class TwitchChat extends React.Component {
                 }
 
                 // query handler
-                if (parsed.message && parsed.message.startsWith("!song")) {
+                if (parsed.message && parsed.message.startsWith("?song")) {
                     let {currentTrack} = this.props
                     let {name, artists} = currentTrack.item
                     let artist = artists.map( (artist) => { return artist.name}).join(", ")
@@ -69,14 +69,14 @@ class TwitchChat extends React.Component {
                     this.webSocket.send(`PRIVMSG ${this.state.channel} :The song is "${name}", by ${artist} `);
                 }
 
-                if (parsed.message && parsed.message.startsWith("!giphy search")) {
+                if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??search")) {
                     let idx = parsed.message.indexOf("search")
                     let searchString = parsed.message.substring(idx + "search".length, parsed.message.length).trim()
                     this.props.searchGiphy(searchString)
                 }
 
                 
-                if (parsed.message && parsed.message.startsWith("!shuffle")) {
+                if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??shuffle")) {
                     return this.props.shuffleCurrentCards()
                 }
             }
