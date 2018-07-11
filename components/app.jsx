@@ -4,6 +4,7 @@ import { Route, Switch, NavLink, withRouter} from 'react-router-dom'
 import Slider from './slider'
 import OverlaySlider from './overlaySlider'
 import GifBox from './gifBox.jsx'
+import TwitchClip from './twitchClips/twitchClip'
 
 import * as spotifyUtil from '../util/spotifyUtil';
 
@@ -126,7 +127,7 @@ class App extends React.Component {
           } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/overlay")
+            this.props.history.push("/twitch")
         }
     }
 
@@ -166,7 +167,7 @@ class App extends React.Component {
     }
 
     render() {
-        let {currentTrack, audioAnalysis, audioFeatures, spotifyAuthToken, networkDelay} = this.state
+        let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.state
         // <Route path="/" render={
         //     (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
         // />
@@ -180,6 +181,10 @@ class App extends React.Component {
                     <Route exact path="/overlay" render={
                         (props) => <OverlaySlider {...props} networkDelay={networkDelay} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
+
+                    <Route exact path="/twitch" render={
+                        (props) => <ClipBox  />}
+                    />
                 </Switch>
             </div>
         )
@@ -187,9 +192,3 @@ class App extends React.Component {
 }
 
 export default withRouter(App)
-
-// <div className="navBar">
-// <NavLink exact className="nav-item" activeStyle={{ fontWeight: 'bold' }} to='/'>Away Screen</NavLink>
-// <NavLink className="nav-item" activeStyle={{ fontWeight: 'bold' }} to='/greenscreen'>Green Screen</NavLink>
-// </div>
-
