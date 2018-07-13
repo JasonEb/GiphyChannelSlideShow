@@ -54,7 +54,7 @@ class GifBox extends React.Component {
     }
 
     componentDidMount() {
-      document.body.style.setProperty('--main-bg', 'black')
+      document.body.style.setProperty('--main-bg', 'red')
       document.title = "GifBox"
       this.resetState()
       this.sequenceTitleCardBehavior(this.props)
@@ -197,9 +197,10 @@ class GifBox extends React.Component {
       let {titleCardVisibility, titleCardBlendMode, slideClipBlendMode,
         slideClipVisibility, urls, searchVisible,
         twitchChatBlendMode, twitchChatVisibility} = this.state
-        // <VhrOverlay currentTrack={currentTrack} 
-        //   audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
+
       return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
+      <VhrOverlay currentTrack={currentTrack} 
+      audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
         <GiphySearchCard visible={this.state.searchVisible} 
           searchGiphy={this.searchGiphy}
           handleKeyPress={this.handleKeyPress} />

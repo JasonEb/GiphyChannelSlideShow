@@ -54,10 +54,10 @@ class GifsList extends React.Component {
         return <GifSlide url={url} key={idx} className="slides"/>
       })
 
-      let beatMs = 60000/(window.tempo);
+      let beatMs = 60000/(this.props.tempo);
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
-        animation: `swing linear ${beatMs*8}ms infinite`
+        // animation: `swing linear ${beatMs*8}ms infinite`
       }
       return <ul className="slides" style={style}>
       <GifSlide url={urls[idx]} className="slides current" style={{}} />

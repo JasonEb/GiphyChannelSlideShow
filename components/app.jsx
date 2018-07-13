@@ -4,7 +4,9 @@ import { Route, Switch, NavLink, withRouter} from 'react-router-dom'
 import Slider from './slider'
 import OverlaySlider from './overlaySlider'
 import GifBox from './gifBox.jsx'
-import TwitchClip from './twitchClips/twitchClip'
+import ClipBox from './twitchClips/clipBox'
+import Clip from './twitchClips/clip'
+import Clips from './twitchClips/clips'
 
 import * as spotifyUtil from '../util/spotifyUtil';
 
@@ -117,7 +119,7 @@ class App extends React.Component {
                 const returnUrl = 'http://127.0.0.1:8000'
                 spotifyUtil.getAuthTokenImplicit(returnUrl)
              })
-        }, beatMs*12)
+        }, beatMs*8)
     }
 
     componentDidMount() {
@@ -127,7 +129,7 @@ class App extends React.Component {
           } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/twitch")
+            this.props.history.push("/clipbox")
         }
     }
 
@@ -145,10 +147,8 @@ class App extends React.Component {
         if (currentTrack.item.id !== prevTrack.item.id) { 
             //update state
             //clear loops
-
             //begin loops
             //initialize data
-            
             spotifyUtil.getCurrentTrack().then( (res) => {
                 let beginT = Date.now()
                 spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
@@ -182,8 +182,16 @@ class App extends React.Component {
                         (props) => <OverlaySlider {...props} networkDelay={networkDelay} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures}  />}
                     />
 
-                    <Route exact path="/twitch" render={
-                        (props) => <ClipBox  />}
+                    <Route exact path="/clipbox" render={
+                        (props) => <ClipBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
+                    />
+
+                    <Route exact path="/clip" render={
+                        (props) => <Clip slug={"LazyDarkFennelDatBoi"} />}
+                    />
+
+                    <Route exact path="/clips" render={
+                        (props) => <Clips slugs={['InspiringBeautifulLousePRChase', 'LazyDarkFennelDatBoi', 'FairObliviousAyeayeOptimizePrime']} />}
                     />
                 </Switch>
             </div>
