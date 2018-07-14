@@ -12,8 +12,11 @@ class ClipBox extends React.Component {
     }
 
     componentDidMount() {
-      twitchUtil.fetchClips("hugs86").then( (res)=>{ 
-        this.setState({ clips: res.clips })
+      twitchUtil.searchGames("Melee").then( (searchRes)=>{ 
+        twitchUtil.fetchGameClips(searchRes.games[0].name).then( (fetchRes)=> { 
+          console.log("searchRes: ", searchRes)
+          this.setState({ clips: fetchRes.clips })
+        })
       })
     }
 

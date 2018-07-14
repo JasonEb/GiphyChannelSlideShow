@@ -5,19 +5,20 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8 }
+      this.state = { idx: 0, rhythmFactor: 8, nextIdx: 1 }
       this.intervalId = ''
       this.play = this.play.bind(this)
+      this.timeOutID = 0
     }
 
     cycle() {
       let {idx} = this.state
       let {clips} = this.props
       let newIdx = idx + 1
-      if (idx === clips.length - 1) {
-        this.setState({idx: 0})
+      if (idx === clips.length - 2) {
+        this.setState({idx: 0, nextIdx: 1})
       } else {
-        this.setState({idx: newIdx})
+        this.setState({idx: newIdx, nextIdx: newIdx + 1})
       }
     }
 
@@ -29,8 +30,11 @@ class Clips extends React.Component {
       if (!currentClip){ return }
 
       let bps = props.tempo / 60
-      let duration = Math.floor(currentClip.duration / bps) * bps 
-      setTimeout((currentClip)=> {
+      let duration = Math.floor(currentClip.duration * bps) * (1 / bps) // rounded beats * beats / seconds
+      console.log("currentClip.duration: ", currentClip.duration)
+      console.log("beated duration:", duration)
+      clearTimeout(this.timeOutID)
+      this.timeOutID = setTimeout((currentClip)=> {
         this.cycle()
         this.play(props)
       }, duration * 1000)
@@ -55,7 +59,7 @@ class Clips extends React.Component {
       let { clips } = this.props
       let slugs = clips.map( (clip)=>{ return clip.slug})
 
-      let {idx} = this.state
+      let {idx, nextIdx} = this.state
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
       }
