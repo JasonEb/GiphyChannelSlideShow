@@ -6,31 +6,6 @@ class TitleCard extends React.Component {
         super(props)
     }
 
-    toggle() {
-        // this.setState({visible: !this.state.visible})
-    }
-
-    componentDidMount() {
-        // let {sections} = window.audioAnalysis
-        // let section = sections.find( (section) => {
-        //   return section.start > 12
-        // })
-        // let duration = section.start * 1000
-        // let progressMs = window.currentTrack.progress_ms
-
-        // window.networkDelay = Date.now() - window.beginT
-        // duration = duration - progressMs - window.networkDelay
-
-        // //titleCard blend effect
-        // window.setTimeout(()=>{
-        //     this.setState({mixBlendMode: "hard-light"})
-        // }, duration / 2)
-        // //outro 
-        // section = sections[sections.length - 1]
-        // let timeStamp = section.start * 1000 - progressMs - window.networkDelay
-        // window.setTimeout(this.toggle, timeStamp)
-    }
-
     render() {
         let {artists, name} = this.props.currentTrack.item
         let text = []

@@ -54,7 +54,7 @@ class GifBox extends React.Component {
     }
 
     componentDidMount() {
-      document.body.style.setProperty('--main-bg', 'red')
+      document.body.style.setProperty('--main-bg', 'darkred')
       document.title = "GifBox"
       this.resetState()
       this.sequenceTitleCardBehavior(this.props)
@@ -204,7 +204,7 @@ class GifBox extends React.Component {
         <GiphySearchCard visible={this.state.searchVisible} 
           searchGiphy={this.searchGiphy}
           handleKeyPress={this.handleKeyPress} />
-        <TitleCard currentTrack={currentTrack}
+        <TitleCard currentTrack={currentTrack} 
           visibility={titleCardVisibility}
           blendMode={titleCardBlendMode} />
 

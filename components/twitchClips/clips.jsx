@@ -1,5 +1,6 @@
 import React from 'react';
-import Clip from './clip.jsx';
+import Clip from './clip';
+import ClipTitleCard from './clipTitleCard';
 
 class Clips extends React.Component {
     constructor(props) {
@@ -57,15 +58,16 @@ class Clips extends React.Component {
 
     render() {
       let { clips } = this.props
-      let slugs = clips.map( (clip)=>{ return clip.slug})
-
       let {idx, nextIdx} = this.state
+      let currentClip = clips[idx]
+      console.table(currentClip)
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
       }
+
       return(
         <div className="clips">
-          <Clip slug={slugs[idx]} />
+          <Clip clip={currentClip} />
         </div>
       )
     }

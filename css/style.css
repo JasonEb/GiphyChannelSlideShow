@@ -8,6 +8,7 @@
 @import "searchBar.css";
 @import "./vhrOverlay/vhrOverlay.css";
 @import "twitchChat.css";
+@import "clipBox/clipBox.css";
 
 html{
     height: 100%;
