@@ -15,8 +15,8 @@ export const fetchChannelClips = (channel) => {
     })
 }
 
-export const searchGames = (string) => {
-    let url = `https://api.twitch.tv/kraken/search/games?query=${string}`
+export const searchGames = (game) => {
+    let url = `https://api.twitch.tv/kraken/search/games?query=${game}&period=month&limit=100`
 
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
                 'Accept': 'application/vnd.twitchtv.v5+json' }
