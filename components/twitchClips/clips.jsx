@@ -6,10 +6,11 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8, nextIdx: 1 }
+      this.state = { idx: 0, rhythmFactor: 8, nextIdx: 1, titleCardVisible: false }
       this.intervalId = ''
       this.play = this.play.bind(this)
       this.timeOutID = 0
+      this.titleCardTimeOutId = 1
     }
 
     cycle() {
@@ -32,8 +33,19 @@ class Clips extends React.Component {
 
       let bps = props.tempo / 60
       let duration = Math.floor(currentClip.duration * bps) * (1 / bps) // rounded beats * beats / seconds
+
+
       console.log("currentClip.duration: ", currentClip.duration)
       console.log("beated duration:", duration)
+
+      //queuing the titlecard
+      this.setState({titleCardVisible: true})
+      clearTimeout(this.titleCardTimeOutId)
+      this.titleCardTimeOutId = setTimeout((currentClip)=>{
+        this.setState({titleCardVisible: false})
+      }, 2 * bps * 1000)
+
+      //queuing the next clip
       clearTimeout(this.timeOutID)
       this.timeOutID = setTimeout((currentClip)=> {
         this.cycle()
@@ -42,32 +54,31 @@ class Clips extends React.Component {
     }
 
     componentDidMount() {
-      this.play(this.props)
     }
 
     componentWillUnmount() {
-      let {intervalId} = this
-      clearInterval(intervalId)
+      // let {intervalId} = this
+      // clearInterval(intervalId)
     }
 
     componentWillReceiveProps(nextProps) {
-      if(nextProps.tempo !== this.props.tempo) {
+      //set play for new set of clips
+      if(nextProps.clips !== this.props.clips) {
         this.play(nextProps)
       }
     }
 
     render() {
       let { clips } = this.props
-      let {idx, nextIdx} = this.state
+      let {idx, nextIdx, titleCardVisible} = this.state
       let currentClip = clips[idx]
-      console.log(currentClip)
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
       }
 
       return(
         <div className="clips">
-          <ClipTitleCard clip={currentClip} visibility={true} />
+          <ClipTitleCard clip={currentClip} visibility={titleCardVisible} />
           <Clip clip={currentClip} />
         </div>
       )

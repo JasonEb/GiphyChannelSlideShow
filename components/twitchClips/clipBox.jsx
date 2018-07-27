@@ -13,16 +13,15 @@ class ClipBox extends React.Component {
     }
 
     componentDidMount() {
-      twitchUtil.searchGames("PubG").then( (searchRes)=>{ 
+      twitchUtil.searchGames("Street%20Fighter%2030th%20Anniversary%20Collection").then( (searchRes)=>{ 
         twitchUtil.fetchGameClips(searchRes.games[0].name).then( (fetchRes)=> { 
           console.log("searchRes: ", searchRes)
           this.setState({ clips: Shuffle(fetchRes.clips) })
         })
       })
-      // twitchUtil.fetchGameClips("PLAYERUNKNOWN'S%20BATTLEGROUNDS").then( (fetchRes)=> { 
+      // twitchUtil.fetchChannelClips("SteevieG", 'all', 100).then( (fetchRes)=> { 
       //   this.setState({ clips: Shuffle(fetchRes.clips) })
       // })
-      
     }
 
     render() {

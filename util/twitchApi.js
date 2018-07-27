@@ -1,9 +1,7 @@
 import $ from 'jquery'
 
-export const fetchChannelClips = (channel) => {
-    //change this eventually
-    
-    let url = `https://api.twitch.tv/kraken/clips/top?channel=${channel}&limit=50`
+export const fetchChannelClips = (channel, period='week', limit=50) => {
+    let url = `https://api.twitch.tv/kraken/clips/top?channel=${channel}&limit=${limit}&period=${period}`
 
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
                 'Accept': 'application/vnd.twitchtv.v5+json' }
@@ -16,7 +14,7 @@ export const fetchChannelClips = (channel) => {
 }
 
 export const searchGames = (game) => {
-    let url = `https://api.twitch.tv/kraken/search/games?query=${game}&period=month&limit=100`
+    let url = `https://api.twitch.tv/kraken/search/games?query=${game}`
 
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
                 'Accept': 'application/vnd.twitchtv.v5+json' }
@@ -28,10 +26,10 @@ export const searchGames = (game) => {
     })
 }    
 
-export const fetchGameClips = (game) => {
+export const fetchGameClips = (game, period='week', limit=50) => {
     //change this eventually
     
-    let url = `https://api.twitch.tv/kraken/clips/top?game=${game}&limit=50`
+    let url = `https://api.twitch.tv/kraken/clips/top?game=${game}&limit=${limit}&period=${period}`
 
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
                 'Accept': 'application/vnd.twitchtv.v5+json' }

@@ -6,4 +6,6 @@
     height: 75vh;
     position: absolute;
     width: 67vw;
+    background-color:  var(--main-bg);
+    mix-blend-mode: 'hard-light';
 }
