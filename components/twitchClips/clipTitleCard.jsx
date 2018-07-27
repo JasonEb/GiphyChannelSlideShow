@@ -6,38 +6,41 @@ class ClipTitleCard extends React.Component {
     }
 
     render() {
-        let {username, title} = this.props
+        let {clip} = this.props
+        let broadcaster = !!clip ? clip.broadcaster.display_name : ''
+        let title = !!clip ? clip.title : ''
+
         let style = {
             visibility: this.props.visibility ? "visible" : "hidden",
             mixBlendMode : this.props.blendMode
         }
 
-        return <section id="clip_title_card" style={style}>
+        return <div id="clip_title_card" style={style}>
             <div className="glitch">
                 <div className="text">
                     <span>
                         "{title}"
                         <br/>
-                        {username}
+                        {broadcaster}
                     </span>
                     <span>
                         "{title}"
                         <br/>
-                        {username}
+                        {broadcaster}
                     </span>
                     <span>
                         "{title}"
                         <br/>
-                        {username}
+                        {broadcaster}
                     </span>
                     <span>
                         "{title}"
                         <br/>
-                        {username}
+                        {broadcaster}
                     </span>
                 </div>
             </div>
-        </section>
+        </div>
     }
   }
 

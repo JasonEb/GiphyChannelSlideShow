@@ -119,7 +119,7 @@ class App extends React.Component {
                 const returnUrl = 'http://127.0.0.1:8000'
                 spotifyUtil.getAuthTokenImplicit(returnUrl)
              })
-        }, beatMs*8)
+        }, beatMs*16)
     }
 
     componentDidMount() {

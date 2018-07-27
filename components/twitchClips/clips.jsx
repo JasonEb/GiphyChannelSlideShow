@@ -60,13 +60,14 @@ class Clips extends React.Component {
       let { clips } = this.props
       let {idx, nextIdx} = this.state
       let currentClip = clips[idx]
-      console.table(currentClip)
+      console.log(currentClip)
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
       }
 
       return(
         <div className="clips">
+          <ClipTitleCard clip={currentClip} visibility={true} />
           <Clip clip={currentClip} />
         </div>
       )

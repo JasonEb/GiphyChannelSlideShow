@@ -1,3 +1,9 @@
 #clip-box {
     margin-top: 10vh;
 }
+
+#clip_title_card {
+    height: 75vh;
+    position: absolute;
+    width: 67vw;
+}
