@@ -6,21 +6,52 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8, nextIdx: 1, titleCardVisible: false }
+      this.state = { idx: 0, rhythmFactor: 8,  titleCardVisible: false }
       this.intervalId = ''
       this.play = this.play.bind(this)
       this.timeOutID = 0
       this.titleCardTimeOutId = 1
+
+      this.resetState = this.resetState.bind(this)
+
+      this.handleClick = this.handleClick.bind(this)
     }
 
-    cycle() {
+    handleClick(e) {
+      let result = e.target.innerText.toLowerCase()
+
+      switch (result){
+        case "prev":
+          this.cycle(false)
+          this.play(this.props)
+          break
+        case "stop":
+          clearTimeout(this.titleCardTimeOutId)
+          clearTimeout(this.timeOutID)  
+          break
+        case "next":
+          this.cycle()
+          this.play(this.props)
+          break
+      }
+    }
+
+    cycle(ascend=true) {
       let {idx} = this.state
       let {clips} = this.props
-      let newIdx = idx + 1
-      if (idx === clips.length - 2) {
-        this.setState({idx: 0, nextIdx: 1})
+
+      if (ascend) {
+        if (idx === clips.length - 1) {
+          this.setState({idx: 0})
+        } else {
+          this.setState({idx: idx + 1})
+        }
       } else {
-        this.setState({idx: newIdx, nextIdx: newIdx + 1})
+        if (idx === 0) {
+          this.setState({idx: clips.length - 1})
+        } else {
+          this.setState({idx: idx - 1})
+        }
       }
     }
 
@@ -43,7 +74,7 @@ class Clips extends React.Component {
       clearTimeout(this.titleCardTimeOutId)
       this.titleCardTimeOutId = setTimeout((currentClip)=>{
         this.setState({titleCardVisible: false})
-      }, 2 * bps * 1000)
+      }, 1.5 * bps * 1000) // x beats 
 
       //queuing the next clip
       clearTimeout(this.timeOutID)
@@ -63,9 +94,19 @@ class Clips extends React.Component {
 
     componentWillReceiveProps(nextProps) {
       //set play for new set of clips
+      if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
+        this.resetState()
+        this.cycle()
+        this.play(nextProps)
+      }
+
       if(nextProps.clips !== this.props.clips) {
         this.play(nextProps)
       }
+    }
+
+    resetState(){
+      this.setState({idx: 0, rhythmFactor: 8, nextIdx: 1, titleCardVisible: false })
     }
 
     render() {
@@ -80,6 +121,11 @@ class Clips extends React.Component {
         <div className="clips">
           <ClipTitleCard clip={currentClip} visibility={titleCardVisible} />
           <Clip clip={currentClip} />
+          <div className="clips_control">
+            <div onClick={this.handleClick}>Prev</div>
+            <div onClick={this.handleClick}>Stop</div>
+            <div onClick={this.handleClick}>Next</div>
+          </div>
         </div>
       )
     }

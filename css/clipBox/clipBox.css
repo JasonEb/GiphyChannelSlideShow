@@ -1,11 +1,27 @@
 #clip-box {
-    margin-top: 10vh;
+    margin-top: 7vh;
 }
 
 #clip_title_card {
-    height: 75vh;
+    height: 100vh;
     position: absolute;
-    width: 67vw;
-    background-color:  var(--main-bg);
-    mix-blend-mode: 'hard-light';
+    width: 100vw;
+    margin-top: -9vh;
+    margin-left: -14vw;
+    background-color: var(--main-bg);
+    mix-blend-mode: hard-light;
+}
+
+#clip-box > div.clips > div.clips_control {
+    color: grey;
+    display: flex;
+    justify-content: space-around;
+    width: 10em;
+    margin: 0 auto;
+    margin-top: 2vh;
+}
+
+div.clip {
+    display: flex;
+    justify-content: center;
 }

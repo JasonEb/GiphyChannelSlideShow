@@ -11,8 +11,7 @@ class ClipTitleCard extends React.Component {
         let title = !!clip ? clip.title : ''
 
         let style = {
-            visibility: this.props.visibility ? "visible" : "hidden",
-            mixBlendMode : this.props.blendMode
+            visibility: this.props.visibility ? "visible" : "hidden"
         }
 
         return <div id="clip_title_card" style={style}>

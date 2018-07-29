@@ -7,7 +7,7 @@ class Clip extends React.Component {
         let url = `https://clips.twitch.tv/embed?clip=${slug}&tt_medium=clips_api&tt_content=embed&muted=false`
 
         return <div className="clip">
-            <iframe src={url} width='1280' height='720' frameBorder='1' scrolling='no' preload="auto" ></iframe>
+            <iframe src={url} width='1280' height='720' frameBorder='0' scrolling='no' preload="auto" ></iframe>
         </div>
     }
 }
