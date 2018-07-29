@@ -7,6 +7,7 @@ class NavMenu extends React.Component {
             <ul className="nav_menu">
                 <li><Link to="overlay">Overlay</Link></li>
                 <li><Link to="gifBox">GifBox</Link></li>
+                <li><Link to="clipbox">ClipBox</Link></li>
             </ul>
         )
     }

@@ -119,7 +119,7 @@ class App extends React.Component {
                 const returnUrl = 'http://127.0.0.1:8000'
                 spotifyUtil.getAuthTokenImplicit(returnUrl)
              })
-        }, beatMs*16)
+        }, beatMs*6)
     }
 
     componentDidMount() {
@@ -139,12 +139,12 @@ class App extends React.Component {
 
     //todo
     // figure out why titlecard visibility is not working with beginT network delay
-    
+
     componentDidUpdate(prevProps, prevState) {
         let currentTrack = this.state.currentTrack
         let prevTrack = prevState.currentTrack
 
-        if (currentTrack.item.id !== prevTrack.item.id) { 
+        if (currentTrack.item.id !== prevTrack.item.id) {
             //update state
             //clear loops
             //begin loops
@@ -153,7 +153,7 @@ class App extends React.Component {
                 let beginT = Date.now()
                 spotifyUtil.getAudioFeatures(res.item.id, (res1) => {
                     spotifyUtil.getAudioAnalysis(res.item.id, (res2)=>{
-                        this.setState({currentTrack: res, 
+                        this.setState({currentTrack: res,
                             audioFeatures: res1, audioAnalysis: res2,
                             networkDelay: Date.now() - beginT })
                         let tempo = res1.tempo
@@ -163,7 +163,7 @@ class App extends React.Component {
                 })
             })
         }
-        // return true      
+        // return true
     }
 
     render() {
