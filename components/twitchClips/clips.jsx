@@ -101,6 +101,7 @@ class Clips extends React.Component {
       }
 
       if(nextProps.clips !== this.props.clips) {
+        this.setState({idx: 0})
         this.play(nextProps)
       }
     }

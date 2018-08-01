@@ -15,6 +15,19 @@ export const fetchChannelClips = (channel, period='week', limit=100, cursor="") 
     })
 }
 
+export const fetchGameClips = (game, period='week', languages="", limit=100, cursor="") => {
+    let langOptions = languages === "" ? "" : "&language=" + languages.trim().split("|").join(",")
+    let cursorOption = cursor.length === 0 ? "" : `&cursor=${cursor}`
+    let url = `https://api.twitch.tv/kraken/clips/top?game=${game}&limit=${limit}&period=${period}${langOptions}${cursorOption}`
+    let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
+                'Accept': 'application/vnd.twitchtv.v5+json' }
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        headers: headers
+    })
+}
+
 export const searchGames = (game) => {
     let url = `https://api.twitch.tv/kraken/search/games?query=${game}`
 
@@ -28,18 +41,7 @@ export const searchGames = (game) => {
     })
 }
 
-export const fetchGameClips = (game, period='week', languages="", limit=100) => {
-    let langOptions = languages === "" ? "" : "&language=" + languages.trim().split("|").join(",")
-    let url = `https://api.twitch.tv/kraken/clips/top?game=${game}&limit=${limit}&period=${period}${langOptions}`
-    let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
-                'Accept': 'application/vnd.twitchtv.v5+json' }
 
-    return $.ajax({
-        method: 'GET',
-        url: url,
-        headers: headers
-    })
-}
 
 export const filterClips = (clips, days=1) => {
     let endDate = new Date()
