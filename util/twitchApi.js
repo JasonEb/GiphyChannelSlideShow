@@ -1,6 +1,7 @@
 import $ from 'jquery'
 
-export const fetchChannelClips = (channel, period='week', language="", limit=50) => {
+export const fetchChannelClips = (channel, period='week', language="", limit=100) => {
+    period = period.toLowerCase()
     let url = `https://api.twitch.tv/kraken/clips/top?channel=${channel}&limit=${limit}&period=${period}`
 
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
@@ -26,7 +27,7 @@ export const searchGames = (game) => {
     })
 }
 
-export const fetchGameClips = (game, period='week', languages="", limit=50) => {
+export const fetchGameClips = (game, period='week', languages="", limit=100) => {
     let langOptions = languages === "" ? "" : "&language=" + languages.trim().split("|").join(",")
     let url = `https://api.twitch.tv/kraken/clips/top?game=${game}&limit=${limit}&period=${period}${langOptions}`
     let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',

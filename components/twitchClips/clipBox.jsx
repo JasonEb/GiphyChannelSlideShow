@@ -12,7 +12,8 @@ class ClipBox extends React.Component {
       super(props)
       this.state = {
         clips: [],
-        searchVisible: false
+        searchVisible: false,
+        currentStr: "@SteevieG, all"
       }
 
       this.handleKeyPress = this.handleKeyPress.bind(this)
@@ -37,14 +38,14 @@ class ClipBox extends React.Component {
       if (searchStr.startsWith("@")) {
         let channel = searchStr.substr(1, searchStr.length)
         twitchUtil.fetchChannelClips(channel, period, limit).then( (fetchRes)=> {
-          this.setState({ clips: Shuffle(fetchRes.clips), searchVisible: false })
+          this.setState({ clips: Shuffle(fetchRes.clips), searchVisible: false, currentStr: input })
         })
       } else {
         twitchUtil.searchGames(searchStr).then( (searchRes)=>{
           let game = searchRes.games[0].name
 
           twitchUtil.fetchGameClips(game, period, languages, limit).then( (fetchRes)=> {
-            this.setState({ clips: Shuffle(fetchRes.clips), searchVisible: false })
+            this.setState({ clips: Shuffle(fetchRes.clips), searchVisible: false, currentStr: input })
           })
         })
       }
@@ -54,15 +55,7 @@ class ClipBox extends React.Component {
       document.body.style.setProperty('--main-bg', 'black')
       document.title = "ClipBox"
 
-      // twitchUtil.searchGames("Street%20Fighter%2030th%20Anniversary%20Collection").then( (searchRes)=>{ 
-      //   twitchUtil.fetchGameClips(searchRes.games[0].name).then( (fetchRes)=> { 
-      //     console.log("searchRes: ", searchRes)
-      //     this.setState({ clips: Shuffle(fetchRes.clips) })
-      //   })
-      // })
-      twitchUtil.fetchChannelClips("SteevieG", 'all').then( (fetchRes)=> { 
-        this.setState({ clips: Shuffle(fetchRes.clips) })
-      })
+      this.searchTwitch(this.state.currentStr)
     }
 
     render() {

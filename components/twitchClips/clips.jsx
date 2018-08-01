@@ -63,18 +63,18 @@ class Clips extends React.Component {
       if (!currentClip){ return }
 
       let bps = props.tempo / 60
-      let duration = Math.floor(currentClip.duration * bps) * (1 / bps) // rounded beats * beats / seconds
+      let duration = (Math.floor(currentClip.duration * bps * 2) / 2 )* (1 / bps) // rounded beats * beats / seconds
 
 
       console.log("currentClip.duration: ", currentClip.duration)
-      console.log("beated duration:", duration)
+      console.log("flattened duration:", duration)
 
       //queuing the titlecard
-      this.setState({titleCardVisible: true})
       clearTimeout(this.titleCardTimeOutId)
+      this.setState({titleCardVisible: true})
       this.titleCardTimeOutId = setTimeout((currentClip)=>{
         this.setState({titleCardVisible: false})
-      }, 1.5 * bps * 1000) // x beats 
+      }, 1 * bps * 1000) // x beats 
 
       //queuing the next clip
       clearTimeout(this.timeOutID)
