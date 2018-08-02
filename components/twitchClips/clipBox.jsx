@@ -13,47 +13,59 @@ class ClipBox extends React.Component {
       this.state = {
         clips: [],
         searchVisible: false,
-        currentStr: "@SteevieG, all",
+        currentStr: "Street Fighter III: 3rd, all",
         fetchedClips: []
       }
 
       this.handleKeyPress = this.handleKeyPress.bind(this)
       this.searchTwitch = this.searchTwitch.bind(this)
+      this.shuffleClips = this.shuffleClips.bind(this)
       this.filterClips = this.filterClips.bind(this)
       this.fetchChannelClips = this.fetchChannelClips.bind(this)
       this.fetchGameClips = this.fetchGameClips.bind(this)
+      this.resetClips = this.resetClips.bind(this)
     }
+
+    componentDidMount() {
+      document.body.style.setProperty('--main-bg', 'black')
+      document.title = "ClipBox"
+
+      this.searchTwitch(this.state.currentStr)
+    }
+
 
     fetchChannelClips(channel, period, limit, clips=[], cursor="") {
       return twitchUtil.fetchChannelClips(channel, period, limit, cursor).then( (fetchRes)=> {
         if (fetchRes._cursor === ""){
           clips = clips.concat(fetchRes.clips)
-          return this.setState({ clips: clips, searchVisible: false})
+          return this.setState({ clips: clips, searchVisible: false, fetchedClips: [...clips]})
         } else {
           clips = clips.concat(fetchRes.clips)
           cursor = fetchRes._cursor
           return this.fetchChannelClips(channel, period, limit, clips, cursor)
         }
-      })
+      }).fail( (e) => {debugger})
     }
 
     fetchGameClips(game, period, languages, limit, cursor="", clips=[]) {
       return twitchUtil.fetchGameClips(game, period, languages, limit, cursor).then( (fetchRes)=> {
         if (fetchRes._cursor === ""){
           clips = clips.concat(fetchRes.clips)
-          return this.setState({ clips: clips, searchVisible: false})
+          return this.setState({ clips: clips, searchVisible: false, fetchedClips: [...clips]})
         } else {
           clips = clips.concat(fetchRes.clips)
           cursor = fetchRes._cursor
           return this.fetchGameClips(game, period, languages, limit, cursor, clips)
         }
-      })
+      }).fail( (e) => {debugger})
     }
 
-    filterClips(days) {
+    filterClips() {
       let {clips} = this.state
-      let filtered = twitchUtil.filterClips(clips, 2)
-      return this.setState({clips: filtered})
+      let days = window.prompt("How many days?", 2)
+      days = parseInt(days)
+      let filtered = twitchUtil.filterClips(clips, days)
+      return this.setState({clips: filtered, idx: 0})
     }
 
     handleKeyPress (e) {
@@ -84,21 +96,27 @@ class ClipBox extends React.Component {
       this.setState({currentStr: input})
     }
 
-    componentDidMount() {
-      document.body.style.setProperty('--main-bg', 'black')
-      document.title = "ClipBox"
-
-      this.searchTwitch(this.state.currentStr)
+    resetClips() {
+      this.setState((prevState, props) =>({clips: [...prevState.fetchedClips], idx: 0}))
     }
+
+    shuffleClips() {
+      this.setState((prevState, props) =>({clips: Shuffle(prevState.clips), idx: 0}))
+    }
+
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
       // <VhrOverlay currentTrack={currentTrack}
       // audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
-        <div onClick={this.filterClips}>Filter</div>
         <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
         <Clips clips={this.state.clips} tempo={this.props.audioFeatures.tempo} audioFeatures={audioFeatures} />
+        <div className="functions">
+          <div onClick={this.filterClips}>Filter</div>
+          <div onClick={this.shuffleClips}>Shuffle</div>
+          <div onClick={this.resetClips}>Reset</div>
+        </div>
       </div>
     }
   }

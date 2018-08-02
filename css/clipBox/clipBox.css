@@ -13,15 +13,31 @@
 }
 
 #clip-box > div.clips > div.clips_control {
-    color: grey;
+    color: #101010;
     display: flex;
     justify-content: space-around;
     width: 10em;
     margin: 0 auto;
     margin-top: 2vh;
+    font-size:2em;
+    font-family: "VT323", monospace;
+    font-weight: bold;
+    animation: blur 30ms infinite, jerk 50ms infinite;
 }
 
 div.clip {
     display: flex;
     justify-content: center;
+}
+
+div.functions {
+    font-size:2em;
+    font-family: "VT323", monospace;
+    font-weight: bold;
+    color: #101010;
+    animation: blur 30ms infinite, jerk 50ms infinite;
+    margin: 2vh auto;
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
 }
