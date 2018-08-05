@@ -54,7 +54,7 @@ class GifBox extends React.Component {
     }
 
     componentDidMount() {
-      document.body.style.setProperty('--main-bg', 'darkred')
+      document.body.style.setProperty('--main-bg', 'aquagreen')
       document.title = "GifBox"
       this.resetState()
       this.sequenceTitleCardBehavior(this.props)
