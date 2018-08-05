@@ -81,3 +81,23 @@ export const filterClips = (clips, days=1) => {
 
     return filtered
 }
+
+// sorting vods results //
+/*
+let { vods } = res
+vods.sort((a, b) => {
+    const channelA = a.channel
+    const channelB = b.channel
+
+    let comparison = 0;
+    if (channelA.views < channelB.views) {
+        comparison = 1;
+    } else if (channelA.views > channelB.views) {
+        comparison = -1;
+    }
+    return comparison;
+})
+vods.forEach((stream) => {
+    console.log("Channel: ", stream.channel.name, '\n' + 'Display Name: ', stream.channel.display_name, '\n' + 'Views:', stream.channel.views, '\n' + 'Language:', stream.channel.language)
+})
+*/
