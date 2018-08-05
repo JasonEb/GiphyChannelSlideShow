@@ -28,6 +28,8 @@
 div.clip {
     display: flex;
     justify-content: center;
+    margin-top: -3vh;
+    margin-bottom: 8vh;
 }
 
 div.functions {

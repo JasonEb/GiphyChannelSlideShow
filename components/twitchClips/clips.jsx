@@ -6,7 +6,7 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8,  titleCardVisible: false }
+      this.state = { idx: 0, rhythmFactor: 8,  titleCardVisible: false, cycleForward: true }
       this.intervalId = ''
       this.play = this.play.bind(this)
       this.timeOutID = 0
@@ -32,6 +32,12 @@ class Clips extends React.Component {
         case "next":
           this.cycle()
           this.play(this.props)
+          break
+        case "forward":
+          this.setState((prevState)=>({cycleForward: !prevState.cycleForward}))
+          break
+        case "reverse":
+          this.setState((prevState)=>({cycleForward: !prevState.cycleForward}))
           break
       }
     }
@@ -79,7 +85,7 @@ class Clips extends React.Component {
       //queuing the next clip
       clearTimeout(this.timeOutID)
       this.timeOutID = setTimeout((currentClip)=> {
-        this.cycle()
+        this.cycle(this.state.cycleForward)
         this.play(props)
       }, duration * 1000)
     }
@@ -96,7 +102,7 @@ class Clips extends React.Component {
       //set play for new set of clips
       if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
         this.resetState()
-        this.cycle()
+        this.cycle(this.state.cycleForward)
         this.play(nextProps)
       }
 
@@ -107,12 +113,12 @@ class Clips extends React.Component {
     }
 
     resetState(){
-      this.setState({idx: 0, rhythmFactor: 8, nextIdx: 1, titleCardVisible: false })
+      this.setState({idx: 0, titleCardVisible: false })
     }
 
     render() {
       let { clips } = this.props
-      let {idx, nextIdx, titleCardVisible} = this.state
+      let {idx, nextIdx, titleCardVisible, cycleForward} = this.state
       let currentClip = clips[idx]
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
@@ -126,6 +132,7 @@ class Clips extends React.Component {
             <div onClick={this.handleClick}>Prev</div>
             <div onClick={this.handleClick}>Stop</div>
             <div onClick={this.handleClick}>Next</div>
+            <div onClick={this.handleClick}>{cycleForward ? "Forward" : "Reverse"}</div>
           </div>
         </div>
       )

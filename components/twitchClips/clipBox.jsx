@@ -13,7 +13,7 @@ class ClipBox extends React.Component {
       this.state = {
         clips: [],
         searchVisible: false,
-        currentStr: "Street Fighter III: 3rd, all",
+        currentStr: "@evo, day",
         fetchedClips: []
       }
 
@@ -34,7 +34,7 @@ class ClipBox extends React.Component {
     }
 
 
-    fetchChannelClips(channel, period, limit, clips=[], cursor="") {
+    fetchChannelClips(channel, period, limit, cursor="", clips=[]) {
       return twitchUtil.fetchChannelClips(channel, period, limit, cursor).then( (fetchRes)=> {
         if (fetchRes._cursor === ""){
           clips = clips.concat(fetchRes.clips)
@@ -42,14 +42,14 @@ class ClipBox extends React.Component {
         } else {
           clips = clips.concat(fetchRes.clips)
           cursor = fetchRes._cursor
-          return this.fetchChannelClips(channel, period, limit, clips, cursor)
+          return this.fetchChannelClips(channel, period, limit, cursor, clips)
         }
-      }).fail( (e) => {debugger})
+      }).fail( (e) => {e.abort()})
     }
 
     fetchGameClips(game, period, languages, limit, cursor="", clips=[]) {
       return twitchUtil.fetchGameClips(game, period, languages, limit, cursor).then( (fetchRes)=> {
-        if (fetchRes._cursor === ""){
+        if (fetchRes._cursor === "" || cursor === "") {
           clips = clips.concat(fetchRes.clips)
           return this.setState({ clips: clips, searchVisible: false, fetchedClips: [...clips]})
         } else {
@@ -57,7 +57,7 @@ class ClipBox extends React.Component {
           cursor = fetchRes._cursor
           return this.fetchGameClips(game, period, languages, limit, cursor, clips)
         }
-      }).fail( (e) => {debugger})
+      }).fail( (e) => {e.abort()})
     }
 
     filterClips() {
@@ -85,11 +85,11 @@ class ClipBox extends React.Component {
 
       if (searchStr.startsWith("@")) {
         let channel = searchStr.substr(1, searchStr.length)
-        this.fetchChannelClips(channel, period, limit)
+        this.fetchChannelClips(channel, period, limit, "")
       } else {
         twitchUtil.searchGames(searchStr).then( (searchRes)=>{
           let game = searchRes.games[0].name
-          this.fetchGameClips(game, period, languages, limit)
+          this.fetchGameClips(game, period, languages, limit, "")
         })
       }
 
@@ -107,11 +107,11 @@ class ClipBox extends React.Component {
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
-      // <VhrOverlay currentTrack={currentTrack}
-      // audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
-        <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
+        <VhrOverlay currentTrack={currentTrack}
+        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
         <Clips clips={this.state.clips} tempo={this.props.audioFeatures.tempo} audioFeatures={audioFeatures} />
+        <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
         <div className="functions">
           <div onClick={this.filterClips}>Filter</div>
           <div onClick={this.shuffleClips}>Shuffle</div>
