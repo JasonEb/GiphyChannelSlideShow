@@ -41,6 +41,32 @@ export const searchGames = (game) => {
     })
 }
 
+export const getStreams = (game) => {
+    let url = `https://api.twitch.tv/kraken/search/streams?query=${game}`
+
+    let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
+                'Accept': 'application/vnd.twitchtv.v5+json' }
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        headers: headers
+    })
+}
+
+export const fetchTopVideos = (game, period='week', languages="", limit=100 , cursor="") => {
+    let langOptions = languages === "" ? "" : "&language=" + languages.trim().split("|").join(",")
+    let url = `https://api.twitch.tv/kraken/videos/top?game=${game}&period=${period}${langOptions}&limit=${limit}`
+
+    let headers = { 'Client-ID': 'y82uc6i30qrmg0skrfoqkbv9hv66iz',
+                'Accept': 'application/vnd.twitchtv.v5+json' }
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        headers: headers
+    })
+}
 
 
 export const filterClips = (clips, days=1) => {
