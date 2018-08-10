@@ -7,11 +7,15 @@ class TwitchData extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            game: "Black Desert",
+            game: "PLAYERUNKNOWN'S BATTLEGROUNDS",
+            period: "month",
             vods: [],
-            fetchedVods: []
+            fetchedVods: [],
+            offset: 0
         }
+        this.launchChannel = this.launchChannel.bind(this)
         this.searchTwitch = this.searchTwitch.bind(this)
+        this.fetchMore = this.fetchMore.bind(this)
         this.removeDuplicateChannels = this.removeDuplicateChannels.bind(this)
         this.resetResults = this.resetResults.bind(this)
     }
@@ -20,11 +24,34 @@ class TwitchData extends React.Component {
         document.body.style.setProperty('--main-bg', '#E6E6FA')
         document.title = "TwitchData"
 
-        let game = "PLAYERUNKNOWN'S%20BATTLEGROUNDS"
-        twitchUtil.fetchTopVideos(game, "month", "").then((res) => {
+        let {game, period} = this.state
+        twitchUtil.fetchTopVideos(game, period, "").then((res) => {
             let {vods} = res
-            this.setState({vods: vods, fetchedVods: [...vods], game: game})
+            this.setState({vods: vods, fetchedVods: [...vods], game: game, offset: vods.length})
         })
+    }
+
+    fetchMore() {
+        let {game, period, offset} = this.state
+        twitchUtil.fetchTopVideos(game, period, '', 100, offset)
+        .then((VODSres) => {
+            let {vods} = VODSres
+            this.setState( (prevState) => {
+                return { vods: [...prevState.fetchedVods, ...vods],
+                    fetchedVods: [...prevState.fetchedVods, ...vods],
+                    offset: prevState.offset + vods.length
+                }
+            })
+        })
+    }
+
+    launchChannel(state, rowInfo, column, instance) {
+        return {
+            onClick: (e) => {
+                let channel = rowInfo.original.channel.name
+                this.props.history.push(`/clipbox?channel=${channel}`)
+            }
+        }
     }
 
     removeDuplicateChannels() {
@@ -46,35 +73,46 @@ class TwitchData extends React.Component {
         this.setState({vods: [...fetchedVods]})
     }
 
+
     searchTwitch(searchStr) {
-        twitchUtil.searchGames(searchStr).then((searchRes) => {
+        let {offset, period} = this.state
+        twitchUtil.searchGames(searchStr)
+        .then( (searchRes) => {
             let game = searchRes.games[0].name
-            twitchUtil.fetchTopVideos(game).then((VODSres) => {
+            twitchUtil.fetchTopVideos(game, period, '', 100, offset)
+            .then((VODSres) => {
                 let {vods} = VODSres
-                this.setState({vods: vods, game: game, fetchedVods: [...vods]})
+                this.setState( (prevState) => {
+                    return { vods: vods,
+                        game: game,
+                        fetchedVods: [...vods],
+                        offset: vods.length
+                    }
+                })
             })
         })
     }
 
     render() {
-        let {vods, game} = this.state
+        let {vods, game, fetchedVods} = this.state
         return (<div className="twitch-data">
             <ClipSearchBar searchTwitch={this.searchTwitch} />
 
             <div className="twitch-data-menu">
                 <button onClick={this.removeDuplicateChannels}>Remove Repeating Channels</button>
                 <button onClick={this.resetResults}>Reset Results</button>
+                <button onClick={this.fetchMore}>Fetch More Results</button>
             </div>
-            <h1>Top Channels</h1>
+            <h1>Channels of the Top {fetchedVods.length} vods</h1>
             <h2>Game: {game}</h2>
-            <ReactTable data={vods}
+            <ReactTable data={vods} getTdProps={this.launchChannel}
                 columns={[
                     {Header:"Channel", columns:[
                         {Header: "Name", accessor: "channel.name"},
                         {Header: "Display Name", accessor: "channel.display_name"},
-                        {Header: "Followers", accessor: "channel.followers"},
                         {Header: "Channel Views", accessor: "channel.views"},
-                        {Header: "Language", accessor: "channel.language"},
+                        {Header: "Followers", accessor: "channel.followers"},
+                        {Header: "Language", accessor: "channel.language", filterable: true},
                         {Header: "Channel Game", accessor: "channel.game", filterable: true},
                         {Header: "VOD Game", accessor: "game",filterable: true}
                     ]}
