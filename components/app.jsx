@@ -129,7 +129,7 @@ class App extends React.Component {
         } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/twitchdata")
+            this.props.history.push("/clipbox")
         }
     }
 

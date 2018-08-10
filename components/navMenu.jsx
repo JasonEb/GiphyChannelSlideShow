@@ -8,6 +8,7 @@ class NavMenu extends React.Component {
                 <li><Link to="overlay">Overlay</Link></li>
                 <li><Link to="gifBox">GifBox</Link></li>
                 <li><Link to="clipbox">ClipBox</Link></li>
+                <li><Link to="twitchdata">Twitch Top Vods Search</Link></li>
             </ul>
         )
     }

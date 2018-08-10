@@ -36,7 +36,7 @@
   animation: blur 30ms infinite, jerk 50ms infinite;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
+  width: 75vw;
 }
 
 .glitch span:nth-child(1) {

@@ -13,7 +13,7 @@ class ClipBox extends React.Component {
       this.state = {
         clips: [],
         searchVisible: false,
-        currentStr: "@evo, day",
+        currentStr: `street fighter, week`,
         fetchedClips: []
       }
 
@@ -30,7 +30,13 @@ class ClipBox extends React.Component {
       document.body.style.setProperty('--main-bg', 'black')
       document.title = "ClipBox"
 
-      this.searchTwitch(this.state.currentStr)
+      let channel = this.props.location.search.substring("?channel=".length)
+
+      if (channel.length === 0){
+        this.searchTwitch(this.state.currentStr)
+      } else {
+        this.searchTwitch('@' + channel)
+      }
     }
 
 
@@ -110,8 +116,9 @@ class ClipBox extends React.Component {
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
         <VhrOverlay currentTrack={currentTrack}
         audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
-        <Clips clips={this.state.clips} tempo={this.props.audioFeatures.tempo} audioFeatures={audioFeatures} />
         <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
+        <Clips clips={this.state.clips} tempo={this.props.audioFeatures.tempo} audioFeatures={audioFeatures} />
+
         <div className="functions">
           <div onClick={this.filterClips}>Filter</div>
           <div onClick={this.shuffleClips}>Shuffle</div>
