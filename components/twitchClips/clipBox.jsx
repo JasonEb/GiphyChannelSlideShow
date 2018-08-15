@@ -111,7 +111,6 @@ class ClipBox extends React.Component {
 
     setClipBoxState(newState) {
       this.setState(newState)
-      console.log("Clip box state updated")
     }
 
     resetClips() {
@@ -125,19 +124,21 @@ class ClipBox extends React.Component {
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
-      let {clips, twitchChatBlendMode, twitchChatVisibility} = this.state
+      let {clips, twitchChatBlendMode, twitchChatVisibility, currentClipIdx} = this.state
       let {setClipBoxState} = this
+      let clipsInfo = {currentClip: clips[currentClipIdx], clips: clips}
+
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
         <VhrOverlay currentTrack={currentTrack}
-        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay}
-        clips={clips} />
+          audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay}
+        />
         <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
         <TwitchChat visibility={twitchChatVisibility}
           currentTrack={currentTrack}
           blendMode={twitchChatBlendMode}
           searchGiphy={()=>{ console.log("no giphy search")}}
-
-          />
+          clipsInfo={clipsInfo}
+        />
         <Clips clips={clips}
           setClipBoxState={setClipBoxState}
           tempo={this.props.audioFeatures.tempo}

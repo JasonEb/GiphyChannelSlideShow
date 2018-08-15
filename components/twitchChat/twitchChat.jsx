@@ -2,7 +2,7 @@ import React from 'react'
 import { parse } from 'querystring';
 
 class TwitchChat extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             messages: [],
@@ -22,60 +22,97 @@ class TwitchChat extends React.Component {
         this.parseMessage = this.parseMessage.bind(this)
         this.closeChat = this.closeChat.bind(this)
         this.openChat = this.openChat.bind(this)
+
+        //clips
+        this.clipMessageID = 0
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.openChat()
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.closeChat()
     }
 
-    openChat(){
+    componentWillReceiveProps(nextProps) {
+        //look for new clipsinfo props and update
+        if(!!nextProps.clipsInfo.currentClip) {
+            if (nextProps.clipsInfo.currentClip !== this.props.clipsInfo.currentClip) {
+                clearInterval(this.clipMessageID)
+                let {currentClip} = nextProps.clipsInfo
+                let {title, broadcaster, duration} = currentClip
+                let {name} = broadcaster
+                let clipUrl = currentClip.url.slice(0, currentClip.url.indexOf("?"))
+
+                let message = `"${title}" from ${name}'s channel... ${clipUrl}`
+                duration = 7000
+                this.clipMessageID = setTimeout(()=>{
+                    this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
+                }, duration)
+            }
+        }
+    }
+
+    openChat() {
         this.webSocket.onmessage = this.onMessage.bind(this)
         this.webSocket.onerror = this.onError.bind(this)
         this.webSocket.onclose = this.onClose
         this.webSocket.onopen = this.onOpen.bind(this)
     }
 
-    onMessage(message){
+    onMessage(message) {
         // console.log("Message: ", message.data)
-        if(message !== null){
+        if (message !== null) {
             let parsed = this.parseMessage(message.data);
-            if(parsed !== null){
-                if(parsed.command === "PRIVMSG") {
+            if (parsed !== null) {
+                if (parsed.command === "PRIVMSG") {
                     // console.log("PRIVMSG: ", parsed)
-                } else if(parsed.command === "PING") {
+                } else if (parsed.command === "PING") {
                     this.webSocket.send("PONG :" + parsed.message);
-                } 
+                }
 
-                if(parsed.username !== null) {
-                    let {messages} = this.state
+                if (parsed.username !== null) {
+                    let { messages } = this.state
                     // cap messages
                     if (messages.length > 100) {
                         messages = messages.slice(0, 10)
                     }
                     messages.push(parsed)
-                    this.setState({messages: messages})
+
+                    //ToDO investigate using prevState update
+                    this.setState({ messages: messages })
                 }
 
                 // query handler
                 if (parsed.message && parsed.message.startsWith("?song")) {
-                    let {currentTrack} = this.props
-                    let {name, artists} = currentTrack.item
-                    let artist = artists.map( (artist) => { return artist.name}).join(", ")
+                    let { currentTrack } = this.props
+                    let { name, artists } = currentTrack.item
+                    let artist = artists.map((artist) => { return artist.name }).join(", ")
 
                     this.webSocket.send(`PRIVMSG ${this.state.channel} :The song is "${name}", by ${artist} `);
                 }
 
+                //twitch clips
+                if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??clips")) {
+                    let idx = parsed.message.indexOf("search")
+                    let searchString = parsed.message.substring(idx + "search".length, parsed.message.length).trim()
+                    this.props.searchGiphy(searchString)
+                }
+
+
+                if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??shuffle")) {
+                    return this.props.shuffleCurrentCards()
+                }
+
+                //giphy
                 if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??search")) {
                     let idx = parsed.message.indexOf("search")
                     let searchString = parsed.message.substring(idx + "search".length, parsed.message.length).trim()
                     this.props.searchGiphy(searchString)
                 }
 
-                
+
                 if (parsed.message && parsed.username == 'interpretivedashdance' && parsed.message.startsWith("??shuffle")) {
                     return this.props.shuffleCurrentCards()
                 }
@@ -92,43 +129,43 @@ class TwitchChat extends React.Component {
             channel: null,
             username: null
         };
-    
-        if(rawMessage[0] === '@'){
+
+        if (rawMessage[0] === '@') {
             let tagIndex = rawMessage.indexOf(' '),
-            userIndex = rawMessage.indexOf(' ', tagIndex + 1),
-            commandIndex = rawMessage.indexOf(' ', userIndex + 1),
-            channelIndex = rawMessage.indexOf(' ', commandIndex + 1),
-            messageIndex = rawMessage.indexOf(':', channelIndex + 1);
-    
+                userIndex = rawMessage.indexOf(' ', tagIndex + 1),
+                commandIndex = rawMessage.indexOf(' ', userIndex + 1),
+                channelIndex = rawMessage.indexOf(' ', commandIndex + 1),
+                messageIndex = rawMessage.indexOf(':', channelIndex + 1);
+
             parsedMessage.tags = rawMessage.slice(0, tagIndex);
             parsedMessage.username = rawMessage.slice(tagIndex + 2, rawMessage.indexOf('!'));
             parsedMessage.command = rawMessage.slice(userIndex + 1, commandIndex);
             parsedMessage.channel = rawMessage.slice(commandIndex + 1, channelIndex);
             parsedMessage.message = rawMessage.slice(messageIndex + 1);
-        } else if(rawMessage.startsWith("PING")) {
+        } else if (rawMessage.startsWith("PING")) {
             parsedMessage.command = "PING";
             parsedMessage.message = rawMessage.split(":")[1];
-        } 
-    
+        }
+
         return parsedMessage;
     }
 
-    onClose(){
+    onClose() {
         console.log('Disconnected from the chat server.');
     }
 
-    closeChat(){
-        if(this.webSocket){
+    closeChat() {
+        if (this.webSocket) {
             this.webSocket.close();
         }
     }
 
-    onOpen(){
+    onOpen() {
         let socket = this.webSocket;
-    
+
         if (socket !== null && socket.readyState === 1) {
             console.log('Connecting and authenticating...');
-    
+
             socket.send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership');
             socket.send('PASS ' + this.password);
             socket.send('NICK ' + this.username);
@@ -149,13 +186,14 @@ class TwitchChat extends React.Component {
 
     render() {
         let side;
-        let chatMsg; 
-        let lastMsg = {props: {username: ''}};
-        let style = { 
+        let chatMsg;
+        let lastMsg = { props: { username: '' } };
+        let style = {
             visibility: this.props.visibility ? "visible" : "hidden",
             mixBlendMode: this.props.blendMode
-         }
-        let chat = this.state.messages.map((msg, idx)=>{
+        }
+
+        let chat = this.state.messages.map((msg, idx) => {
             // logic here is that chat messages should alternate left and right
             // UNLESS there's repeated messages by the same user, then it should be the same
             if (lastMsg.props.username === msg.username) {
@@ -165,7 +203,7 @@ class TwitchChat extends React.Component {
             } else {
                 side = 'right'
             }
-            
+
             if (side === 'left') {
                 chatMsg = <li key={idx} className='left' username={msg.username}>{msg.username}{' -> '}{msg.message}</li>
             } else {
@@ -178,7 +216,7 @@ class TwitchChat extends React.Component {
 
         chat = chat.slice(Math.max(chat.length - 10, 1))
 
-        return(
+        return (
             <div id="twitch_chat" style={style}>
                 <ul>
                     {chat}

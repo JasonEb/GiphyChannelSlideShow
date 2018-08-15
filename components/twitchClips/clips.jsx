@@ -9,7 +9,7 @@ class Clips extends React.Component {
       this.state = { idx: 0, rhythmFactor: 8,  titleCardVisible: false, cycleForward: true }
       this.intervalId = ''
       this.play = this.play.bind(this)
-      this.timeOutID = 0
+      this.timeOutID = 1000
       this.titleCardTimeOutId = 1
 
       this.resetState = this.resetState.bind(this)
