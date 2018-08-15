@@ -44,21 +44,25 @@ class Clips extends React.Component {
 
     cycle(ascend=true) {
       let {idx} = this.state
-      let {clips} = this.props
+      let {clips, setClipBoxState} = this.props
+      let newIdx = 0
 
       if (ascend) {
         if (idx === clips.length - 1) {
-          this.setState({idx: 0})
+          newIdx = 0
         } else {
-          this.setState({idx: idx + 1})
+          newIdx = idx + 1
         }
       } else {
         if (idx === 0) {
-          this.setState({idx: clips.length - 1})
+          newIdx = clips.length - 1
         } else {
-          this.setState({idx: idx - 1})
+          newIdx = idx - 1
         }
       }
+
+      this.setState({idx: newIdx})
+      setClipBoxState({currentClipIdx: newIdx})
     }
 
     play(props) {
@@ -108,6 +112,7 @@ class Clips extends React.Component {
 
       if(nextProps.clips !== this.props.clips) {
         this.setState({idx: 0})
+        nextProps.setClipBoxState({currentClipIdx: 0})
         this.play(nextProps)
       }
     }

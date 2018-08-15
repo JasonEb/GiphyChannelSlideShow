@@ -3,6 +3,7 @@ import React from 'react'
 import Clips from './clips'
 import ClipSearch from './clipSearch'
 import VhrOverlay from '../vhrOverlay/vhrOverlay'
+import TwitchChat from '../twitchChat/twitchChat'
 
 import * as twitchUtil from '../../util/twitchApi.js'
 import Shuffle from 'shuffle-array'
@@ -13,8 +14,13 @@ class ClipBox extends React.Component {
       this.state = {
         clips: [],
         searchVisible: false,
-        currentStr: `street fighter, week`,
-        fetchedClips: []
+        currentStr: `irl, week`,
+        fetchedClips: [],
+
+        // twitch chat
+        twitchChatVisibility: false,
+        twitchChatBlendMode: "hard-light",
+        currentClipIdx: 0
       }
 
       this.handleKeyPress = this.handleKeyPress.bind(this)
@@ -24,6 +30,7 @@ class ClipBox extends React.Component {
       this.fetchChannelClips = this.fetchChannelClips.bind(this)
       this.fetchGameClips = this.fetchGameClips.bind(this)
       this.resetClips = this.resetClips.bind(this)
+      this.setClipBoxState = this.setClipBoxState.bind(this)
     }
 
     componentDidMount() {
@@ -102,22 +109,39 @@ class ClipBox extends React.Component {
       this.setState({currentStr: input})
     }
 
+    setClipBoxState(newState) {
+      this.setState(newState)
+      console.log("Clip box state updated")
+    }
+
     resetClips() {
-      this.setState((prevState, props) =>({clips: [...prevState.fetchedClips], idx: 0}))
+      this.setState((prevState, props) =>({clips: [...prevState.fetchedClips]}))
     }
 
     shuffleClips() {
-      this.setState((prevState, props) =>({clips: Shuffle(prevState.clips), idx: 0}))
+      this.setState((prevState, props) =>({clips: [...Shuffle(prevState.clips)]}))
     }
 
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
+      let {clips, twitchChatBlendMode, twitchChatVisibility} = this.state
+      let {setClipBoxState} = this
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
         <VhrOverlay currentTrack={currentTrack}
-        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
+        audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay}
+        clips={clips} />
         <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
-        <Clips clips={this.state.clips} tempo={this.props.audioFeatures.tempo} audioFeatures={audioFeatures} />
+        <TwitchChat visibility={twitchChatVisibility}
+          currentTrack={currentTrack}
+          blendMode={twitchChatBlendMode}
+          searchGiphy={()=>{ console.log("no giphy search")}}
+
+          />
+        <Clips clips={clips}
+          setClipBoxState={setClipBoxState}
+          tempo={this.props.audioFeatures.tempo}
+          audioFeatures={audioFeatures} />
 
         <div className="functions">
           <div onClick={this.filterClips}>Filter</div>
