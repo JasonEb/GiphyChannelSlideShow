@@ -39,7 +39,7 @@ div.functions {
     color: #101010;
     animation: blur 30ms infinite, jerk 50ms infinite;
     margin: 2vh auto;
-    width: 20%;
+    width: 80%;
     display: flex;
     justify-content: space-around;
 }

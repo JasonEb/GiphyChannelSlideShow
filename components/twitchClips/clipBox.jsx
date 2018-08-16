@@ -46,31 +46,28 @@ class ClipBox extends React.Component {
       }
     }
 
-
-    fetchChannelClips(channel, period, limit, cursor="", clips=[]) {
-      return twitchUtil.fetchChannelClips(channel, period, limit, cursor).then( (fetchRes)=> {
-        if (fetchRes._cursor === ""){
-          clips = clips.concat(fetchRes.clips)
-          return this.setState({ clips: clips, searchVisible: false, fetchedClips: [...clips]})
-        } else {
-          clips = clips.concat(fetchRes.clips)
-          cursor = fetchRes._cursor
-          return this.fetchChannelClips(channel, period, limit, cursor, clips)
-        }
-      }).fail( (e) => {e.abort()})
+    componentDidUpdate(prevProps, prevState) {
+      if(this.state.currentStr !== prevState.currentStr){
+        this.setState({clips: [], fetchedClips: [], cursor: ""})
+      }
     }
 
-    fetchGameClips(game, period, languages, limit, cursor="", clips=[]) {
-      return twitchUtil.fetchGameClips(game, period, languages, limit, cursor).then( (fetchRes)=> {
-        if (fetchRes._cursor === "" || cursor === "") {
-          clips = clips.concat(fetchRes.clips)
-          return this.setState({ clips: clips, searchVisible: false, fetchedClips: [...clips]})
-        } else {
-          clips = clips.concat(fetchRes.clips)
-          cursor = fetchRes._cursor
-          return this.fetchGameClips(game, period, languages, limit, cursor, clips)
-        }
-      }).fail( (e) => {e.abort()})
+    fetchChannelClips(channel, period, limit, cursor="") {
+      return twitchUtil.fetchChannelClips(channel, period, limit, cursor).then( (fetchRes)=> {
+        let {clips, _cursor} = fetchRes
+        this.setState( (prevState) => {
+          return { clips: [...prevState.clips, ...clips], searchVisible: false, fetchedClips: [...prevState.clips, ...clips], cursor: _cursor}
+        })
+      }).fail( (e) => { e.abort() })
+    }
+
+    fetchGameClips(game, period, languages, limit, cursor="") {
+      return twitchUtil.fetchGameClips(game, period, languages, limit, cursor).then( (fetchRes) => {
+          let {clips, _cursor} = fetchRes
+          this.setState( (prevState) => {
+            return { clips: [...prevState.clips, ...clips], searchVisible: false, fetchedClips: [...prevState.clips, ...clips], cursor: _cursor}
+          })
+      }).fail( (e) => { e.abort() })
     }
 
     filterClips() {
@@ -95,14 +92,15 @@ class ClipBox extends React.Component {
       let period = !!options[0] ? options[0].trim() : ""
       let languages = !!options[1] ? options[1].trim() : ""
       let limit = !!options[2] ? options[2].trim() : 100
+      let {cursor} = this.state
 
       if (searchStr.startsWith("@")) {
         let channel = searchStr.substr(1, searchStr.length)
-        this.fetchChannelClips(channel, period, limit, "")
+        this.fetchChannelClips(channel, period, limit, cursor)
       } else {
         twitchUtil.searchGames(searchStr).then( (searchRes)=>{
           let game = searchRes.games[0].name
-          this.fetchGameClips(game, period, languages, limit, "")
+          this.fetchGameClips(game, period, languages, limit, cursor)
         })
       }
 
@@ -131,21 +129,27 @@ class ClipBox extends React.Component {
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
         <VhrOverlay currentTrack={currentTrack}
           audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay}
+          clipsInfo={clipsInfo}
         />
         <ClipSearch visible={this.state.searchVisible} searchTwitch={this.searchTwitch} />
+
         <TwitchChat visibility={twitchChatVisibility}
           currentTrack={currentTrack}
           blendMode={twitchChatBlendMode}
           searchGiphy={()=>{ console.log("no giphy search")}}
           clipsInfo={clipsInfo}
         />
+        
         <Clips clips={clips}
           setClipBoxState={setClipBoxState}
           tempo={this.props.audioFeatures.tempo}
           audioFeatures={audioFeatures} />
 
         <div className="functions">
-          <div onClick={this.filterClips}>Filter</div>
+          <div onClick={()=>{ this.searchTwitch(this.state.currentStr)}}>Fetch More</div>
+          <div onClick={this.filterClips}>Filter By Days</div>
+          <div onClick={this.removeChannelClips}>Remove Channel</div>
+          <div onClick={()=>{ this.setState({searchVisible: !this.state.searchVisible})}}>Search</div>
           <div onClick={this.shuffleClips}>Shuffle</div>
           <div onClick={this.resetClips}>Reset</div>
         </div>

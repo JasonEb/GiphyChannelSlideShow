@@ -1,11 +1,12 @@
 div#search_card{
     padding: 5em;
-    height: 100vh;
+    height: 79vh;
     overflow: hidden;
-    z-index: 100;
+    z-index: 99;
     position: relative;
-    background-color: transparent;
+    background-color: var(--main-bg, black);
     color: white;
+    position: absolute;
   }
 
   ul.nav_menu {
