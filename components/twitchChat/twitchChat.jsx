@@ -6,7 +6,8 @@ class TwitchChat extends React.Component {
         super(props)
         this.state = {
             messages: [],
-            channel: "#interpretivedashdance"
+            channel: "#interpretivedashdance",
+            broadcast: false
         }
         this.username = 'interpretivedashdance'
         this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
@@ -37,20 +38,18 @@ class TwitchChat extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         //look for new clipsinfo props and update
-        if(!!nextProps.clipsInfo.currentClip) {
-            if (nextProps.clipsInfo.currentClip !== this.props.clipsInfo.currentClip) {
-                clearInterval(this.clipMessageID)
-                let {currentClip} = nextProps.clipsInfo
-                let {title, broadcaster, duration} = currentClip
-                let {name} = broadcaster
-                let clipUrl = currentClip.url.slice(0, currentClip.url.indexOf("?"))
+        if (this.state.broadcast && !!nextProps.clipsInfo && !!nextProps.clipsInfo.currentClip && nextProps.clipsInfo.currentClip !== this.props.clipsInfo.currentClip) {
+            clearInterval(this.clipMessageID)
+            let {currentClip} = nextProps.clipsInfo
+            let {title, broadcaster, duration} = currentClip
+            let {name} = broadcaster
+            let clipUrl = currentClip.url.slice(0, currentClip.url.indexOf("?"))
 
-                let message = `"${title}" from ${name}'s channel... ${clipUrl}`
-                duration = 7000
-                this.clipMessageID = setTimeout(()=>{
-                    this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
-                }, duration)
-            }
+            let message = `"${title}" from ${name}'s channel... ${clipUrl}`
+            duration = 7000
+            this.clipMessageID = setTimeout(()=>{
+                this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
+            }, duration)
         }
     }
 
