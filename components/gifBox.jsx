@@ -1,7 +1,7 @@
 import React from 'react';
 import * as spotifyUtil from '../util/spotifyUtil'
 import * as gifUtil from '../util/giphyApiUtil.js'
-import * as slideUtil from '../util/sliderControls.js' 
+import * as slideUtil from '../util/sliderControls.js'
 import Shuffle from 'shuffle-array'
 
 import VhrOverlay from './vhrOverlay/vhrOverlay'
@@ -22,7 +22,7 @@ class GifBox extends React.Component {
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
-        currentGiphyTerm: 'mario+tennis',
+        currentGiphyTerm: 'glitch+art',
         urls: []
       }
 
@@ -54,7 +54,7 @@ class GifBox extends React.Component {
     }
 
     componentDidMount() {
-      document.body.style.setProperty('--main-bg', 'aquagreen')
+      document.body.style.setProperty('--main-bg', 'black')
       document.title = "GifBox"
       this.resetState()
       this.sequenceTitleCardBehavior(this.props)
@@ -127,7 +127,7 @@ class GifBox extends React.Component {
           titleCardVisibility: false
         })
       }, timestamp)
-    
+
       //intro card effect
       this.ids.titleCardB = setTimeout(() => {
         this.setState({
@@ -144,7 +144,7 @@ class GifBox extends React.Component {
           slideClipBlendMode: 'hard-light',
           twitchChatVisibility: true
         })
-        slideUtil.initializeShow(section.tempo)        
+        slideUtil.initializeShow(section.tempo)
       },timestamp)
 
       beatMs = 60000/(section.tempo)
@@ -154,10 +154,10 @@ class GifBox extends React.Component {
         this.setState({
           twitchChatVisibility: false,
           urls: newUrls
-        })  
+        })
       },timestamp + beatMs*16)
 
-      //outro 
+      //outro
       section = sections[sections.length - 1]
       timestamp = section.start * 1000 - progressMs - networkDelay
       this.ids.outro = setTimeout(()=>{

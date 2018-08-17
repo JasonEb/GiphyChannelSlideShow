@@ -1,7 +1,5 @@
 import React from 'react'
 
-//todo examine clearing out intervals on every prop update change
-
 class CurrentTrackDisplay extends React.Component {
     constructor(props) {
         super(props)
@@ -11,7 +9,7 @@ class CurrentTrackDisplay extends React.Component {
         this.rotateInfo = this.rotateInfo.bind(this)
         this.toggle = this.toggle.bind(this)
         this.formatArtistsData = this.formatArtistsData.bind(this)
-        
+
         this.state = {
             count: 0, 
             info: [

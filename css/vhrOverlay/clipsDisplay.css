@@ -1,0 +1,12 @@
+ul.clips_display {
+    font-size:2em;
+    font-family: "VT323", monospace;
+    font-weight: bold;
+    color: #313131;
+    animation: blur 30ms infinite;
+    width: 30vw;
+    position: absolute;
+    right: 10.5vw;
+    bottom: 23vh;
+    direction: rtl;
+}

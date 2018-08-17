@@ -170,9 +170,6 @@ class App extends React.Component {
 
     render() {
         let { currentTrack, audioAnalysis, audioFeatures, networkDelay } = this.state
-        // <Route path="/" render={
-        //     (props) => <Slider {...props} currentTrack={currentTrack} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
-        // />
         return (
             <div id="app">
                 <Switch>

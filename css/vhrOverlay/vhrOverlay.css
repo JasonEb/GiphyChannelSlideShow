@@ -1,6 +1,7 @@
 @import "battery.css";
 @import "currentTrackDisplay.css";
 @import "dateAndTimeDisplay.css";
+@import "clipsDisplay.css";
 
 div.vhr_overlay {
     height: 100vh;

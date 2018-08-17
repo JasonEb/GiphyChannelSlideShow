@@ -3,6 +3,7 @@ import $ from "jquery"
 import Battery from './battery'
 import CurrentTrackDisplay from './currentTrackDisplay'
 import DateAndTimeDisplay from './dateAndTimeDisplay'
+import ClipsDisplay from './clipsDisplay'
 
 class VhrOverlay extends React.Component {
     constructor(props) {
@@ -28,8 +29,6 @@ class VhrOverlay extends React.Component {
         let section = sections.find( (section) => {
             return section.start >= 6.0
         })
-
-
 
         if (!sameSong ) {
             clearTimeout(this.introTimeOut)
@@ -58,8 +57,8 @@ class VhrOverlay extends React.Component {
     }
 
     render() {
-        let {audioFeatures, audioAnalysis, currentTrack, networkDelay} = this.props
-        let {visible, animate, cssAnimation} = this.state
+        let {audioFeatures, audioAnalysis, currentTrack, networkDelay, clipsInfo} = this.props
+        let { animate, cssAnimation} = this.state
         let tempo = this.props.audioFeatures.tempo
         let bps = tempo / 60
         let {progress_ms} = currentTrack
@@ -74,7 +73,7 @@ class VhrOverlay extends React.Component {
 
         let {sections} = audioAnalysis
         let section = sections.find( (section) => {
-          return section.start >= 12
+            return section.start >= 12
         })
 
         let overlayCSS = {
@@ -84,10 +83,11 @@ class VhrOverlay extends React.Component {
         return <div className="vhr_overlay" style={animate ? overlayCSS : {}}>
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} tempo={tempo}/>
+            <ClipsDisplay data={clipsInfo} />
             <CurrentTrackDisplay currentTrack={currentTrack} trackId={audioFeatures.id} tempo={tempo} audioAnalysis={audioAnalysis} networkDelay={networkDelay} />
             <DateAndTimeDisplay tempo={tempo} />
         </div>
     }
-  }
+}
 
 export default VhrOverlay;
