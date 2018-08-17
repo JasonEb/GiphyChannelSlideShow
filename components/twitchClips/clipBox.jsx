@@ -14,9 +14,10 @@ class ClipBox extends React.Component {
       this.state = {
         clips: [],
         searchVisible: false,
-        currentStr: `irl, week`,
+        currentStr: `irl, day`,
         fetchedClips: [],
-
+        clipOrder: true,
+        clipAnimated: false,
         // twitch chat
         twitchChatVisibility: false,
         twitchChatBlendMode: "hard-light",
@@ -31,6 +32,7 @@ class ClipBox extends React.Component {
       this.fetchGameClips = this.fetchGameClips.bind(this)
       this.resetClips = this.resetClips.bind(this)
       this.setClipBoxState = this.setClipBoxState.bind(this)
+      this.reverseClips = this.reverseClips.bind(this)
     }
 
     componentDidMount() {
@@ -112,7 +114,13 @@ class ClipBox extends React.Component {
     }
 
     resetClips() {
-      this.setState((prevState, props) =>({clips: [...prevState.fetchedClips]}))
+      this.setState((prevState, props) =>({clips: [...prevState.fetchedClips], clipOrder: true}))
+    }
+
+    reverseClips() {
+      this.setState((prevState, props) =>({clips: prevState.clips.reverse(), 
+        clipOrder: !prevState.clipOrder,
+        currentClipIdx: 0}))
     }
 
     shuffleClips() {
@@ -122,9 +130,13 @@ class ClipBox extends React.Component {
 
     render() {
       let {currentTrack, audioAnalysis, audioFeatures, networkDelay} = this.props
-      let {clips, twitchChatBlendMode, twitchChatVisibility, currentClipIdx} = this.state
+      let {clips, twitchChatBlendMode, twitchChatVisibility, currentClipIdx, clipOrder, clipAnimated} = this.state
       let {setClipBoxState} = this
-      let clipsInfo = {currentClip: clips[currentClipIdx], clips: clips}
+      let clipsInfo = {currentClip: clips[currentClipIdx],
+        clips: clips,
+        currentClipIdx: currentClipIdx,
+        clipOrder: clipOrder
+      }
 
       return <div id="clip-box" tabIndex="1" onKeyPress={this.handleKeyPress}>
         <VhrOverlay currentTrack={currentTrack}
@@ -139,16 +151,17 @@ class ClipBox extends React.Component {
           searchGiphy={()=>{ console.log("no giphy search")}}
           clipsInfo={clipsInfo}
         />
-        
+
         <Clips clips={clips}
           setClipBoxState={setClipBoxState}
           tempo={this.props.audioFeatures.tempo}
+          animated={clipAnimated}
           audioFeatures={audioFeatures} />
 
         <div className="functions">
           <div onClick={()=>{ this.searchTwitch(this.state.currentStr)}}>Fetch More</div>
           <div onClick={this.filterClips}>Filter By Days</div>
-          <div onClick={this.removeChannelClips}>Remove Channel</div>
+          <div onClick={this.reverseClips}>Reverse</div>
           <div onClick={()=>{ this.setState({searchVisible: !this.state.searchVisible})}}>Search</div>
           <div onClick={this.shuffleClips}>Shuffle</div>
           <div onClick={this.resetClips}>Reset</div>

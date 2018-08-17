@@ -6,7 +6,7 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 8,  titleCardVisible: false, cycleForward: true }
+      this.state = { idx: 0, rhythmFactor: 4,  titleCardVisible: false, cycleForward: true }
       this.intervalId = ''
       this.play = this.play.bind(this)
       this.timeOutID = 1000
@@ -72,7 +72,7 @@ class Clips extends React.Component {
       // figure out when to cycle after duration
       if (!currentClip){ return }
 
-      let bps = props.tempo / 60
+      let bps = tempo / 60
       let duration = (Math.floor(currentClip.duration * bps * 2) / 2 )* (1 / bps) // rounded beats * beats / seconds
 
 
@@ -122,17 +122,24 @@ class Clips extends React.Component {
     }
 
     render() {
-      let { clips } = this.props
-      let {idx, nextIdx, titleCardVisible, cycleForward} = this.state
+      let { clips, tempo, animated } = this.props
+      let {idx,titleCardVisible, cycleForward, rhythmFactor} = this.state
       let currentClip = clips[idx]
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
+      }
+      let bps = tempo / 60
+
+      let clipAnimation = animated ? `blur ${bps/rhythmFactor}s infinite, jerk ${bps/rhythmFactor}s infinite` : ''
+
+      let clipStyle = {
+        animation: clipAnimation
       }
 
       return(
         <div className="clips">
           <ClipTitleCard clip={currentClip} visibility={titleCardVisible} />
-          <Clip clip={currentClip} />
+          <Clip clip={currentClip} style={clipStyle}/>
           <div className="clips_control">
             <div onClick={this.handleClick}>Prev</div>
             <div onClick={this.handleClick}>Stop</div>
