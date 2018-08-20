@@ -34,16 +34,34 @@ div.clip {
 
 div.clips_index {
     position: absolute;
-    top: 4vh;
-    left: 33vw;
     font-family: "VT323", monospace;
     font-size: 1.5em;
     font-weight: bold;
-    background-color: #444444;
+    color: gray;
+    background-color: var(--main-bg, black);
     z-index: 100;
+    margin-left: 10vw;
 }
 
-#clip-box > div.clips_index > div > div.rt-table > div.rt-tbody {
+div.clips_pagination {
+    font-size: 1em;
+}
+
+#clip-box > div.dash_board > div.clips_index > div > div.pagination-top > div > div.-next > button  {
+    color: grey;
+}
+
+#clip-box > div.dash_board > div.clips_index > div > div.pagination-top > div > div.-previous > button  {
+    color: grey;
+}
+
+#clip-box > div.dash_board > div.clips_index > div > div.pagination-top > div > div.-center > span > div > input[type="number"] {
+    background: #ffffff61;
+    color: white;
+    font-family: "VT323", monospace;
+}
+
+div.dash_board > div.clips_index > div > div.rt-table > div.rt-tbody {
     animation: blur 30ms infinite;
 }
 
@@ -64,4 +82,12 @@ div.functions {
     1% { transform: scale(1.03) }
     2% { transform: scale(1) }
     100% { transform: scale(1) }
+}
+
+div.dash_board {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    width: 100%;
+    left: 0;
 }

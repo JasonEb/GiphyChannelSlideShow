@@ -6,7 +6,7 @@ class Clips extends React.Component {
     constructor(props) {
       super(props)
       this.cycle = this.cycle.bind(this)
-      this.state = { idx: 0, rhythmFactor: 4,  titleCardVisible: false, cycleForward: true }
+      this.state = {rhythmFactor: 1,  titleCardVisible: false, cycleForward: true }
       this.intervalId = ''
       this.play = this.play.bind(this)
       this.timeOutID = 1000
@@ -43,8 +43,8 @@ class Clips extends React.Component {
     }
 
     cycle(ascend=true) {
-      let {idx} = this.state
-      let {clips, setClipBoxState} = this.props
+      let {clips, setClipBoxState, currentClipIdx} = this.props
+      let idx = currentClipIdx
       let newIdx = 0
 
       if (ascend) {
@@ -61,14 +61,13 @@ class Clips extends React.Component {
         }
       }
 
-      this.setState({idx: newIdx})
+      // this.setState({idx: newIdx})
       setClipBoxState({currentClipIdx: newIdx})
     }
 
     play(props) {
-      let {tempo, clips} = props
-      let {idx} = this.state
-      let currentClip = clips[idx]
+      let {tempo, clips, currentClipIdx} = props
+      let currentClip = clips[currentClipIdx]
       // figure out when to cycle after duration
       if (!currentClip){ return }
 
@@ -111,26 +110,30 @@ class Clips extends React.Component {
       }
 
       if(nextProps.clips !== this.props.clips) {
-        this.setState({idx: 0})
-        nextProps.setClipBoxState({currentClipIdx: 0})
+        nextProps.setClipBoxState({currentClipcurrentClipIdx: 0})
+        this.play(nextProps)
+      }
+
+      if(nextProps.currentClipIdx !== this.props.currentClipIdx) {
         this.play(nextProps)
       }
     }
 
     resetState(){
-      this.setState({idx: 0, titleCardVisible: false })
+      this.setState({titleCardVisible: false })
+      this.props.setClipBoxState({currentClipIdx: 0})
     }
 
     render() {
-      let { clips, tempo, animated } = this.props
+      let { clips, tempo, animated, currentClipIdx } = this.props
       let {idx,titleCardVisible, cycleForward, rhythmFactor} = this.state
-      let currentClip = clips[idx]
+      let currentClip = clips[currentClipIdx]
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
       }
       let bps = tempo / 60
 
-      let clipAnimation = animated ? `blur ${bps/rhythmFactor}s infinite, jerk ${bps/rhythmFactor}s infinite` : ''
+      let clipAnimation = animated ? `bounce ${bps/rhythmFactor}s infinite linear` : ''
 
       let clipStyle = {
         animation: clipAnimation
