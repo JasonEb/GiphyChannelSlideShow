@@ -32,6 +32,21 @@ div.clip {
     margin-bottom: 8vh;
 }
 
+div.clips_index {
+    position: absolute;
+    top: 4vh;
+    left: 33vw;
+    font-family: "VT323", monospace;
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #444444;
+    z-index: 100;
+}
+
+#clip-box > div.clips_index > div > div.rt-table > div.rt-tbody {
+    animation: blur 30ms infinite;
+}
+
 div.functions {
     font-size:2em;
     font-family: "VT323", monospace;
@@ -46,6 +61,7 @@ div.functions {
 
 @keyframes bounce {
     0% { transform: scale(1) }
-    50% { transform: scale(1.01) }
+    1% { transform: scale(1.03) }
+    2% { transform: scale(1) }
     100% { transform: scale(1) }
 }

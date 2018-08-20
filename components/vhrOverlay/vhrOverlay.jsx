@@ -10,7 +10,9 @@ class VhrOverlay extends React.Component {
         super(props)
         this.state = { visible: false,
             animate: true,
-            cssAnimation: ""
+            cssAnimation: "",
+            loopingEffect: true,
+            rhythmFactor: 1
         }
         this.toggle = this.toggle.bind(this)
         this.randomPick = this.randomPick.bind(this)
@@ -25,6 +27,9 @@ class VhrOverlay extends React.Component {
     componentWillReceiveProps(nextProps) {
         let sameSong = nextProps.audioFeatures.id === this.props.audioFeatures.id
         let {networkDelay, currentTrack} = nextProps
+        let {rhythmFactor, loopingEffect} = this.state
+        let tempo = nextProps.audioFeatures.tempo
+        let bps = tempo / 60
         let {sections} = nextProps.audioAnalysis
         let section = sections.find( (section) => {
             return section.start >= 6.0
@@ -48,7 +53,8 @@ class VhrOverlay extends React.Component {
             this.setState({animate: true, cssAnimation: cssStr})
 
             //turn off animation
-            this.introTimeOut = setTimeout(()=>{this.setState({animate: false})}, section.start * 1000 - networkDelay)
+            let cssAnimation = loopingEffect ? `bounce ${bps/rhythmFactor}s infinite ease-in` : ''
+            this.introTimeOut = setTimeout(()=>{this.setState({animate: false, cssAnimation: cssAnimation})}, section.start * 1000 - networkDelay)
         }
     }
 
@@ -58,7 +64,7 @@ class VhrOverlay extends React.Component {
 
     render() {
         let {audioFeatures, audioAnalysis, currentTrack, networkDelay, clipsInfo} = this.props
-        let { animate, cssAnimation} = this.state
+        let {cssAnimation} = this.state
         let tempo = this.props.audioFeatures.tempo
         let bps = tempo / 60
         let {progress_ms} = currentTrack
@@ -80,7 +86,7 @@ class VhrOverlay extends React.Component {
                 animation: cssAnimation
         }
 
-        return <div className="vhr_overlay" style={animate ? overlayCSS : {}}>
+        return <div className="vhr_overlay" style={overlayCSS}>
             <div id="vhr_grid" style={gridStyle} />
             <Battery batteryPct={batteryPct} tempo={tempo}/>
             <ClipsDisplay data={clipsInfo} />
