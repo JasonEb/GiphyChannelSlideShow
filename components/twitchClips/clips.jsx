@@ -23,7 +23,6 @@ class Clips extends React.Component {
       switch (result){
         case "prev":
           this.cycle(false)
-          this.play(this.props)
           break
         case "stop":
           clearTimeout(this.titleCardTimeOutId)
@@ -31,7 +30,6 @@ class Clips extends React.Component {
           break
         case "next":
           this.cycle()
-          this.play(this.props)
           break
         case "forward":
           this.setState((prevState)=>({cycleForward: !prevState.cycleForward}))
@@ -89,7 +87,6 @@ class Clips extends React.Component {
       clearTimeout(this.timeOutID)
       this.timeOutID = setTimeout((currentClip)=> {
         this.cycle(this.state.cycleForward)
-        this.play(props)
       }, duration * 1000)
     }
 
@@ -101,21 +98,17 @@ class Clips extends React.Component {
       // clearInterval(intervalId)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps, prevState) {
       //set play for new set of clips
-      if (nextProps.audioFeatures.id !== this.props.audioFeatures.id ) {
+      if (prevProps.audioFeatures.id !== this.props.audioFeatures.id ) {
         this.resetState()
         this.cycle(this.state.cycleForward)
-        this.play(nextProps)
-      }
-
-      if(nextProps.clips !== this.props.clips) {
-        nextProps.setClipBoxState({currentClipcurrentClipIdx: 0})
-        this.play(nextProps)
-      }
-
-      if(nextProps.currentClipIdx !== this.props.currentClipIdx) {
-        this.play(nextProps)
+        // this.play(this.props)
+      } else if(prevProps.clips !== this.props.clips) {
+        this.props.setClipBoxState({currentClipcurrentClipIdx: 0})
+        // this.play(this.props)
+      } else if(prevProps.currentClipIdx !== this.props.currentClipIdx) {
+        this.play(this.props)
       }
     }
 
@@ -126,7 +119,7 @@ class Clips extends React.Component {
 
     render() {
       let { clips, tempo, animated, currentClipIdx } = this.props
-      let {idx,titleCardVisible, cycleForward, rhythmFactor} = this.state
+      let {titleCardVisible, cycleForward, rhythmFactor} = this.state
       let currentClip = clips[currentClipIdx]
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",

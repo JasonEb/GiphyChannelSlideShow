@@ -17,7 +17,8 @@ class ClipsIndex extends React.Component {
         return {
             onClick: (e) => {
                 let channel = rowInfo.original.broadcaster.name
-                if (column.Header === 'channel'){
+                let clips = state.sortedData.map( (datum) => datum._original)
+                if (column.Header === 'Channel'){
                     if (e.shiftKey){
                         let searchStr = `@${channel}, month`
                         searchTwitch(searchStr)
@@ -28,10 +29,10 @@ class ClipsIndex extends React.Component {
                     setClipBoxState({clips: results})
                     }
                 } else if (column.Header === 'Preview') {
-                    setClipBoxState({currentClipIdx: rowInfo.index, searchVisible: false})
+                    // try finding new idx within the new clips
+                    setClipBoxState({currentClipIdx: rowInfo.index, searchVisible: false, clips: clips })
                 } else {
-                    setClipBoxState({clips: state.sortedData.map( (datum) => datum._original),
-                        currentClipIdx: rowInfo.index})
+                    setClipBoxState({currentClipIdx: 0, searchVisible: false, clips: clips })
                 }
             }
         }
@@ -55,7 +56,9 @@ class ClipsIndex extends React.Component {
 
         let columns = [
             {Header: "Preview", accessor: "thumbnail.small", Cell: thumbnailCell },
-            {Header: "channel", accessor: "broadcaster.name"},
+            {Header: "Channel", accessor: "broadcaster.name", filterable: true},
+            {Header: "Game", accessor: "game"},
+            {Header: "Language", accessor: "language", filterable: true},
             {Header: "Clip Title", accessor: "title"},
             {Header: "Views", accessor: "views"},
             {Header: "created_at", accessor: "created_at"},
