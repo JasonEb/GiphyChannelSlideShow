@@ -88,7 +88,9 @@ class App extends React.Component {
     }
 
     setupSpotify() {
-        let token = window.location.hash.slice(14, 182)
+        let a =  window.location.hash.indexOf("#access_token=") + "#access_token=".length
+        let b =  window.location.hash.indexOf("&token_type")
+        let token = window.location.hash.slice(a, b)
         this.setState({ spotifyAuthToken: token })
         spotifyUtil.setAuthToken(token)
 

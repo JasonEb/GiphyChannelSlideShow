@@ -32,6 +32,7 @@ export const getAuthTokenImplicit = (url) => {
     
     // v 1.0 = 'a1725413073e48a697827b4895650356'
     // const clientId = '76838704e3d141acb61be1dbd05726b2'
+    
     const clientId = 'a1725413073e48a697827b4895650356'
     
     const redirectUri = url
