@@ -12,7 +12,7 @@ class VhrOverlay extends React.Component {
             animate: true,
             cssAnimation: "",
             loopingEffect: true,
-            rhythmFactor: 1
+            rhythmFactor: 4.0
         }
         this.toggle = this.toggle.bind(this)
         this.randomPick = this.randomPick.bind(this)
@@ -29,7 +29,7 @@ class VhrOverlay extends React.Component {
         let {networkDelay, currentTrack} = nextProps
         let {rhythmFactor, loopingEffect} = this.state
         let tempo = nextProps.audioFeatures.tempo
-        let bps = tempo / 60
+        let bps = tempo / 60.0
         let {sections} = nextProps.audioAnalysis
         let section = sections.find( (section) => {
             return section.start >= 6.0
@@ -53,7 +53,7 @@ class VhrOverlay extends React.Component {
             this.setState({animate: true, cssAnimation: cssStr})
 
             //turn off animation
-            let cssAnimation = loopingEffect ? `bounce ${bps/rhythmFactor}s infinite ease-in` : ''
+            let cssAnimation = loopingEffect ? `bounce ${(1 / bps) * rhythmFactor}s linear ${(1 / bps) * rhythmFactor}s infinite` : ''
             this.introTimeOut = setTimeout(()=>{this.setState({animate: false, cssAnimation: cssAnimation})}, section.start * 1000 - networkDelay)
         }
     }

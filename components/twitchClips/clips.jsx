@@ -15,6 +15,7 @@ class Clips extends React.Component {
       this.resetState = this.resetState.bind(this)
 
       this.handleClick = this.handleClick.bind(this)
+      this.onTitleClick = this.onTitleClick.bind(this)
     }
 
     handleClick(e) {
@@ -61,6 +62,14 @@ class Clips extends React.Component {
 
       // this.setState({idx: newIdx})
       setClipBoxState({currentClipIdx: newIdx})
+    }
+
+    onTitleClick(clipTarget) {
+      let {clips, setClipBoxState} = this.props
+      //remove channel
+      let results = clips.filter( (clip) => clip.broadcaster.name !== clipTarget.broadcaster.name )
+      //update state
+      setClipBoxState({clips: results, currentClipIdx: 0})
     }
 
     play(props) {
@@ -118,8 +127,9 @@ class Clips extends React.Component {
     }
 
     render() {
-      let { clips, tempo, animated, currentClipIdx } = this.props
+      let { clips, tempo, animated, currentClipIdx} = this.props
       let {titleCardVisible, cycleForward, rhythmFactor} = this.state
+      let {onTitleClick} = this
       let currentClip = clips[currentClipIdx]
       let style = {
         visibility: this.props.visibility ? "visible" : "hidden",
@@ -134,7 +144,7 @@ class Clips extends React.Component {
 
       return(
         <div className="clips">
-          <ClipTitleCard clip={currentClip} visibility={titleCardVisible} />
+          <ClipTitleCard clip={currentClip} visibility={titleCardVisible} onTitleClick={onTitleClick}  />
           <Clip clip={currentClip} style={clipStyle}/>
           <div className="clips_control">
             <div onClick={this.handleClick}>Prev</div>

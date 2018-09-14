@@ -3,6 +3,13 @@ import React from 'react'
 class ClipTitleCard extends React.Component {
     constructor(props){
         super(props)
+
+        this.handleClick = this.handleClick.bind(this)
+    }
+
+    handleClick(e){
+        let {clip, onTitleClick} = this.props
+        onTitleClick(clip)
     }
 
     render() {
@@ -16,24 +23,24 @@ class ClipTitleCard extends React.Component {
 
         return <div id="clip_title_card" style={style}>
             <div className="glitch">
-                <div className="text">
+                <div className="text" onClick={this.handleClick}>
                     <span>
-                        "{title}"
+                        ⦍{title}⦐
                         <br/>
                         {broadcaster}
                     </span>
                     <span>
-                        "{title}"
+                        ⦍{title}⦐
                         <br/>
                         {broadcaster}
                     </span>
                     <span>
-                        "{title}"
+                        ⦍{title}⦐
                         <br/>
                         {broadcaster}
                     </span>
                     <span>
-                        "{title}"
+                        ⦍{title}⦐
                         <br/>
                         {broadcaster}
                     </span>

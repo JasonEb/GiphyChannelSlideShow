@@ -13,7 +13,7 @@
 }
 
 #clip-box > div.clips > div.clips_control {
-    color: #101010;
+    color:white;
     display: flex;
     justify-content: space-around;
     width: 10em;
@@ -69,7 +69,7 @@ div.functions {
     font-size:2em;
     font-family: "VT323", monospace;
     font-weight: bold;
-    color: #101010;
+    color: white;
     animation: blur 30ms infinite, jerk 50ms infinite;
     margin: 2vh auto;
     width: 80%;
