@@ -1,5 +1,5 @@
 import React from 'react';
-import GifSlide from './gifSlide.jsx';
+import GifSlide from './gifSlide';
 
 class GifsList extends React.Component {
     constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import SlideClip from './slideClip.jsx'
-import GifsList from './gifsList.jsx'
+import GifsList from './mixbox/gifsList'
 import * as gifUtil from '../util/giphyApiUtil.js' 
 import TitleCard from './titleCard.jsx'
 import AudioFeaturesCard from './audioFeaturesCard.jsx'

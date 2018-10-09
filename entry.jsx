@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Slider from './components/slider.jsx';
+// import Slider from './components/slider.jsx';
 import * as slideUtil from './util/sliderControls';
 import $ from "jquery";
 import Root from './components/root';

@@ -3,7 +3,7 @@ import { Route, Switch, NavLink, withRouter } from 'react-router-dom'
 
 import Slider from './slider'
 import OverlaySlider from './overlaySlider'
-import GifBox from './gifBox'
+import GifBox from './mixbox/gifBox'
 import ClipBox from './twitchClips/clipBox'
 import TwitchData from './twitchData/twitchData'
 
