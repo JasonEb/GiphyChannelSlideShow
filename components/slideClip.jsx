@@ -71,8 +71,8 @@ class SlideClip extends React.Component {
         width: '100%',
         height: '70vh',
         position: 'absolute',
-        backgroundImage: `url("${url}")`,
-        backgroundSize: "contain",
+        // backgroundImage: `url("${url}")`,
+        backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         zIndex: '91',
@@ -82,7 +82,9 @@ class SlideClip extends React.Component {
         visibility: this.props.visibility ? "visible" : "hidden"
       }
 
-      return <div id="slideClip" style={style} onError={this.onError} ></div>
+      return <div id="slideClip" style={style} >
+        <img src={url} alt={""} crossOrigin={"anonymous"} onError={this.onError} />
+      </div>
     }
   }
 

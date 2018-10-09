@@ -28,7 +28,7 @@ class App extends React.Component {
                     key: 0,
                     key_confidence: 0,
                     loudness: -11.28,
-                    mode: 1,
+                    mode: 1,    
                     mode_confidence: 0,
                     start: 12,
                     tempo: 120.54,
@@ -131,7 +131,7 @@ class App extends React.Component {
         } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/clipbox")
+            this.props.history.push("/gifbox")
         }
     }
 

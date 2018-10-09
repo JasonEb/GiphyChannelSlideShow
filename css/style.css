@@ -16,6 +16,7 @@ html{
     padding: 0;
     /* filter:sepia(1.0); */
     --main-bg: black;
+    --background-size: cover;
 }
 
 body {

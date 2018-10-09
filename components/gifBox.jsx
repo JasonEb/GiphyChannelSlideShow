@@ -210,7 +210,7 @@ class GifBox extends React.Component {
 
         <GifsList gifUrls={urls.slice(1, 24)} tempo={audioFeatures.tempo} visibility={true} />
         <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} searchGiphy={this.searchGiphy} />
-        <SlideClip url={urls[0]} visibility={slideClipVisibility} blendMode={slideClipBlendMode} audioFeatures={audioFeatures} />
+        <SlideClip url={urls[0]} visibility={true} blendMode={slideClipBlendMode} audioFeatures={audioFeatures} />
       </div>
     }
   }

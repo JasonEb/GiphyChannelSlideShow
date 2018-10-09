@@ -135,6 +135,8 @@ export const filteredGiphy = (url) => {
         'https://media.giphy.com/media/3oFzlWEeBDMYkOPXoY/giphy.gif',
         'https://media.giphy.com/media/2dGnPDvSFfooU/giphy.gif',
 
+        //glitch
+        'https://media.giphy.com/media/PAufI0M225nos/giphy.gif',
         //american flag
         'https://media.giphy.com/media/GHZ9RZFGqsWbK/giphy.gif',
         'https://media.giphy.com/media/3oriOiFbufnNR5zMVq/giphy.gif',
