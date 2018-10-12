@@ -9,7 +9,7 @@ import TwitchChat from '../twitchChat/twitchChat'
 import TitleCard from './titleCard'
 import GifsList from './gifsList'
 import SlideClip from '../slideClip'
-import GiphySearchCard from './giphySearchCard'
+import GiphySearchCard from '../searchForms/giphySearchCard'
 
 class MixBox extends React.Component {
     constructor(props){

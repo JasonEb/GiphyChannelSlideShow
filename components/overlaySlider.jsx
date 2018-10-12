@@ -2,7 +2,7 @@ import React from 'react';
 import * as spotifyUtil from '../util/spotifyUtil'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
 import TwitchChat from './twitchChat/twitchChat'
-import GiphySearchCard from './mixbox/giphySearchCard'
+import GiphySearchCard from './searchForms/giphySearchCard'
 
 class OverlaySlider extends React.Component {
     constructor(props){

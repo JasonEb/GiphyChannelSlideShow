@@ -1,5 +1,5 @@
 import React from 'react'
-import GiphySearchBar from './giphySearchBar';
+import GiphySearchBar from '../searchForms/giphySearchBar';
 
 class TitleCard extends React.Component {
     constructor(props){
