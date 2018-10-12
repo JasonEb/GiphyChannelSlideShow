@@ -6,12 +6,12 @@ import Shuffle from 'shuffle-array'
 
 import VhrOverlay from '../vhrOverlay/vhrOverlay'
 import TwitchChat from '../twitchChat/twitchChat'
-import TitleCard from '../titleCard'
+import TitleCard from './titleCard'
 import GifsList from './gifsList'
 import SlideClip from '../slideClip'
-import GiphySearchCard from '../giphySearchCard'
+import GiphySearchCard from './giphySearchCard'
 
-class GifBox extends React.Component {
+class MixBox extends React.Component {
     constructor(props){
       super(props)
       this.state = {
@@ -22,7 +22,7 @@ class GifBox extends React.Component {
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
-        currentGiphyTerm: 'glitch+art',
+        currentGiphyTerm: 'cassette',
         urls: []
       }
 
@@ -55,7 +55,7 @@ class GifBox extends React.Component {
 
     componentDidMount() {
       document.body.style.setProperty('--main-bg', 'black')
-      document.title = "GifBox"
+      document.title = "MixBox"
       this.resetState()
       this.sequenceTitleCardBehavior(this.props)
       this.searchGiphy(this.state.currentGiphyTerm)
@@ -215,4 +215,4 @@ class GifBox extends React.Component {
     }
   }
 
-export default GifBox;
+export default MixBox;

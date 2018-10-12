@@ -3,7 +3,7 @@ import { Route, Switch, NavLink, withRouter } from 'react-router-dom'
 
 import Slider from './slider'
 import OverlaySlider from './overlaySlider'
-import GifBox from './mixbox/gifBox'
+import MixBox from './mixbox/mixBox'
 import ClipBox from './twitchClips/clipBox'
 import TwitchData from './twitchData/twitchData'
 
@@ -131,7 +131,7 @@ class App extends React.Component {
         } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/gifbox")
+            this.props.history.push("/mixbox")
         }
     }
 
@@ -175,8 +175,8 @@ class App extends React.Component {
         return (
             <div id="app">
                 <Switch>
-                    <Route exact path="/gifbox" render={
-                        (props) => <GifBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
+                    <Route exact path="/mixbox" render={
+                        (props) => <MixBox {...props} currentTrack={currentTrack} networkDelay={networkDelay} audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} />}
                     />
 
                     <Route exact path="/overlay" render={

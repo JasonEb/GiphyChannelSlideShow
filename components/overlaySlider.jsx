@@ -2,7 +2,7 @@ import React from 'react';
 import * as spotifyUtil from '../util/spotifyUtil'
 import VhrOverlay from './vhrOverlay/vhrOverlay'
 import TwitchChat from './twitchChat/twitchChat'
-import GiphySearchCard from './giphySearchCard'
+import GiphySearchCard from './mixbox/giphySearchCard'
 
 class OverlaySlider extends React.Component {
     constructor(props){
@@ -10,11 +10,11 @@ class OverlaySlider extends React.Component {
       this.state = {
         twitchChatVisibility: false,
         twitchChatBlendMode: "hard-light",
-        searchVisible: false    
+        searchVisible: false
       }
       this.handleKeyPress = this.handleKeyPress.bind(this)
     }
-    
+
     componentDidMount() {
       console.log("Component mounted?")
       document.body.style.setProperty('--main-bg', '#00ffff')
