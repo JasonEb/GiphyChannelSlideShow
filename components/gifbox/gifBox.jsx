@@ -15,14 +15,16 @@ class GifBox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            //titlecard
             titleCardVisibility: true,
             titleCardBlendMode: 'unset',
+            titleCardAnimation: '',
             twitchChatVisibility: false,
             twitchChatBlendMode: "hard-light",
             slideClipVisibility: true,
             searchVisible: false,
             slideClipBlendMode: 'unset',
-            currentGiphyTerm: 'cassette',
+            currentGiphyTerm: 'pixel',
             urls: []
         }
 
@@ -97,6 +99,7 @@ class GifBox extends React.Component {
         this.setState({
             titleCardVisibility: true,
             titleCardBlendMode: 'unset',
+            titleCardAnimation: '',
             twitchChatVisibility: false,
             twitchChatBlendMode: "hard-light",
             searchVisible: false,
@@ -109,7 +112,7 @@ class GifBox extends React.Component {
 
         let { sections } = props.audioAnalysis
         let section = sections.find((section) => {
-            return section.start >= 12.0
+            return section.start >= 6.0
         })
         console.log("intro section: ", section, section.start)
         let duration = section.start * 1000
@@ -122,11 +125,12 @@ class GifBox extends React.Component {
         console.log("netWorkDelay at sequenceTitleBehavior", networkDelay)
         let timestamp = duration - progressMs - networkDelay
         console.log("timestamp at gifBox: ", timestamp)
-        this.ids.titleCardIntroA = setTimeout(() => {
-            this.setState({
-                titleCardVisibility: false
-            })
-        }, timestamp)
+
+        //set fadeout immediately
+        let titleCardAnimation = `fadeout ${timestamp/1000}s linear ${timestamp/1000}s 1 running`
+        this.setState({
+            titleCardAnimation: titleCardAnimation
+        })
 
         //intro card effect
         this.ids.titleCardB = setTimeout(() => {
@@ -134,6 +138,13 @@ class GifBox extends React.Component {
                 titleCardBlendMode: 'hard-light'
             })
         }, timestamp / 2)
+
+        //// turn off card
+        // this.ids.titleCardIntroA = setTimeout(() => {
+        //     this.setState({
+        //         titleCardVisibility: false
+        //     })
+        // }, timestamp)
 
         //half way
         section = sections[Math.round(sections.length / 2)]
@@ -194,22 +205,29 @@ class GifBox extends React.Component {
 
     render() {
         let { currentTrack, audioAnalysis, audioFeatures, networkDelay } = this.props
-        let { titleCardVisibility, titleCardBlendMode, slideClipBlendMode,
-            slideClipVisibility, urls, searchVisible,
+        let { titleCardVisibility, titleCardBlendMode,
+            urls, searchVisible, titleCardAnimation,
             twitchChatBlendMode, twitchChatVisibility } = this.state
-
+        
+        let url = "https://thumbs.gfycat.com/DaringEntireIriomotecat-size_restricted.gif"
         return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
             <VhrOverlay currentTrack={currentTrack}
                 audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
-            <GiphySearchCard visible={this.state.searchVisible}
+            <GiphySearchCard visible={searchVisible}
                 searchGiphy={this.searchGiphy}
                 handleKeyPress={this.handleKeyPress} />
             <TitleCard currentTrack={currentTrack}
                 visibility={titleCardVisibility}
-                blendMode={titleCardBlendMode} />
+                blendMode={titleCardBlendMode}
+                animation={titleCardAnimation}
+            />
 
-            <GifSlide url={urls[0]} visibility={true} />
+            <GifSlide url={url} visibility={true} />
             <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} searchGiphy={this.searchGiphy} />
+
+            <div className="functions">
+                <div onClick={() => { this.setState({ searchVisible: !this.state.searchVisible }) }}>Search</div>
+            </div>
         </div>
     }
 }

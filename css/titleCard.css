@@ -1,6 +1,6 @@
 #titleCard {
   color: white;
-  width: 100%;
+  width: 72vw;
   height: 100vh;
   background-color: var(--main-bg, black);
   position: absolute;
@@ -85,6 +85,16 @@
     opacity: 0.6;
   }
 }
+
+@keyframes fadeout {
+  0%  {
+    background-color: #000000;
+  }
+  100% {
+    background-color: #00000000;
+  }
+}
+
 @keyframes jerk {
   50% {
     left: 2px;

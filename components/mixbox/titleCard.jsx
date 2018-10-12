@@ -15,9 +15,11 @@ class TitleCard extends React.Component {
             <br/>
             {artists}
         </span>)}
+
         let style = {
             visibility: this.props.visibility ? "visible" : "hidden",
-            mixBlendMode : this.props.blendMode
+            mixBlendMode : this.props.blendMode,
+            animation: this.props.animation
         }
 
         return <section id="titleCard" style={style}>
