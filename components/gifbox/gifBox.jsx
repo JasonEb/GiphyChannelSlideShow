@@ -24,7 +24,7 @@ class GifBox extends React.Component {
             slideClipVisibility: true,
             searchVisible: false,
             slideClipBlendMode: 'unset',
-            currentGiphyTerm: 'pixel',
+            currentGiphyTerm: 'background',
             urls: []
         }
 
@@ -36,6 +36,7 @@ class GifBox extends React.Component {
         this.fetchMyChannelGifs = this.fetchMyChannelGifs.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
         this.searchGiphy = this.searchGiphy.bind(this)
+        this.fadeoutIdx = 0
     }
 
     clearSequences() {
@@ -61,6 +62,8 @@ class GifBox extends React.Component {
         this.resetState()
         this.sequenceTitleCardBehavior(this.props)
         this.searchGiphy(this.state.currentGiphyTerm)
+
+        let titleCardEl = document.getElementById("titleCard")
     }
 
     componentWillUnmount() {
@@ -96,23 +99,32 @@ class GifBox extends React.Component {
     }
 
     resetState() {
-        this.setState({
+        this.setState( (state) => { return {
             titleCardVisibility: true,
             titleCardBlendMode: 'unset',
-            titleCardAnimation: '',
+            // titleCardAnimation: '',
             twitchChatVisibility: false,
             twitchChatBlendMode: "hard-light",
             searchVisible: false,
             slideClipBlendMode: 'unset',
+            urls: Shuffle(state.urls)
+            }
         })
+
+        let titleCardEl = document.getElementById("titleCard")
+        titleCardEl.style.mixBlendMode = "unset"
+        titleCardEl.style.backgroundColor = "black"
     }
 
     sequenceTitleCardBehavior(props) {
         this.clearSequences()
 
+        let {fadeoutIdx} = this
         let { sections } = props.audioAnalysis
+        let titleCardEl = document.getElementById("titleCard")
+
         let section = sections.find((section) => {
-            return section.start >= 6.0
+            return section.start >= 10.0
         })
         console.log("intro section: ", section, section.start)
         let duration = section.start * 1000
@@ -127,26 +139,26 @@ class GifBox extends React.Component {
         console.log("timestamp at gifBox: ", timestamp)
 
         //set fadeout immediately
-        let titleCardAnimation = `fadeout ${timestamp/1000}s linear ${timestamp/1000}s 1 running`
-        this.setState({
-            titleCardAnimation: titleCardAnimation
-        })
+        let titleCardAnimation = `fadeout${fadeoutIdx % 2 + 1} ${timestamp}ms ease-in ${timestamp}ms 1 running`
+        this.fadeoutIdx++;
+        titleCardEl.style.animation = titleCardAnimation
 
         //intro card effect
         this.ids.titleCardB = setTimeout(() => {
-            this.setState({
-                titleCardBlendMode: 'hard-light'
-            })
+            titleCardEl.style.mixBlendMode = 'hard-light'
         }, timestamp / 2)
 
-        //// turn off card
-        // this.ids.titleCardIntroA = setTimeout(() => {
-        //     this.setState({
-        //         titleCardVisibility: false
-        //     })
-        // }, timestamp)
+        // turn off title background color
+        beatMs = 60000 / (section.tempo)
+        this.ids.titleCardIntroA = setTimeout(() => {
+            // this.setState({
+            //     titleCardVisibility: false
+            // })
+            titleCardEl.style.backgroundColor = "transparent"
+            titleCardEl.style.mixBlendMode = "unset"
+        }, timestamp + 4*beatMs)
 
-        //half way
+        // half way
         section = sections[Math.round(sections.length / 2)]
         timestamp = section.start * 1000 - networkDelay - progressMs
 
@@ -155,7 +167,7 @@ class GifBox extends React.Component {
                 slideClipBlendMode: 'hard-light',
                 twitchChatVisibility: true
             })
-            slideUtil.initializeShow(section.tempo)
+            // slideUtil.initializeShow(section.tempo)
         }, timestamp)
 
         beatMs = 60000 / (section.tempo)
@@ -171,8 +183,15 @@ class GifBox extends React.Component {
         //outro
         section = sections[sections.length - 1]
         timestamp = section.start * 1000 - progressMs - networkDelay
+        beatMs = 60000 / (section.tempo)
+
         this.ids.outro = setTimeout(() => {
             this.setState({ titleCardVisibility: true })
+            titleCardAnimation = `fadeout${fadeoutIdx % 2 + 1} ${4 * beatMs}ms ease-in ${4 * beatMs}ms 1 running`
+            titleCardEl.style.animationDirection = "reverse";
+
+            timestamp = duration - progressMs - networkDelay
+            this.ids.outroFadeOut = setTimeout( () => {titleCardEl.style.backgroundColor = "black";}, timestamp)
         }, timestamp)
     }
 
@@ -208,8 +227,13 @@ class GifBox extends React.Component {
         let { titleCardVisibility, titleCardBlendMode,
             urls, searchVisible, titleCardAnimation,
             twitchChatBlendMode, twitchChatVisibility } = this.state
-        
-        let url = "https://thumbs.gfycat.com/DaringEntireIriomotecat-size_restricted.gif"
+
+        let url = urls[0]
+
+    //     <div className="functions">
+    //     <div onClick={() => { this.setState({ searchVisible: !this.state.searchVisible }) }}>Search</div>
+    // </div>
+
         return <div id="slider" tabIndex="1" onKeyPress={this.handleKeyPress} >
             <VhrOverlay currentTrack={currentTrack}
                 audioAnalysis={audioAnalysis} audioFeatures={audioFeatures} networkDelay={networkDelay} />
@@ -223,11 +247,10 @@ class GifBox extends React.Component {
             />
 
             <GifSlide url={url} visibility={true} />
-            <TwitchChat visibility={twitchChatVisibility} currentTrack={currentTrack} blendMode={twitchChatBlendMode} searchGiphy={this.searchGiphy} />
-
-            <div className="functions">
-                <div onClick={() => { this.setState({ searchVisible: !this.state.searchVisible }) }}>Search</div>
-            </div>
+            <TwitchChat visibility={twitchChatVisibility}
+                currentTrack={currentTrack}
+                blendMode={twitchChatBlendMode}
+                searchGiphy={this.searchGiphy} />
         </div>
     }
 }

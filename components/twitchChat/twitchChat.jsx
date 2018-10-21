@@ -51,6 +51,19 @@ class TwitchChat extends React.Component {
                 this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
             }, duration)
         }
+
+        //current song changes
+        if (nextProps.currentTrack.item.id !== this.props.currentTrack.item.id){
+            clearInterval(this.clipMessageID)
+
+            let {name, artists} = nextProps.currentTrack.item
+            let artist = artists.map((artist) => { return artist.name }).join(", ")
+            let message = `"${name}" by ${artist}`
+            let duration = 7000
+            this.clipMessageID = setTimeout(()=>{
+                this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
+            }, duration)
+        }
     }
 
     openChat() {

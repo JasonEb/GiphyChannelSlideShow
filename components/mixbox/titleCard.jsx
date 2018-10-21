@@ -18,8 +18,7 @@ class TitleCard extends React.Component {
 
         let style = {
             visibility: this.props.visibility ? "visible" : "hidden",
-            mixBlendMode : this.props.blendMode,
-            animation: this.props.animation
+            mixBlendMode : this.props.blendMode
         }
 
         return <section id="titleCard" style={style}>

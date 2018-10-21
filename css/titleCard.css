@@ -86,12 +86,24 @@
   }
 }
 
-@keyframes fadeout {
+@keyframes fadeout2 {
   0%  {
-    background-color: #000000;
+    background-color:black;
   }
-  100% {
-    background-color: #00000000;
+  50% {
+    background-color: transparent;
+  }
+}
+
+@keyframes fadeout1 {
+  0%  {
+    background-color:black;
+  }
+  12.5% {
+    background-color: #000000b5;
+  }
+  75% {
+    background-color: transparent;
   }
 }
 
