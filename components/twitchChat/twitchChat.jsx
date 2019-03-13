@@ -7,10 +7,10 @@ class TwitchChat extends React.Component {
         this.state = {
             messages: [],
             channel: "#interpretivedashdance",
-            broadcast: false
+            broadcast: true
         }
-        this.username = 'interpretivedashdance'
-        this.password = 'oauth:v4h9bcymhi1ztx135tidwic31pwffu'
+        this.username = 'bidoubot'
+        this.password = 'oauth:oasncugad4uhokjxuzr00u1o1q2daf'
         this.server = 'irc-ws.chat.twitch.tv';
         this.port = 443;
         this.webSocket = new WebSocket('wss://' + this.server + ':' + this.port + '/', 'irc');
@@ -38,32 +38,35 @@ class TwitchChat extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         //look for new clipsinfo props and update
-        if (this.state.broadcast && !!nextProps.clipsInfo && !!nextProps.clipsInfo.currentClip && nextProps.clipsInfo.currentClip !== this.props.clipsInfo.currentClip) {
-            clearInterval(this.clipMessageID)
-            let {currentClip} = nextProps.clipsInfo
-            let {title, broadcaster, duration} = currentClip
-            let {name} = broadcaster
-            let clipUrl = currentClip.url.slice(0, currentClip.url.indexOf("?"))
+        if(this.state.broadcast) {
+            if (!!nextProps.clipsInfo && !!nextProps.clipsInfo.currentClip && nextProps.clipsInfo.currentClip !== this.props.clipsInfo.currentClip) {
+                clearInterval(this.clipMessageID)
+                let {currentClip} = nextProps.clipsInfo
+                let {title, broadcaster, duration} = currentClip
+                let {name} = broadcaster
+                let clipUrl = currentClip.url.slice(0, currentClip.url.indexOf("?"))
 
-            let message = `"${title}" from ${name}'s channel... ${clipUrl}`
-            duration = 7000
-            this.clipMessageID = setTimeout(()=>{
-                this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
-            }, duration)
+                let message = `"${title}" from ${name}'s channel... ${clipUrl}`
+                duration = 7000
+                this.clipMessageID = setTimeout(()=>{
+                    this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
+                }, duration)
+            }
+
+            //current song changes
+            if (nextProps.currentTrack.item.id !== this.props.currentTrack.item.id){
+                clearInterval(this.clipMessageID)
+
+                let {name, artists} = nextProps.currentTrack.item
+                let artist = artists.map((artist) => { return artist.name }).join(", ")
+                let message = `the song is now "${name}" by ${artist}`
+                let duration = 7000
+                this.clipMessageID = setTimeout(()=>{
+                    this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
+                }, duration)
+            }
         }
 
-        //current song changes
-        if (nextProps.currentTrack.item.id !== this.props.currentTrack.item.id){
-            clearInterval(this.clipMessageID)
-
-            let {name, artists} = nextProps.currentTrack.item
-            let artist = artists.map((artist) => { return artist.name }).join(", ")
-            let message = `"${name}" by ${artist}`
-            let duration = 7000
-            this.clipMessageID = setTimeout(()=>{
-                this.webSocket.send(`PRIVMSG ${this.state.channel} : ${message}`);
-            }, duration)
-        }
     }
 
     openChat() {
