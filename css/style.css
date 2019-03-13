@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=VT323");
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 
+@import "portraitMode.css";
 @import "slider.css";
 @import "titleCard.css";
 @import "audioCard.css";
@@ -16,7 +17,7 @@ html{
     padding: 0;
     /* filter:sepia(1.0); */
     --main-bg: black;
-    --background-size: cover;
+    --background-size: contain;
 }
 
 body {
@@ -76,5 +77,63 @@ body {
   }
   100% {
     transform: rotate(0deg);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  #battery {
+    left: -12vw;
+    top: 1vh;
+  }
+
+  #slider li img {
+    width: 70vw;
+    height: 75vh;
+    margin-top: 3vh;
+    object-fit: var(--background-size, contain);
+  }
+
+  .glitch {
+    height: 85%;
+  }
+  div#current_track_display {
+    bottom: 20vh;
+    left: 21vw;
+  }
+
+  div#date_and_time_display {
+    right: 13vw;
+    top: 1em;
+  }
+
+  @keyframes jerkwhole {
+    40% {
+      opacity: 1;
+      top: 0;
+      left: 0px;
+    }
+    41% {
+      opacity: 0.8;
+      top: 0px;
+      left: -100px;
+    }
+    42% {
+      opacity: 0.8;
+      top: 0px;
+      left: 50px;
+    }
+    43% {
+      opacity: 1;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  @keyframes jerk {
+    50% {
+    }
+    51% {
+    }
   }
 }

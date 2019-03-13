@@ -15,7 +15,7 @@ class ClipBox extends React.Component {
         this.state = {
             clips: [],
             searchVisible: false,
-            currentStr: `irl, day`,
+            currentStr: `super smash, day`,
             fetchedClips: [],
             clipOrder: 'descending',
             clipAnimated: false,

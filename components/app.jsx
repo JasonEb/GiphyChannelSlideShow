@@ -132,7 +132,7 @@ class App extends React.Component {
         } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/gifbox")
+            this.props.history.push("/overlay")
         }
     }
 

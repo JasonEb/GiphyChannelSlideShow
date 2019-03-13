@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+    /* For mobile phones: */
+    body {
+        background-color: red;
+    }
+
+    #battery {
+        left: -9vw;
+    }
+}

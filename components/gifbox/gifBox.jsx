@@ -24,7 +24,7 @@ class GifBox extends React.Component {
             slideClipVisibility: true,
             searchVisible: false,
             slideClipBlendMode: 'unset',
-            currentGiphyTerm: 'background',
+            currentGiphyTerm: 'squirtle',
             urls: []
         }
 
@@ -229,6 +229,7 @@ class GifBox extends React.Component {
             twitchChatBlendMode, twitchChatVisibility } = this.state
 
         let url = urls[0]
+        // url = "https://media.giphy.com/media/REO8lAYODdm3C/giphy.gif"
 
     //     <div className="functions">
     //     <div onClick={() => { this.setState({ searchVisible: !this.state.searchVisible }) }}>Search</div>

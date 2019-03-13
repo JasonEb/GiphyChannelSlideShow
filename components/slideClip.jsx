@@ -36,7 +36,7 @@ class SlideClip extends React.Component {
     componentWillReceiveProps(nextProps) {
       if (nextProps.url !== this.props.url){
         clearInterval(this.loopId)
-        
+
         // dynamic measure matching
         let measures = nextProps.audioFeatures.danceability <= 0.400 ? 12 : 8
 
@@ -72,7 +72,7 @@ class SlideClip extends React.Component {
         height: '70vh',
         position: 'absolute',
         // backgroundImage: `url("${url}")`,
-        backgroundSize: 'cover',
+        // backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         zIndex: '91',
