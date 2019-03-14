@@ -30,6 +30,10 @@ class ClipsDisplay extends React.Component {
     render() {
         let {data} = this.props
 
+        if (typeof data == "undefined"){
+            return <div></div>; 
+        }
+
         let clips = !!data ? data.clips : [{duration:0}]
         let currentClip = !!data ? data.currentClip : {}
         let currentClipIdx = !!data ? data.currentClipIdx : 0

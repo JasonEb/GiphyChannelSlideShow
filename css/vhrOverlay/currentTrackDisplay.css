@@ -4,5 +4,18 @@ div#current_track_display {
     bottom: 19vh;
     right: 17vw;
     font-family: VT323;
-    font-size: 2rem;
+    font-size: 2em;
+}
+
+
+@media only screen and (max-width: 768px) {
+    div#current_track_display {
+        color: #ffffff50;
+        position: fixed;
+        bottom: 19vh;
+        font-family: VT323;
+        font-size: 1.5em;
+        display: flex;
+        justify-content: center;
+    }
 }

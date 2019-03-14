@@ -82,16 +82,12 @@ body {
 
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
-  #battery {
-    left: -12vw;
-    top: 1vh;
-  }
 
   #slider li img {
     width: 70vw;
     height: 75vh;
     margin-top: 3vh;
-    object-fit: var(--background-size, contain);
+
   }
 
   .glitch {

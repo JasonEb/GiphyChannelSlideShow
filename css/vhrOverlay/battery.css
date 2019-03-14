@@ -3,11 +3,10 @@
     top: 1.75em;
     left: 0em;
     display: block;
-    margin: 35px 0 0 5px;
+	margin: 4vh 0 0 13vw;
     /* width: 55px; */
-    height: 28px;
+	height: 2em;
     float: left;
-    margin-left: 250px;
 	opacity: 0.2;
 	z-index: 100;
 }
@@ -19,7 +18,7 @@
 	border: 6px solid #ffffff;
 	margin: -12px;
 	width: 100px;
-	height: 50px;
+	height: 3.5em;
 	position: absolute;
 	border-radius: 1px;
 	z-index: 100;
@@ -38,6 +37,27 @@
 	z-index: 100;
 }
 
-#battery.empty {width: 0;}
-#battery.half {width: 40px}
-#battery.full {width: 72px}
+#battery.empty {
+	width: 0;
+}
+
+#battery.half {
+	width: 40px
+}
+
+#battery.full {
+	width: 72px
+}
+
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	#battery {
+		top: 3vh;
+		margin: 2vh 0 0 17vw;
+		width: 55px;
+		height: 2em;
+		float: left;
+		opacity: 0.2;
+		z-index: 100;
+	}
+}
