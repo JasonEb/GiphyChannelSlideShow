@@ -26,7 +26,7 @@ export const fetchLocalGifUrls = () => {
 
 export const fetchGiphyChannel = (id="2579919", offset) => {
     // 6343 for matt horror work
-    let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&offset=0&limit=150&offset=${offset}`
+    let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=cpHZy144063Z5Y1Y5yctNwoUmw8OjDIY&offset=0&limit=150&offset=${offset}`
     // let url = `https://api.giphy.com/v1/channels/${id}/gifs?api_key=cpHZy144063Z5Y1Y5yctNwoUmw8OjDIY&offset=0&limit=100`
     return $.ajax({
         method: 'GET',

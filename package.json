@@ -1,11 +1,14 @@
 {
   "name": "GiphyChannelSlideShow",
   "version": "1.0.0",
+  "local-web-server": {
+    "port": 80
+  },
   "description": "A website that cycles through Gifs from a Giphy Channel",
   "main": "index.js",
   "scripts": {
     "webpack": "webpack -w",
-    "ws": "ws"
+    "ws": "ws --https "
   },
   "repository": {
     "type": "git",
@@ -24,17 +27,17 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "json-loader": "^0.5.7",
-    "local-web-server": "^2.5.6",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "local-web-server": "^2.6.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
-    "react-table": "^6.8.6",
-    "react-timeout": "^1.1.1",
+    "react-table": "^6.10.0",
+    "react-timeout": "^1.2.0",
     "webpack": "^3.12.0"
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "json-loader": "^0.5.7",
     "shuffle-array": "^1.0.1"
   }

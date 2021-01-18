@@ -119,7 +119,7 @@ class App extends React.Component {
             spotifyUtil.getCurrentTrack().then((res) => {
                 this.setState({ currentTrack: res })
             }).catch((res) => {
-                const returnUrl = 'http://127.0.0.1:8000'
+                const returnUrl = 'https://127.0.0.1:8000'
                 spotifyUtil.getAuthTokenImplicit(returnUrl)
             })
         }, beatMs * 6)
@@ -127,12 +127,12 @@ class App extends React.Component {
 
     componentDidMount() {
         if (window.location.hash === '') {
-            const returnUrl = 'http://127.0.0.1:8000'
+            const returnUrl = 'https://127.0.0.1:8000'
             spotifyUtil.getAuthTokenImplicit(returnUrl)
         } else {
             this.setupSpotify()
             // figure out how to auto redirect routes...
-            this.props.history.push("/gifbox")
+            this.props.history.push("/clipbox")
         }
     }
 

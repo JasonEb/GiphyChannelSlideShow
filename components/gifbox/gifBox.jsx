@@ -24,7 +24,7 @@ class GifBox extends React.Component {
             slideClipVisibility: true,
             searchVisible: false,
             slideClipBlendMode: 'unset',
-            currentGiphyTerm: 'squirtle',
+            currentGiphyTerm: 'lofi',
             urls: []
         }
 

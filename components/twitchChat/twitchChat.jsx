@@ -7,7 +7,7 @@ class TwitchChat extends React.Component {
         this.state = {
             messages: [],
             channel: "#interpretivedashdance",
-            broadcast: true
+            broadcast: false
         }
         this.username = 'bidoubot'
         this.password = 'oauth:oasncugad4uhokjxuzr00u1o1q2daf'

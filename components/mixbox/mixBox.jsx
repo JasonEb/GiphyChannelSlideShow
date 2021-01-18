@@ -22,7 +22,7 @@ class MixBox extends React.Component {
         slideClipVisibility: true,
         searchVisible: false,
         slideClipBlendMode: 'unset',
-        currentGiphyTerm: 'cassette',
+        currentGiphyTerm: 'futuristic',
         urls: []
       }
 
